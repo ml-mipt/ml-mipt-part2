@@ -5,7 +5,7 @@ __pycache__/
 *.DS_Store
 # C extensions
 *.so
-*data*
+*./data/cifar*
 # Distribution / packaging
 .Python
 env/
