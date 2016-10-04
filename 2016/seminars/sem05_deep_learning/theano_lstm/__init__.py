@@ -239,52 +239,30 @@ class RNN(Layer):
 
 class GRU(RNN):
     def create_variables(self):
-        self.reset_layer = theano_lstm.RNN(self.input_size, self.hidden_size, activation = T.nnet.sigmoid)
-        self.memory_interpolation_layer = theano_lstm.RNN(self.input_size, self.hidden_size, activation = T.nnet.sigmoid)
-        self.memory_to_memory_layer = theano_lstm.RNN(self.input_size, self.hidden_size, activation = T.tanh)
-        self.internal_layers = [
-            self.reset_layer,
-            self.memory_interpolation_layer,
-            self.memory_to_memory_layer
-        ]
+        '''
+        create needed variables here
+        '''
+        pass
 
     @property
     def params(self):
-        return [param for layer in self.internal_layers for param in layer.params]
+        '''
+        return parameters
+        '''
+        return []
 
     @params.setter
     def params(self, param_list):
+        '''
+        assert is a hint only, change it, if you want
+        '''
         assert(len(param_list) == 6)
-        self.reset_layer.params                = param_list[0:2]
-        self.memory_interpolation_layer.params = param_list[2:4]
-        self.memory_to_memory_layer.params     = param_list[4:6]
     
     def activate(self, x, h):
-        reset_gate = self.reset_layer.activate(
-            x,
-            h
-        )
-
-        # the new state dampened by resetting
-        reset_h = reset_gate * h;
-
-        # the new hidden state:
-        candidate_h = self.memory_to_memory_layer.activate(
-            x,
-            reset_h
-        )
-
-        # how much to update the new hidden state:
-        update_gate = self.memory_interpolation_layer.activate(
-            x,
-            h
-        )
-
-        # the new state interploated between candidate and old:
-        new_h = (
-            h      * (1.0 - update_gate) +
-            candidate_h * update_gate
-        )
+        '''
+        write activation function here
+        '''
+        new_h = None
         return new_h
 
 class LSTM(RNN):
