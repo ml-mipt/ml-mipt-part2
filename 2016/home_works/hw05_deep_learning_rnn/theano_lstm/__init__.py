@@ -236,34 +236,7 @@ class RNN(Layer):
     def params(self, param_list):
         self.linear_matrix.set_value(param_list[0].get_value())
         self.bias_matrix.set_value(param_list[1].get_value())
-
-class GRU(RNN):
-    def create_variables(self):
-        '''
-        create needed variables here
-        '''
-        pass
-
-    @property
-    def params(self):
-        '''
-        return parameters
-        '''
-        return []
-
-    @params.setter
-    def params(self, param_list):
-        '''
-        assert is a hint only, change it, if you want
-        '''
-        assert(len(param_list) == 6)
-    
-    def activate(self, x, h):
-        '''
-        write activation function here
-        '''
-        new_h = None
-        return new_h
+        
 
 class LSTM(RNN):
     """
