@@ -1,0 +1,90 @@
+Данные для прогнозирования интенсивности продаж конкретного товара в конкретной торговой точки розничной сети. 
+
+#	Variable	Description
+1	LOCATION_ID	Идентификатор магазина
+2	MODEL_ID	Идентификатор модеи
+3	MODEL_NAME	Наименование модели
+4	MODEL_OS	Операционная система
+5	MODEL_TYPE	Тип телефона
+6	MODEL_BRAND	Бренд
+7	MODEL_COST	Закупочная стоимость
+8	STORE_REGION	Регион расположения магазина
+9	STORE_CITY	Город расположения магазина
+10	STORE_OPEN_DTTM	Дата открытия магазина
+11	STORE_FORMAT	Формат магазина
+12	STORE_BUILDING_TYPE	Тип здания магазина
+13	STORE_ADDRESS_LINE	Адрес магазина
+14	STORE_GPS	GPS координаты магазина
+15	STORE_PRICE_TYPE	Ценовой регион 
+16	ABC_SMART_WHITE	См. замечания ниже
+17	ABC_SMART_BLACK	См. замечания ниже
+18	ABC_SMART_GOLD	См. замечания ниже
+19	ABC_SMART_COLORED	См. замечания ниже
+20	ABC_SMART_alcatel	См. замечания ниже
+21	ABC_SMART_other_brands	См. замечания ниже
+22	ABC_SMART_samsung	См. замечания ниже
+23	ABC_SMART_мтс	См. замечания ниже
+24	ABC_SMART_RES_HD	См. замечания ниже
+25	ABC_SMART_RES_LOW	См. замечания ниже
+26	ABC_SMART_RES_GOOD	См. замечания ниже
+27	ABC_SMART_DIAG_BIG	См. замечания ниже
+28	ABC_SMART_DIAG_MEDIUM	См. замечания ниже
+29	ABC_SMART_DIAG_SMALL	См. замечания ниже
+30	ABC_NONSMART_WHITE	См. замечания ниже
+31	ABC_NONSMART_BLACK	См. замечания ниже
+32	ABC_NONSMART_GOLD	См. замечания ниже
+33	ABC_NONSMART_COLORED	См. замечания ниже
+34	ABC_NONSMART_alcatel	См. замечания ниже
+35	ABC_NONSMART_other_brands	См. замечания ниже
+36	ABC_NONSMART_samsung	См. замечания ниже
+37	ABC_NONSMART_mts	См. замечания ниже
+38	ABC_NONSMART_RES_HD	См. замечания ниже
+39	ABC_NONSMART_RES_LOW	См. замечания ниже
+40	ABC_NONSMART_RES_GOOD	См. замечания ниже
+41	ABC_NONSMART_DIAG_BIG	См. замечания ниже
+42	ABC_NONSMART_DIAG_MEDIUM	См. замечания ниже
+43	ABC_NONSMART_DIAG_SMALL	См. замечания ниже
+44	assortment	Ассортимент торговой точки
+45	SPECTR_SMART_WHITE	См. замечания ниже
+46	SPECTR_SMART_BLACK	См. замечания ниже
+47	SPECTR_SMART_GOLD	См. замечания ниже
+48	SPECTR_SMART_COLOR	См. замечания ниже
+49	SPECTR_SMART_alcatel	См. замечания ниже
+50	SPECTR_SMART_other_brands	См. замечания ниже
+51	SPECTR_SMART_samsung	См. замечания ниже
+52	SPECTR_SMART_mts	См. замечания ниже
+53	SPECTR_SMART_BIG	См. замечания ниже
+54	SPECTR_SMART_MEDIUM	См. замечания ниже
+55	SPECTR_SMART_SMALL	См. замечания ниже
+56	SPECTR_SMART_HD	См. замечания ниже
+57	SPECTR_SMART_LOW	См. замечания ниже
+58	SPECTR_SMART_GOOD	См. замечания ниже
+59	SPECTR_NONSMART_WHITE	См. замечания ниже
+60	SPECTR_NONSMART_BLACK	См. замечания ниже
+61	SPECTR_NONSMART_GOLD	См. замечания ниже
+62	SPECTR_NONSMART_COLOR	См. замечания ниже
+63	SPECTR_NONSMART_alcatel	См. замечания ниже
+64	SPECTR_NONSMART_other_brands	См. замечания ниже
+65	SPECTR_NONSMART_samsung	См. замечания ниже
+66	SPECTR_NONSMART_mts	См. замечания ниже
+67	SPECTR_NONSMART_BIG	См. замечания ниже
+68	SPECTR_NONSMART_MEDIUM	См. замечания ниже
+69	SPECTR_NONSMART_SMALL	См. замечания ниже
+70	SPECTR_NONSMART_HD	См. замечания ниже
+71	SPECTR_NONSMART_LOW	См. замечания ниже
+72	SPECTR_NONSMART_GOOD	См. замечания ниже
+73	DEMAND	Параметр расчитанный на первом месяце истории продаж. Целевая переменная
+
+
+Замечаения: 
+1) переменные ABC - это ABC группы торговой точки по продажам в штуках по некоторой группе товара за месяц, предшествующий старту временного рада LOCATION+MODEL (пропуск соответствует тому, что для данного ряда было недостаточно данных - месяц продаж):
+Приставки 
+	-- SMART - ABC для группы смартфонов, 
+	-- NONSMART - для фичефонов
+	-- WHITE/BLACK/GOLD/COLORED - по группам цветов
+	-- alcatel/samsung/mts/other_brands - по ""ядровым"" брендам
+	-- BIG/MEDIUM/SMALL - по диагоналям экрана
+	-- HD/GOOD/LOW - по разрешению экрана
+
+2) Переменные SPECTR - это спектр для торговой точки, рассчитанный по некоторой группе товар, на периоде за два месяца предшествующих старту временного рада LOCATION+MODEL. 
+Спектр за период времени определяется как отношение числа различных проданных SKU за период времени к числу различных SKU находившихся на остатках за период времени.
