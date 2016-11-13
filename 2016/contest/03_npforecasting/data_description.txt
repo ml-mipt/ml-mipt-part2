@@ -1,90 +1,43 @@
 Данные для прогнозирования интенсивности продаж конкретного товара в конкретной торговой точки розничной сети. 
 
 #	Variable	Description
-1	LOCATION_ID	Идентификатор магазина
-2	MODEL_ID	Идентификатор модеи
-3	MODEL_NAME	Наименование модели
-4	MODEL_OS	Операционная система
-5	MODEL_TYPE	Тип телефона
-6	MODEL_BRAND	Бренд
-7	MODEL_COST	Закупочная стоимость
-8	STORE_REGION	Регион расположения магазина
-9	STORE_CITY	Город расположения магазина
-10	STORE_OPEN_DTTM	Дата открытия магазина
-11	STORE_FORMAT	Формат магазина
-12	STORE_BUILDING_TYPE	Тип здания магазина
-13	STORE_ADDRESS_LINE	Адрес магазина
-14	STORE_GPS	GPS координаты магазина
-15	STORE_PRICE_TYPE	Ценовой регион 
-16	ABC_SMART_WHITE	См. замечания ниже
-17	ABC_SMART_BLACK	См. замечания ниже
-18	ABC_SMART_GOLD	См. замечания ниже
-19	ABC_SMART_COLORED	См. замечания ниже
-20	ABC_SMART_alcatel	См. замечания ниже
-21	ABC_SMART_other_brands	См. замечания ниже
-22	ABC_SMART_samsung	См. замечания ниже
-23	ABC_SMART_мтс	См. замечания ниже
-24	ABC_SMART_RES_HD	См. замечания ниже
-25	ABC_SMART_RES_LOW	См. замечания ниже
-26	ABC_SMART_RES_GOOD	См. замечания ниже
-27	ABC_SMART_DIAG_BIG	См. замечания ниже
-28	ABC_SMART_DIAG_MEDIUM	См. замечания ниже
-29	ABC_SMART_DIAG_SMALL	См. замечания ниже
-30	ABC_NONSMART_WHITE	См. замечания ниже
-31	ABC_NONSMART_BLACK	См. замечания ниже
-32	ABC_NONSMART_GOLD	См. замечания ниже
-33	ABC_NONSMART_COLORED	См. замечания ниже
-34	ABC_NONSMART_alcatel	См. замечания ниже
-35	ABC_NONSMART_other_brands	См. замечания ниже
-36	ABC_NONSMART_samsung	См. замечания ниже
-37	ABC_NONSMART_mts	См. замечания ниже
-38	ABC_NONSMART_RES_HD	См. замечания ниже
-39	ABC_NONSMART_RES_LOW	См. замечания ниже
-40	ABC_NONSMART_RES_GOOD	См. замечания ниже
-41	ABC_NONSMART_DIAG_BIG	См. замечания ниже
-42	ABC_NONSMART_DIAG_MEDIUM	См. замечания ниже
-43	ABC_NONSMART_DIAG_SMALL	См. замечания ниже
-44	assortment	Ассортимент торговой точки
-45	SPECTR_SMART_WHITE	См. замечания ниже
-46	SPECTR_SMART_BLACK	См. замечания ниже
-47	SPECTR_SMART_GOLD	См. замечания ниже
-48	SPECTR_SMART_COLOR	См. замечания ниже
-49	SPECTR_SMART_alcatel	См. замечания ниже
-50	SPECTR_SMART_other_brands	См. замечания ниже
-51	SPECTR_SMART_samsung	См. замечания ниже
-52	SPECTR_SMART_mts	См. замечания ниже
-53	SPECTR_SMART_BIG	См. замечания ниже
-54	SPECTR_SMART_MEDIUM	См. замечания ниже
-55	SPECTR_SMART_SMALL	См. замечания ниже
-56	SPECTR_SMART_HD	См. замечания ниже
-57	SPECTR_SMART_LOW	См. замечания ниже
-58	SPECTR_SMART_GOOD	См. замечания ниже
-59	SPECTR_NONSMART_WHITE	См. замечания ниже
-60	SPECTR_NONSMART_BLACK	См. замечания ниже
-61	SPECTR_NONSMART_GOLD	См. замечания ниже
-62	SPECTR_NONSMART_COLOR	См. замечания ниже
-63	SPECTR_NONSMART_alcatel	См. замечания ниже
-64	SPECTR_NONSMART_other_brands	См. замечания ниже
-65	SPECTR_NONSMART_samsung	См. замечания ниже
-66	SPECTR_NONSMART_mts	См. замечания ниже
-67	SPECTR_NONSMART_BIG	См. замечания ниже
-68	SPECTR_NONSMART_MEDIUM	См. замечания ниже
-69	SPECTR_NONSMART_SMALL	См. замечания ниже
-70	SPECTR_NONSMART_HD	См. замечания ниже
-71	SPECTR_NONSMART_LOW	См. замечания ниже
-72	SPECTR_NONSMART_GOOD	См. замечания ниже
-73	DEMAND	Параметр расчитанный на первом месяце истории продаж. Целевая переменная
+1	DEMAND            	целевая переменная: интенсивность спроса, расcчитанная на первом месяце истории продаж
+2	LOCATION_ID	идентификатор магазина
+3	MODEL_BRAND         	бренд модели
+4	MODEL_COST_AVG	средняя закупочная стоимость модели в первый месяц продаж
+5	MODEL_COUNT_SALES_DAYS             	количество дней, которая модель продавалась в других каналах (связано с MODEL_MEAN_SALES)
+6	MODEL_DIAG	длина диагонали
+7	MODEL_DIAG_TYPE           	тип диагонали
+8	MODEL_HEIGHT	высоты
+9	MODEL_ID       	ID модели
+10	MODEL_MEAN_SALES	средняя интенсивность продаж модели в других каналах (оценённая на небольшому периоду, см поле MODEL_COUNT_SALES_DAYS)
+11	MODEL_NAME	наименование модели
+12	MODEL_OS	операционная система
+13	MODEL_RES_TYPE	тип разрешения экрана
+14	MODEL_TYPE	тип телефона
+15	MODEL_WIDTH	ширина экрана
+16	STORE_ASSORTMENT	количество моделей в магазине,  на которые приходится 90% продаж в штуках
+17	STORE_BRAND_ABC	категория ABC магазина относительно продаж данного бренда (см. MODEL_BRAND)
+18	STORE_BRAND_SPECTR	спектр магазина относительно продаж данного бренда (см. MODEL_BRAND)
+19	STORE_BUILDING_TYPE	тип здания, в котором находится магазин
+20	STORE_CITY	город расположения магазина
+21	STORE_CLUSTER	кластер магазина в виде XuYm: чем выше X, тем сильнее продажи в штуках, чем выше Y тем выше продажи в деньгах
+22	STORE_TYPE_A	вероятность отнесения магазина к группе A  относительно продаж моделей данного типа (см. MODEL_TYPE)
+23	STORE_TYPE_B	вероятность отнесения магазина к группе B  относительно продаж моделей данного типа (см. MODEL_TYPE)
+24	STORE_TYPE_C	вероятность отнесения магазина к группе C  относительно продаж моделей данного типа (см. MODEL_TYPE)
+25	STORE_TYPE_SPECTR	спектр магазина относительно продаж данного типа (см. MODEL_TYPE)
+26	STORE_DIAG_ABC	категория ABC магазина относительно продаж моделей данного типа диагонали (см. MODEL_DIAG_TYPE)
+27	STORE_DIAG_SPECTR	спектр магазина относительно продаж моделей данного типа диагонали (см. MODEL_DIAG_TYPE)
+28	STORE_FORMAT	формат магазина
+29	STORE_OPEN_DTTM	дата открытия магазина
+30	STORE_PRICE_TYPE	ценовой регион 
+31	STORE_REGION	регион, в котором расположен магазин
+32	STORE_RES_ABC	категория ABC магазина относительно продаж моделей аналогичных по разрешению экрана (см. MODEL_RES_TYPE)
+33	STORE_RES_SPECTR	спектр магазина относительно продаж моделей аналогичных по разрешению экрана (см. MODEL_RES_TYPE)
 
 
-Замечаения: 
-1) переменные ABC - это ABC группы торговой точки по продажам в штуках по некоторой группе товара за месяц, предшествующий старту временного рада LOCATION+MODEL (пропуск соответствует тому, что для данного ряда было недостаточно данных - месяц продаж):
-Приставки 
-	-- SMART - ABC для группы смартфонов, 
-	-- NONSMART - для фичефонов
-	-- WHITE/BLACK/GOLD/COLORED - по группам цветов
-	-- alcatel/samsung/mts/other_brands - по ""ядровым"" брендам
-	-- BIG/MEDIUM/SMALL - по диагоналям экрана
-	-- HD/GOOD/LOW - по разрешению экрана
+Замечания: 
+1) переменные с постфиксом _ABC - это ABC группы магазина по продажам в штуках по некоторой группе товара за месяц, предшествующий старту временного ряда LOCATION+MODEL (пропуск соответствует тому, что для данного ряда было недостаточно данных - месяц продаж):
 
-2) Переменные SPECTR - это спектр для торговой точки, рассчитанный по некоторой группе товар, на периоде за два месяца предшествующих старту временного рада LOCATION+MODEL. 
+2) переменные с постфиксом _SPECTR - это спектр для торговой точки, рассчитанный по некоторой группе товар, на периоде за два месяца предшествующих старту временного рада LOCATION+MODEL.
 Спектр за период времени определяется как отношение числа различных проданных SKU за период времени к числу различных SKU находившихся на остатках за период времени.
