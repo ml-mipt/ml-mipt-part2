@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import math
+import pandas as pd
 
 # Quality functions
 def qualitySSE(x,y):
@@ -138,3 +139,99 @@ def AdaptiveExponentialSmoothing(x, h, Params):
                 y = y*(1-alpha) + (alpha)*x[t]
         FORECAST[t+h] = y
     return FORECAST
+
+def WintersExponentialSmoothing(x, h, Params):
+    T = len(x)
+    alpha = Params['alpha']
+    gamma = Params['gamma']
+    p = Params['seasonality_period']
+    
+    FORECAST = [np.NaN]*(T+h)
+    
+    l= np.NaN
+    s= []
+    for i in range(p):
+        if not math.isnan(x[i]):
+            s.append(x[i])
+        else:
+            s.append(s[i-1])
+    
+    for cntr in range(T):
+        if not math.isnan(x[cntr]):
+            if math.isnan(l):
+                l= x[cntr]
+            if len(s)==0:
+                for i in range(p):
+                    s.append(x[i])
+            if cntr<p:
+                l = alpha*(x[cntr]-s[cntr])+(1-alpha)*l # recurrent smoothing of level 
+            else:
+                s_old=s[cntr%p]
+                s[cntr%p]=gamma*(x[cntr]-l)+(1-gamma)*s[cntr%p]
+                l = alpha*(x[cntr]-s_old)+(1-alpha)*l # recurrent smoothing of level 
+                
+                
+        FORECAST[cntr+h] = l + s[(cntr+1)%p]
+    return FORECAST
+
+def TWExponentialSmoothing(x, h, Params):
+    T = len(x)
+    alpha = Params['alpha']
+    beta = Params['beta']
+    gamma = Params['gamma']
+    p = Params['seasonality_period']
+    
+    FORECAST = [np.NaN]*(T+h)
+    
+    l= np.NaN
+    b=np.NaN
+    s= []
+    for i in range(p):
+        if not math.isnan(x[i]):
+            s.append(x[i])
+        else:
+            s.append(s[i-1])
+
+    for cntr in range(T):
+        if not math.isnan(x[cntr]):
+            if math.isnan(l):
+                l= x[cntr]
+            if math.isnan(b):
+                b= 0
+            if cntr<p:
+                l_old=l
+                l = alpha*(x[cntr]-s[cntr])+(1-alpha)*(l+b)
+                b=beta*(l-l_old)+(1-beta)*b
+            else:
+                l_old=l
+                s_old=s[cntr%p]
+                s[cntr%p]=gamma*(x[cntr]-l)+(1-gamma)*s[cntr%p]
+                l = alpha*(x[cntr]-s_old)+(1-alpha)*(l+b) # recurrent smoothing of level 
+                b=beta*(l-l_old)+(1-beta)*b
+            
+        FORECAST[cntr+h] = l+b + s[(cntr+h)%p]
+    return FORECAST
+
+def build_forecast(h, ts, algname, algtitle, params_array, step='D'):
+    FRC_TS = dict()
+
+    for p in params_array:
+        frc_horizon = pd.date_range(wage.index[-1], periods=h+1, freq=step)[1:]
+        frc_ts = pd.DataFrame(index = ts.index.append(frc_horizon), columns = ts.columns)
+        
+        for cntr in ts.columns:
+            frc_ts[cntr] = eval(algname)(ts[cntr], h, p)
+        
+#         frc_ts.columns = frc_ts.columns+('%s %s' % (algtitle, p))
+        FRC_TS['%s %s' % (algtitle, p)] = frc_ts
+    
+    return FRC_TS
+
+def plot_tsforecast(ts, frc_ts, ts_num=0, alg_title=''):
+    frc_ts.columns = ts.columns+'; '+alg_title
+    ts[ts.columns[0]].plot(style='b', linewidth=1.0, marker='o')
+    ax = frc_ts[frc_ts.columns[0]].plot(style='r-^', figsize=(15,5), linewidth=1.0)
+    plt.xlabel("Time ticks")
+    plt.ylabel("TS values")
+    plt.legend()
+    return ax
