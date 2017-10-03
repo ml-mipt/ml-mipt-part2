@@ -216,7 +216,7 @@ def build_forecast(h, ts, algname, algtitle, params_array, step='D'):
     FRC_TS = dict()
 
     for p in params_array:
-        frc_horizon = pd.date_range(wage.index[-1], periods=h+1, freq=step)[1:]
+        frc_horizon = pd.date_range(ts.index[-1], periods=h+1, freq=step)[1:]
         frc_ts = pd.DataFrame(index = ts.index.append(frc_horizon), columns = ts.columns)
         
         for cntr in ts.columns:
