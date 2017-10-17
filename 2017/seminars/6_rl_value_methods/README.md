@@ -1,4 +1,4 @@
-#### __Lecture slides__ - [here](https://yadi.sk/i/54qWKtDB3NDeuh)
+#### __Lecture slides__ - [here](https://github.com/neychev/ml-mipt-part2/blob/master/2017/lectures/6_temporal_difference.pdf)
 ### Materials
 * Russian materials:
    - Recap of value iteration & Q_learning - [video](https://yadi.sk/i/I7XcP6vU3ExNrT)
@@ -6,8 +6,8 @@
    - More on value-based methods - [video 2](https://yadi.sk/i/I7XcP6vU3ExNrT)
    - Sarsa & stuff - [seminar2](https://yadi.sk/i/XbqNQmjm3ExNsq)
 * English materials:
-   - Lecture by David Silver (english) - [video part I](https://www.youtube.com/watch?v=PnHCvfgC_ZA), [video part II](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=43s)
-   - Alternative lecture by Pieter Abbeel (english) - [video](https://www.youtube.com/watch?v=ifma8G7LegE)
+   - Lecture by Pieter Abbeel (english) - [video](https://www.youtube.com/watch?v=ifma8G7LegE)
+   - Alternative lectures by David Silver (english) - [video part I](https://www.youtube.com/watch?v=Nd1-UUMVfz4) [video part II](https://www.youtube.com/watch?v=PnHCvfgC_ZA), [video part III](https://www.youtube.com/watch?v=0g4j2k_Ggc4&t=43s)
    - Alternative lecture by John Schulmann (english) - [video](https://www.youtube.com/watch?v=IL3gVyJMmhg)
    - Blog post on q-learning Vs SARSA - [url](https://studywolf.wordpress.com/2013/07/01/reinforcement-learning-sarsa-vs-q-learning/)
 
