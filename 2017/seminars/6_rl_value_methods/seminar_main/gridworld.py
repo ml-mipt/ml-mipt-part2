@@ -462,10 +462,12 @@ if __name__ == '__main__':
   # GET THE AGENT
   ###########################
 
-  import valueIterationAgents, qlearningAgents
+  # import valueIterationAgents, qlearningAgents
+  import qlearningAgents
   a = None
   if opts.agent == 'value':
-    a = valueIterationAgents.ValueIterationAgent(mdp, opts.discount, opts.iters)
+    # a = valueIterationAgents.ValueIterationAgent(mdp, opts.discount, opts.iters)
+    raise NotImplementedError
   elif opts.agent == 'q':
     #env.getPossibleActions, opts.discount, opts.learningRate, opts.epsilon
     #simulationFn = lambda agent, state: simulation.GridworldSimulation(agent,state,mdp)
