@@ -1,8 +1,8 @@
 #### __Lecture slides__ - [here](https://github.com/neychev/ml-mipt-part2/blob/master/2017/lectures/6_temporal_difference.pdf)
 ### Materials
 * Russian materials:
-   - Recap of value iteration & Q_learning - [video](https://yadi.sk/i/I7XcP6vU3ExNrT)
-   - Q-learning seminar - [video](https://yadi.sk/i/XbqNQmjm3ExNsq)
+   - Recap of value iteration & Q_learning - [video](https://yadi.sk/i/cVawsPkK3EtGJj)
+   - Q-learning seminar - [video](https://yadi.sk/i/dQmolwOy3EtGNK)
    - More on value-based methods - [video 2](https://yadi.sk/i/I7XcP6vU3ExNrT)
    - Sarsa & stuff - [seminar2](https://yadi.sk/i/XbqNQmjm3ExNsq)
 * English materials:
