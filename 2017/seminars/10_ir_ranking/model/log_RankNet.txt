@@ -1,0 +1,42 @@
+
+[+] General Parameters:
+Training data:	./data/train.txt
+Test data:	./data/test.txt
+Validation data:	./data/valid.txt
+Feature vector representation: Dense.
+Ranking method:	RankNet
+Feature description file:	Unspecified. All features will be used.
+Train metric:	NDCG@10
+Test metric:	NDCG@10
+Feature normalization: No
+Model file: ./model/RankNet.txt
+
+[+] RankNet's Parameters:
+No. of epochs: 100
+No. of hidden layers: 1
+No. of hidden nodes per layer: 10
+Learning rate: 5.0E-5
+
+Reading feature file [./data/train.txt]: 0... Reading feature file [./data/train.txt]... [Done.]            
+(104 ranked lists, 1305 entries read)
+Reading feature file [./data/valid.txt]: 0... Reading feature file [./data/valid.txt]... [Done.]            
+(105 ranked lists, 975 entries read)
+Reading feature file [./data/test.txt]: 0... Reading feature file [./data/test.txt]... [Done.]            
+(76 ranked lists, 655 entries read)
+Initializing... [Done]
+-----------------------------------------
+Training starts...
+--------------------------------------------------
+#epoch  | % mis-ordered  | NDCG@10-T | NDCG@10-V | 
+        |   pairs        |           |           | 
+--------------------------------------------------
+1       | 0.2128         | 0.682     | 0.5654    | 
+2       | 0.1924         | 0.6769    | 0.5656    | 
+3       | 0.1592         | 0.6795    | 0.5651    | 
+4       | 0.1437         | 0.6788    | 0.5654    | 
+5       | 0.1435         | 0.6778    | 0.5647    | 
+6       | 0.143          | 0.6762    | 0.5631    | 
+7       | 0.142          | 0.677     | 0.5593    | 
+8       | 0.1415         | 0.6759    | 0.5596    | 
+9       | 0.1417         | 0.6741    | 0.5612    | 
+10      | 0.142          | 0.673     | 0.5603    | 
