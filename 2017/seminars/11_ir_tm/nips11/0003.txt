@@ -1,0 +1,342 @@
+Evidence for a Forward Dynamics Model 
+in Human Adaptive Motor Control 
+Nikhil Bhushan and Reza Shadmehr 
+Dept. of Biomedical Engineering 
+Johns Hopkins University, Baltimore, MD 21205 
+Email: nbhushan@bme.jhu.edu, reza@bme.jhu.edu 
+Abstract 
+Based on computational principles, the concept of an internal 
+model for adaptive control has been divided into a forward and an 
+inverse model. However, there is as yet little evidence that learning 
+control by the CNS is through adaptation of one or the other. Here 
+we examine two adaptive control architectures, one based only on 
+the inverse model and other based on a combination of forward and 
+inverse models. We then show that for reaching movements of the 
+hand in novel force fields, only the learning of the forward model 
+results in key characteristics of performance that match the kine- 
+matics of human subjects. In contrast, the adaptive control system 
+that relies only on the inverse model fails to produce the kinematic 
+patterns observed in the subjects, despite the fact that it is more 
+stable. Our results provide evidence that learning control of novel 
+dynamics is via formation of a forward model. 
+I Introduction 
+The concept of an internal model, a system for predicting behavior of a controlled 
+process, is central to the current theories of motor control (Wolpert et al. 1995) and 
+learning (Shadmehr and Mussa-Ivaldi 1994). Theoretical studies have proposed 
+that internal models may be divided into two varieties: forward models, which 
+simulate the causal flow of a process by predicting its state transition given a motor 
+command, and inverse models, which estimate motor commands appropriate for a 
+desired state transition (Miall and Wolpert, 1996). This classification is relevant for 
+adaptive control because based on computational principles, it has been proposed 
+that learning control of a nonlinear system might be facilitated if a forward model 
+of the plant is learned initially, and then during an off-line period is used to train 
+an inverse model (Jordan and Rumelhart, 1992). While there is no experimental 
+evidence for this idea in the central nervous system, there is substantial evidence 
+4 N. Bhushan and R. $hadrnehr 
+that learning control of arm movements involves formation of an internal model. 
+For example, practicing arm movements while holding a novel dynamical system 
+initiates an adaptation process which results in the formation of an internal model: 
+upon sudden removal of the force field, after-effects are observed which match the 
+expected behavior of a system that has learned to predict and compensate for the 
+dynamics of the imposed field (Shadmehr and Brashers-Krug, 1997). However, the 
+computational nature of this internal model, whether it be a forward or an inverse 
+model, or a combination of both, is not known. 
+Here we use a computational approach to examine two adaptive control architec- 
+tures: adaptive inverse model feedforward control and adaptive forward-inverse 
+model feedback control. We show that the two systems predict different behaviors 
+when applied to control of arm movements. While adaptation to a force field is 
+possible with either approach, the second system with feedback control through an 
+adaptive forward model, is far less stable and is accompanied with distinct kinematic 
+signatures, termed "near path-discontinuities". We observe remarkably similar in- 
+stability and near path-discontinuities in the kinematics of 16 subjects that learned 
+force fields. This is behavioral evidence that learning control of novel dynamics is 
+accomplished with an adaptive forward model of the system. 
+2 Adaptive Control using Internal Models 
+Adaptive control of a nonlinear system which has large sensory feedback delays, 
+such as the human arm, can be accomplished by using two different internal model 
+architectures. The first method uses only an adaptive inverse dynamics model to 
+control the system (Shadmehr and Mussa-Ivaldi, 1994). The adaptive controller 
+is feedforward in nature and ignores delayed feedback during the movement. The 
+control system is stable because it relies on the equilibrium properties of the muscle 
+and the spinal reflexes to correct for any deviations from the desired trajectory. 
+The second method uses a rapidly adapting forward dynamics model and delayed 
+sensory feedback in addition to an inverse dynamics model to control arm move- 
+ments (Miall and Wolpert, 1996). In this case, the corrections to deviations from 
+the desired trajectory are a result of a combination of supraspinal feedback as well 
+as spinal/muscular feedback. Since the two methods rely on different internal model 
+and feedback structures, they are expected to behave differently when the dynamics 
+of the system are altered. 
+The Mechanical Model of the Human Arm 
+For the purpose of simulating arm movements with the two different control archi- 
+tectures, a reasonably accurate model of the human arm is required. We model the 
+arm as a two joint revolute arm attached to six muscles that act in pairs around 
+the two joints. The three muscle pairs correspond to elbow joint, shoulder joint 
+and two joint muscles and are assumed to have constant moment arms. Each mus- 
+cle is modeled using a Hill parametric model with nonlinear stiffness and viscosity 
+(Soechting and Flanders, 1997). The dynamics of the muscle can be represented by 
+a nonlinear state function fM, such that, 
+(1) 
+where, Ft is the force developed by the muscle, N is the neural activation to the 
+muscle, and x,, , are the muscle length and velocity. The passive dynamics 
+related to the mechanics of the two-joint revolute arm can be represented by 
+such that, 
+ = fz>(T,x,.)= D-(x)[T-C(x,.). + J'F] (2) 
+Evidence for a Forward Dynamics Model in Human Adaptive Motor Control 5 
+where, / is the hand acceleration, T is the joint torque generated by the muscles, 
+x,  are the hand position and velocity, D and C are the inertia and the coriolis 
+matrices of the arm, J is the Jacobian for hand position and joint angle, and Fx is 
+the external dynamic interaction force on the hand. 
+Under the force field environment, the external force Fx acting on the hand is 
+equal to B2, where B is a 2x2 rotational viscosity matrix. The effect of the force 
+field is to push the hand perpendicular to the direction of movement with a force 
+proportional to the speed of the hand. The overall forward plant dynamics of the 
+arm is a combination of fM and fD and can be represented by the function fp, 
+(a) 
+Adaptive Inverse Model Feedforward Control 
+The first control architecture uses a feedforward controller with only an adaptive 
+inverse model. The inverse model computes the neural activation to the muscles 
+for achieving a desired acceleration, velocity and position of the hand. It can be 
+represented as the estimated inverse, f-l, of the forward plant dynamics, and maps 
+the desired position xd, velocity 2d, and acceleration/a of the hand, into descending 
+neural commands Nc. 
+Nc = f-l(/a,xa,a) (4) 
+Adaptation to novel external dynamics occurs by learning a new inverse model of the 
+altered external environment. The error between desired and actual hand trajectory 
+can be used for training the inverse model. When the inverse model is an exact 
+inverse of the forward plant dynamics, the gain of the feedforward path is unity and 
+the arm exactly tracks the desired trajectory. Deviations from the desired trajectory 
+occur when the inverse model does not exactly model the external dynamics. Under 
+that situation, the spinal reflex corrects for errors in desired (x,d, 2,a) and actual 
+(x,, 2,) muscle state, by producing a corrective neural signal NR based on a linear 
+feedback controller with constants K and K2. 
+:vR = (xm - + - (5) 
+Adaptive Forward-Inverse Model Feedback Control 
+The second architecture provides feedback control of arm movements in addition 
+to the feedforward control described above. Delays in feedback cause instability, 
+therefore, the system relies on a forward model to generate updated state estimates 
+of the arm. An estimated error in hand trajectory is given by the difference in 
+desired and estimated state, and can be used by the brain to issue corrective neural 
+signals to the muscles while a movement is being made. The forward model, written 
+Desired 
+Trajectory 
+Od(t+60) 
+,/ 
+Inverse Arm 
+Dynamics Model TLJd Inverse Muscle 
+I '] Model f 
+, fD 
+i '-  Feedback 
+[ ............................................. ................................................................... 
+II, 
+A = 90 ms 0d(t.30 ) 
+ß Nc Muscle 
+A = 60 rns"TR If M 
+Spinal 
+T; Dynamics 
+fD 
+Y 
+fP Fx 
+(external force 
+0(t-30) A = 30 ms 
+Figure 1' The adaptive inverse model feedforward control system. 
+6 N. Bhushan and R. Shadrnehr 
+Xd' Xd(ti[; X, i (t+0) 
+I I Feedbao Ca,l 
+Hand-to-joint 
+state transform 
+A = 90 ms 
+Forward X(,_o). 
+Model I.Nc(t-I 0) 4 (t+60) 
+I' 
++ N 
+Model 
+fll fM 
+Spinal 
+Feedbac 
+Z= 120 ms 
+Arm 
+Dynamics 
+fD 
+I Hand-to-joint 
+F x state transform 
+O(t-30) 
+O(t.30 ) A = 30 ms 
+Figure 2: A control system that provides feedback control with the use of a forward 
+and an inverse model. 
+as fp, mimics the forward dynamics of the plant and predicts hand acceleration 8, 
+from neural signal No, and an estimate of hand state , 2. 
+; ---- /p( Nc, ;, ; ) (6) 
+Using this equation, one can solve for ,  at time t, when given the estimated state 
+at some earlier time t-T, and the descending neural commds Nc from time t- w 
+to t. If t is the current time and w is the time delay in the feedback loop, then sensory 
+feedback gives the hand state x, 2 at t-w. The current estimate of the hand position 
+and velocity can be computed by assuming initial conditions (t - )=x(t - w) and 
+(t - w)=2(t - w), and then solving Eq. 6. For the simulations, w has vue of 200 
+msec, and is composed of 120 msec feedback delay, 60 msec descending neural path 
+delay, and 20 msec muscle activation delay. 
+Based on the current state estimate and the estimated error in trajectory, the desired 
+acceleration is corrected using a linear feedback controller with constants Kp and 
+Kv. The inverse model maps the hand acceleration to appropriate neural signal 
+for the muscles No. The spinal reflex provides additional corrective feedback N, 
+when there is an error in the estimated and actual muscle state. 
+new = d + c = d + Kp(Zd -- ) + Kv(d -- ) (7) 
+NG = /;l(new,, ) (8) 
+= - + 
+When the forward model is an exact copy of the forward plant dynamics fp=fp, and 
+the inverse model is correct f =f, the hand exactly tracks the desired trajectory. 
+Errors due to an incorrect inverse model are corrected through the feedback loop. 
+However, errors in the forward model cause deviations from the desired behavior 
+and instability in the system due to inappropriate feedback action. 
+3 Simulations results and comparison to human behavior 
+To test the two control architectures, we compared simulations of arm movements 
+for the two methods to experimental human results under a novel force field environ- 
+ment. Sixteen human subjects were trained to make rapid point-to-point reaching 
+Evidence for a Forward Dynamics Model in Human Adaptive Motor Control 7 
+Inverse Model 
+Feedforward Control 
+(1) 
+(2) 
+\/ 
+fl. 0.5 1 1.5 
+(3) 
+ 0.3 
+ 0.2 
+ 0.1 
+0 
+'I' 0.5 1 1.5 
+(4) 
+tO 0  
+0.5 sec 1 1.5 
+(5) 
+Typical Subject 
+0.5 1 1.5 
+0.3 
+0.2 
+01 
+s si % s 4 
+o 
+0.5 sec 1 1 5 
+81 
+Forward-Inverse Model 
+Feedback Control 
+ß . ..... 
+.... :, 
+0.5 I 1.5 
+0.$ 
+0.2 
+0.1 
+0 
+0.5 1 1.5 
+20 
+0 
+0 0.5 SeC 1 1.5 
+Figure 3: Performance in field B2 after a typical subject (middle column) and each of 
+the controllers (left and right columns) had adapted to field B. (1) hand paths for 
+8 movement directions, (2-5) hand velocity, speed, derivative of velocity direction, 
+and segmented hand path for the -90 ø downward movement. The segmentation in 
+hand trajectory that is observed in our subjects is almost precisely reproduced by 
+the controller that uses a forward model. 
+movements with their hand while an external force field, F - B, pushed on the 
+hand. The task was to move the hand to a target position 10 cm away in 0.5 
+sec. The movement could be directed in any of eight equally spaced directions. 
+The subjects made straight-path minimum-jerk movements to the targets in the 
+absence of any force fields. The subjects were initially trained in force field B 
+with B-[0 13;-13 0], until they had completely adapted to this field and converged 
+to the straight-path minimum-jerk movement observed before the force field was 
+applied. Subsequently, the force field was switched to B2 with B=[0 -13;13 0] (the 
+new field pushed anticlockwise, instead of clockwise), and the first three movements 
+in each direction were used for data analysis. The movements of the subjects in 
+field B2 showed huge deviations from the desired straight path behavior because 
+the subjects expected clockwise force field B. The hand trajectories for the first 
+movement in each of the eight directions are shown for a typical subject in Fig. 3 
+(middle column). 
+Simulations were performed for the two methods under the same conditions as 
+the human experiment. The movements were made in force field B2, while the 
+internal models were assumed to be adapted to field B. Complete adaptation 
+to the force field B was found to occur for the two methods only when both 
+8 N. Bhushan and R. Shadrnehr 
+Inverse Experimental Forward 
+[] Model J data from J Model 
+(a) ]  16s, bj, c Cor, 
+(b) 
+(c) 
+.,(ø) d,(m) L_(ø) t,_(s) .(ø) cj(m/s ) Ns 
+Figure 4: The mean and standard deviation for segmentation parameters for each 
+type of controller as compared to the data from our subjects. Parameters are 
+defined in Fig. 3: /ki is angle about a seg. point, di is the distance to the i-th 
+seg. point, ti is time to reach the i-th seg. point, cj is cumulative squared jerk 
+for the entire movement, Ns is number of seg. point in the movement. Up until 
+the first segmentation point (/k and d), behavior of the controllers are similar 
+and both agree with the performance of our subjects. However, as the movement 
+progresses, only the controller that utilizes a forward model continues to agree with 
+the movement characteristics of the subjects. 
+the inverse and forward models expected field B. Fig. 3 (left column) shows the 
+simulation of the adaptive inverse model feedforward control for movements in field 
+B2 with the inverse model incorrectly expecting B. Fig. 3 (right column) shows the 
+simulation of the adaptive forward-inverse model feedback control for movements 
+in field B2 with both the forward and the inverse model incorrectly expecting B. 
+Simulations with the two methods show clear differences in stability and corrective 
+behavior for all eight directions of movement. The simulations with the inverse 
+model feedforward control seem to be stable, and converge to the target along a 
+straight line after the initial deviation. The simulations with the forward-inverse 
+model feedback control are more unstable and have a curious kinematic pattern 
+with discontinuities in the hand path. This is especially marked for the downward 
+movement. The subject's hand paths show the same kinematic pattern of near 
+discontinuities and segmentation of movement as found with the forward-inverse 
+model feedback control. 
+To quantify the segmentation pattern in the hand path, we identified the "near 
+path-discontinuities" as points on the trajectory where there was a sudden change 
+in both the derivative of hand speed and the direction of hand velocity. The hand 
+path was segmented on the basis of these near discontinuities. Based on the first 
+three segments in the hand trajectory we defined the following parameters: , 
+angle between the first segment and the straight path to the target; d, the distance 
+covered during the first segment; 2, angle between the second segment and straight 
+path to the target from the first segmentation point; t2, time duration of the second 
+Evidence for a Forward Dynamics Model in Human Adaptive Motor Control 9 
+segment; ha, angle between the second and third segments; Ns, the number of 
+segmentation points in the movement. We also calculated the cumulative jerk Ca 
+in the movements to get a measure of the instability in the system. 
+The results of the movement segmentation are presented in Fig. 4 for 16 human sub- 
+jects, 25 simulations of the inverse model and 20 simulations of the forward model 
+control for three movement directions (a) -90 ø downward, (b) 90 ø upward and (c) 
+135 ø upward. We performed the different simulations for the two methods by sys- 
+tematically varying various model parameters over a reasonable physiological range. 
+This was done because the parameters are only approximately known and also vary 
+from subject to subject. The parameters of the second and third segment, as rep- 
+resented by 2, t2 and ha, clearly show that the forward model feedback control 
+performs very differently from inverse model feedforward control and the behavior 
+of human subjects is very well predicted by the former. Furthermore, this charac- 
+teristic behavior could be produced by the forward-inverse model feedback control 
+only when the forward model expected field B. This could be accomplished only 
+by adaptation of the forward model during initial practice in field B. This provides 
+evidence for an adaptive forward model in the control of human arm movements in 
+novel dynamic environments. 
+We further tried to fit adaptation curves of simulated movement parameters (using 
+forward-inverse model feedback control) to real data as subjects trained in field B. 
+We found that the best fit was obtained for a rapidly adapting forward and inverse 
+model (Bhushan and Shadmehr, 1999). This eliminated the possibility that the 
+inverse model was trained offiine after practice. The data, however, suggested that 
+during learning of a force field, the rate of learning of the forward model was faster 
+than the inverse model. This finding could be paricularly relevant if it is proven 
+that a forward model is easier to learn than an inverse model (Narendra, 1990), 
+and could provide a computational rationale for the existence of forward model in 
+adaptive motor control. 
+References 
+Bhushan N, Shadmehr R (1999) Computational architecture of the adaptive controller 
+during learning of reaching movements in force fields. Biol Cybern, in press. 
+Jordan MI, Flash T, Arnon Y (1994) A model of learning arm trajectories from spatial 
+deviations Journal of Cog Neur 6:359-376. 
+Jordan MI, Rumelhart DE (1992) Forward model: supervised learning with a distal 
+teacher. Cog Sc 16:307-354. 
+Miall RC, Wolpert DM (1996) Forward models for physiological motor control. Neural 
+Networks 9:1265-1279. 
+Narendra KS (1990) Identification and control of dynamical systems using neural networks. 
+Neural Networks 1:4-27. 
+Shadmehr R, Brashers-Krug T (1997) Functional stages in the formation of human long- 
+term memory. J Neurosci 17:409-19. 
+Shadmehr R, Mussa-Ivaldi FA (1994) Adaptive representation of dynamics during learning 
+of a motor task. The Journal of Neuroscience 14:3208-3224. 
+Soechting JF, Flanders M (1997) Evaluating an integrated musculoskeletal model of the 
+human arm J Biomech Eng 9:93-102. 
+Wolpert DM, Ghahramani Z, Jordan MI (1995) An internal model for sensorimotor inte- 
+gration. Science 269:1880-82. 

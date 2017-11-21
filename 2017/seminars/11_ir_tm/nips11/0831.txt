@@ -1,0 +1,292 @@
+Orientation Scale and Discontinuity as 
+Emergent Properties of Illusory Contour 
+Shape 
+Karvel K. Thornbet 
+NEC Research Institute 
+4 Independence Way 
+Princeton, NJ 08540 
+Lance R. Williams 
+Dept. of Computer Science 
+University of New Mexico 
+Albuquerque, NM 87131 
+Abstract 
+A recent neural model of illusory contour formation is based on 
+a distribution of natural shapes traced by particles moving with 
+constant speed in directions given by Brownian motions. The input 
+to that model consists of pairs of position and direction constraints 
+and the output consists of the distribution of contours joining all 
+such pairs. In general, these contours will not be closed and their 
+distribution will not be scale-invariant. In this paper, we show 
+how to compute a scale-invariant distribution of closed contours 
+given position constraints alone and use this result to explain a 
+well known illusory contour effect. 
+I INTRODUCTION 
+It has been proposed by Mumford[3] that the distribution of illusory contour shapes 
+can be modeled by particles travelling with constant speed in directions given by 
+Brownian motions. More recently, Williams and Jacobs[7, 8] introduced the notion 
+of a stochastic completion field, the distribution of particle trajectories joining pairs 
+of position and direction constraints, and showed how it could be computed in a 
+local parallel network. They argued that the mode, magnitude and variance of 
+the completion field are related to the observed shape, salience, and sharpness of 
+illusory contours. 
+Unfortunately, the Williams and Jacobs model, as described, has some shortcom- 
+ings. Recent psychophysics suggests that contour salience is greatly enhanced by 
+closure[2]. Yet, in general, the distribution computed by the Williams and Jacobs 
+model does not consist of closed contours. Nor is it scale-invariant--doubling the 
+distances between the constraints does not produce a comparable completion field of 
+832 K. K. Thornber and L. R. k'lliams 
+double the size without a corresponding doubling of the particle's speeds. However, 
+the Williams and Jacobs model contains no intrinsic mechanism for speed selec- 
+tion. The speeds (like the directions) must be specified a priori. In this paper, we 
+show how to compute a scale-invariant distribution of closed contours given position 
+constraints alone. 
+2 TECHNICAL DETAILS 
+2.1 SHAPE DISTRIBUTION 
+Consistent with our earlier work[5, 6], in this paper we do not use the same dis- 
+tribution described by Mumford[3] but instead assume a distribution of completion 
+shapes consisting of straight-line base-trajectories modified by random impulses 
+drawn from a mixture of two limiting distributions. The first distribution consists 
+of weak but frequently acting impulses (we call this the Gaussian-limit). The dis- 
+tribution of these weak impulses has zero mean and variance equal to cr'. The weak 
+impulses act at Poisson times with rate R 9. The second distribution consists of 
+strong but infrequently acting impulses (we call this the Poisson-limit). Here, the 
+magnitude of the random impulses is Gaussian distributed with zero mean. How- 
+ever, the variance is equal to cr 2 (where Crp 2 ;>;> cr2). The strong impulses act at 
+Poisson times with rate Rp  9' Particles decay with half-life equal to a param- 
+eter r. The effect is that particles tend to travel in smooth, short paths punctuated 
+by occasional orientation discontinuities. See [5, 6]. 
+2.2 EIGENSOURCES 
+Let i and j be position and velocity constraints, (xi, ci) and (xj, kj). Then P(j] i) 
+is the conditional probability that a particle beginning at i will reach j. Note that 
+these transition probabilities are not symmetric, i.e., P(jli) - P(i ]_j). However, by 
+time-reversal symmetry, P(jli) = P(i ]j) where; = (xi,-:i) and j = (xj,-cj). 
+Gi.ven only the matrix of transition probabilities, P, we would like to compute the 
+relative number of closed contours satisfying a given position and velocity constraint. 
+We begin by noting that, due to their randomness, only increasingly smaller and 
+smaller fractions of contours are likely to satisfy increasing numbers of constraints. 
+(1) contours start at xi with i. Then 
+Suppose we let i 
+s(2) 
+j = -iP(Jl 
+is the relative number of contours through xj with j, i.e., which satisfy two con- 
+straints. In general, 
+8 n+l) z i P(J [ i)s? ) 
+Now suppose we compute the eigenvector, 
+,$j z -i P(j [ i)si 
+(1) (n+l) 
+with largest, real positive eigenvalue, and take s i = si. Then clearly s 
+This implies that as the number of constraints satisfied increases by one, the number 
+of contours remaining in the sample of interest decreases by ,. However, the ratios 
+of the si remain invariant. Letting n pass to infinity, we see that the si are just 
+the relative number of contours through i. To summarize, having started with all 
+possible contours, we are now left with only those bridging pairs of constraints at 
+all past-times. By solving ,s = Ps for s we know their relative numbers. We refer 
+to the components of s as the eigensources of the stochastic completion field. 
+Emergent Properties of Illusory Contour Shape 833 
+2.3 STOCHASTIC COMPLETION FIELDS 
+Note that the eigensources alone do not represent a distribution of closed contours. 
+In fact, the majority of contours contributing to s will not satisfy a single additional 
+constraint. However, the following recurrence equation gives the number of contours 
+which begin at constraint i and end at constraint j and satisfy n - I intermediate 
+constraints 
+P(n+l)(J [ i) = -],k P(J l k)P(n)(k [ i) 
+where P(')(jli)- P(j l i). Given the above recurrence equation, we can define an 
+expression for the relative number of contours of any length which begin and end 
+at constraint i' 
+ci = limn-P()(ili)/j P)(j]j) 
+Using a result from the theory of positive matrices[I], it is possible to show that 
+the above expression is simply 
+½i --- 8ii/ j 8jj 
+where s and õ are the right and left eigenvectors of P with largest positive real 
+eigenvalue, i.e., As - Ps and Aõ - pTõ. Because of the time-reversal symmetry 
+of P, the right and left eigenvectors are related by a permutation which exchanges 
+opposite directions, i.e., i = s;. 
+Finally, given s and õ, it is possible to compute the relative number of closed 
+contours through an arbitrary position and velocity in the plane, i.e., to compute 
+the stochastic completion field. If ] - (x, ) is an arbitrary position and velocity 
+in the plane, then 
+C(7]) -- 1 
+' i P(rl l i)si ' j P(j l rl)J 
+gives the relative probability that a closed contour will pass through /. Note, that 
+this is a natural generalization of the Williams and Jacobs[7] factorization of the 
+completion field into the product of source and sink fields. 
+2.4 SCALE-INVARIANCE 
+Under the restriction that particles have constant speed, the transition probability 
+matrix, P, becomes block-diagonal. Each block corresponds to a different possible 
+speed, % Since the components of any given eigenvector will be confined to a single 
+block, we can consider P to be a function of "/and solve: 
+/k("/) s(7) = 
+Let/kmax ("/) be the largest positive real eigenvalue of P('y) and let ')'max be the speed 
+where /kmax("/) is maximized. Then Smax("/max), i.e., the eigenvector of P('Ymax) 
+associated with /kmax("/max), is the limiting distribution over all spatial scales. 
+3 EXPERIMENTS 
+3.1 EIGHT POINT CIRCLE 
+Given eight points spaced uniformly around the perimeter of a circle of diameter, 
+d - 16, we would like to find the distribution of directions through each point and 
+the corresponding completion field (Figure I (left)). Neither the order of traversal, 
+directions, i.e., ci/]:[, or speed, i.e., 7 = [k[, are specified a priori. In all of 
+our experiments, we sample direction at 5 ø intervals. Consequently, there are 72 
+discrete directions and 576 position-direction pairs, i.e., P(7) is of size 576 x 576.1 
+The parameters defining the distribution of completion shapes are T = Rga - 0.0005 
+and - ---- 9.5. For simplicity, we assume the pure Gaussian-limit case described in [6]. 
+834 K. K. Thornber and L. R. V'lliams 
+v 
+b 
+ Eight Point Ci rcle (two sizes) 
+0o 
+3o 
+x 
+Figure 1: Left: (a) The eight position constraints. Neither the order of traversal, direc- 
+tions, or speed are specified a priori. (b) The eigenvector, S,a(',,a) represents the lim- 
+iting distribution over all spatial scales. (c) The product of Sma (',) and m (',)- 
+Orientations tangent to the circle dominate the distribution of closed contours. (d) The 
+stochastic completion field, C, due to S('ma). Right: Plot of magnitude of maximum 
+positive real eigenvalue, A,,, vs. log.(1/,) for eight point circle with d = 16.0 (solid) 
+and d = 32.0 (dashed). 
+J  J [ l I 
+] 
+Figure 2: Observers report that as the width of the arms increases, the shape of the 
+illusory contour changes from a circle to a square[4]. 
+First, we evaluated A,ax ("/) over the velocity interval [1.1 -, 1.1-3ø] using standard 
+numerical routines and plotted the magnitude of the largest, real positive eigenvalue, 
+Amax vs. lOgl.l(1/"/). The function reaches its maximum value at "/max  1.1 -eø 
+Consequently, the eigenvector, s,ax (1.1 -eø) represents the limiting distribution over 
+all spatial scales (Figure I (right)). 
+Next, we scaled the test Figure by a factor of two, i.e., d  - 32.0 and plotted 
+A',a("/) over the same interval (Figure I (right)). We observe that A',a(1.1 -+7) 
+ A,a(1.1-x), i.e., when plotted using a logarithmic x-axis, the functions are 
+identical except for a translation. It follows that  
+"/max  1091.1 7 X "/rnax  2.0X %nax. 
+This confirms the scale-invariance of the system--doubling the size of the Figure 
+results in a doubling of the selected speed. 
+3.2 KOFFKA CROSS 
+The Kofftm Cross stimulus (Figure 2) has two basic degrees of freedom which we call 
+diameter (i.e., d) and arm width (i.e., w) (Figure 3 (a)). We are interested in how 
+Emergent Properties of Illusory Contour Shape 835 
+(a) 
+I 
+(b) (-o 5w, o. sd) ( o. 5w, o. sd) 
+ (.5d, 05w) t 
+(-05w, -0.5d) (0.5w, -05d) 
+(c) (d) 
+(05d,OSw)  
+I 
+( 05d ,-0.5w) / 
+Figure 3: (a) Koffka Cross showing diameter, d, and width, w. (b) Orientation and 
+position constraints in terms of d and w. The normal orientation at each endpoint 
+is indicated by the solid lines while the dashed lines represent plus or minus one 
+standard deviation (i.e., 12.8 ø) of the Gaussian weighting function. (c) Typically 
+perceived as square. (d) Typically perceived as circle. The positions of the line 
+endpoints is the same. 
+the stochastic completion field changes as these parameters are varied. Observers 
+report that as the width of the arms increases, the shape of the illusory contour 
+changes from a circle to a square[4]. The endpoints of the lines comprising the 
+Koffka Cross can be used to define a set of position and orientation constraints 
+(Figure 3 (b)). The position constraints are specified in terms of the parameters, d 
+and w. The orientation constraints take the form of a Gaussian weighting function 
+which assigns higher probabilities to contours passing through the endpoints with 
+orientations normal to the lines? The prior probabilities assigned to each position- 
+direction pair by the Gaussian weighting function form a diagonal matrix, D: 
+,k(7)s("r) = D«P(7)D«s(7) = q(7)s(?) 
+where P(,) is the transition probability matrix for the random process at scale 
+?, ,k('),) is an eigenvalue of Q(,), and s(,) is the corresponding eigenvector. Let 
+,kin,x(?) be the largest positive real eigenvalue of Q(,) and let "/,ax be the scale 
+where ,kmax("/) is maximized. Then s,ax(',ax), i.e., the eigenvector of 
+associated with ,k,ax (',x), is the limiting distribution over all spatial scales. 
+First, we used a Koffka Cross where d = 2.0 and w = 0.5 and evaluated ,k,ax (') over 
+the velocity interval [8.0 x 1.1-1, 8.0 x 1.1-8ø] using standard numerical routines. 3 
+The function reaches its maximum value at ',ax  8.0 x 1.1-62 (Figure 4 (left)). 
+Observe that the completion field due to the eigenvector, Smax(8.0 x 1.1-62), is 
+dominated by contours of a predominantly circular shape (Figure 4 (right)). We 
+then uniformly scaled the Koffka Cross Figure by a factor of two, i.e., d' - 4.0 and 
+2Observe that Figure 3 (c) is perceived as a square while Figure 3 (d) is perceived as a 
+circle. Yet the positions of the line endpoints is the same. It follows that the orientations 
+of the lines affect the percept. We have chosen to model this dependence through the use 
+of a Gaussian weighting function which favors contours passing through the endpoints of 
+the lines in the normal direction. It is possible to motivate this based on the statistics of 
+natural scenes. The distribution of relative orientations at contour crossings is maximum 
+at 90 ø and drops to nearly zero at 0 ø and 180 ø. 
+3The parameters defining the distribution of completion shapes were: T = Raa  - 
+0.0005, r -- 9.5, p = O'p/T = 100.0 and Rp -- 1.0 x 10 -8. As an anti-aliasing measure, the 
+transition probabilities, P(jli), were averaged over initial conditions modeled as Gaussians 
+2 2 = 0.00024 and a -- 0.0019. See [6]. 
+of variance rr: = o' v 
+836 K. K. Thornber and L. R. Williams 
+Kof fka Crosses ('two sizes) 
+Figure 4: Left: Plot of magnitude of maximum positive real eigenvalue, ,)imax, ¾S. 
+log.(1/-y) for Koffka Crosses with d = 2.0 and w = 0.5 (solid) and d = 4.0 and w = 1.0 
+(dashed). Right: The completion field due to the eigenvector, Smax(8.0 X 1.1-62). 
+W' = 1.0 and plotted Xx('/) over the same interval (Figure 4 (left)). Observe 
+that X'ax(8.0 x 1.1 -+7)  X,a(8.0 x 1.1-). As before, this confirms the scale- 
+invariance of the system. 
+Next, we studied how the relative magnitudes of the local maxima of 
+change as the parameter w is varied. We begin with a Koffka Cross where d = 2.0 
+and w = 0.5 and observe that l,x('/) has two local maxima (Figure 5 (left)). 
+We refer to the larger of these maxima as '/circle. As previously noted, this max- 
+imum is located at approximately 8.0 x 1.1-62. The second maximum is located 
+at approximately 8.0 x 1.1-32. When the completion field due to the eigenvector, 
+s,a(8.0 x 1.1-32), is rendered, we observe that the distribution is dominated by 
+contours of predominantly square shape (Figure 5(a)). For this reason, we refer 
+to this local maximum as '/square- Now consider a Koffira Cross where the widths 
+of the arms are doubled but the diameter remains the same, i.e., d' - 2.0 and 
+w' - 1.0. We observe that A'a('/) still has two local maxima, one at approxi- 
+mately 8.0 x 1.1-63 and a second at approximately 8.0 x 1.1-29 (Figure 5 (left)). 
+When we render the completion fields due to the eigenvectors, s'a (8.0 x 1.1-63) and 
+sna(8.0 x 1.1-29), we find that the completion fields have the same general char- 
+acter as before--the contours associated with the smaller spatial scale (i.e., lower 
+speed) are approximately circular and those associated with the larger spatial scale 
+(i.e., higher speed) are approximately square (Figure 5 (d) and (c)). Accordingly, 
+we refer to the locations of the respective local maxima as ?' and 
+circle '/square' How- 
+ever, what is most interesting is that the relative magnitudes of the local maxima 
+have reversed. Whereas we previously observed that X,ax ('/circle) > A,ax (7square), 
+we now observe that A' (%quare) > A'a (circle)' Therefore, the completion field 
+due to the eigenvector, s'(7's uare) [not S',a(f'circle) ] represents the limiting 
+q ß 
+distribution over all spatial scales. This is consistent with the transition from circle 
+to square reported by human observers when the widths of the arms of the Koffka 
+Cross are increased. 
+Emergent Properties of Illusory Contour Shape 83 7 
+Io 
+0 
+:30 
+0 
+0 
+oõ 
+Kof fro Crosses (two widths) 
+b 
+x 
+& 1:> 
+Figure 5: Plot of magnitude of maximum positive real eigenvalue, Amax, VS. 1ogl.x (1/if) 
+for Koffka Crosses with d = 2.0 and w = 0.5 (solid) and d = 2.0 and w = 1.0 (dashed). 
+Stochastic completion fields for Koffka Cross due to (a) Smax ("square) is a local optimum 
+for w 0.5 (b) sa("/cict) is the global optimum for w 0.5 (c) t t 
+= = Sm(%qu) is the 
+global optimum for w 1.0 (d)   
+: Sraax(square ) is a local optimum for w = 1.0. These 
+results are consistent with the circle-to-square transition perceived by human subjects 
+when the width of the arms of the Koffka Cross are increased. 
+4 CONCLUSION 
+We have improved upon a previous model of illusory contour formation by show- 
+ing how to compute a scale-invariant distribution of closed contours given position 
+constraints alone. We also used our model to explain a previously unexplained 
+perceptual effect. 
+References 
+[1] Horn, R.A., and C.R. Johnson, Matrix Analysis, Cambridge Univ. Press, p. 500, 
+1985. 
+[2] Kovacs, I. and B. Julesz, A Closed Curve is Much More than an Incomplete One: 
+Effect of Closure in Figure-Ground Segmentation, Proc. Natl. Acad. Sci. USA, 90, 
+pp. 7495-7497, 1993. 
+[3] Mumford, D., Elastica and Computer Vision, Algebraic Geometry and Its Applica- 
+tions, Chandrajit Bajaj (ed.), Springer-Verlag, New York, 1994. 
+[4] Sambin, M., Angular Margins without Gradients, Italian Journal of Psychology 1, 
+pp. 355-361, 1974. 
+[5] Thornbet, K.K. and L.R. Williams, Analytic Solution of Stochastic Completion 
+Fields, Biological Cybernetics 75, pp. 141-151, 1996. 
+[6] Thornber, K.K. and L.R. Williams, Characterizing the Distribution of Completion 
+Shapes with Corners Using a Mixture of Random Processes, Intl. Workshop on 
+Energy Minimization Methods in Computer Vision, Venice, Italy, 1997. 
+[7] Williams, L.R. and D.W. Jacobs, Stochastic Completion Fields: A Neural Model of 
+Illusory Contour Shape and Salience, Neural Computation 9(4), pp. 837-858, 1997. 
+[8] Williams, L.R. and D.W. Jacobs, Local Parallel Computation of Stochastic Com- 
+pletion Fields, Neural Computation 9(4), pp. 859-881, 1997. 

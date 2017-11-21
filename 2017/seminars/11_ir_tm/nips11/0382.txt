@@ -1,0 +1,273 @@
+Bayesian PCA 
+Christopher M. Bishop 
+Microsoft Research 
+St. George House, 1 Guildhall Street 
+Cambridge CB2 3NH, U.K. 
+cmbishop@microsoft. com 
+Abstract 
+The technique of principal component analysis (PCA) has recently been 
+expressed as the maximum likelihood solution for a generative latent 
+variable model. In this paper we use this probabilistic reformulation 
+as the basis for a Bayesian treatment of PCA. Our key result is that ef- 
+fective dimensionality of the latent space (equivalent to the number of 
+retained principal components) can be determined automatically as part 
+of the Bayesian inference procedure. An important application of this 
+framework is to mixtures of probabilistic PCA models, in which each 
+component can determine its own effective complexity. 
+1 Introduction 
+Principal component analysis (PCA) is a widely used technique for data analysis. Recently 
+Tipping and Bishop (1997b) showed that a specific form of generative latent variable model 
+has the property that its maximum likelihood solution extracts the principal sub-space of 
+the observed data set. This probabilistic reformulation of PCA permits many extensions 
+including a principled formulation of mixtures of principal component analyzers, as dis- 
+cussed by Tipping and Bishop (1997a). 
+A central issue in maximum likelihood (as well as conventional) PCA is the choice of 
+the number of principal components to be retained. This is particularly problematic in a 
+mixture modelling context since ideally we would like the components to have potentially 
+different dimensionalities. However, an exhaustive search over the choice of dimensionality 
+for each of the components in a mixture distribution can quickly become computationally 
+intractable. In this paper we develop a Bayesian treatment of PCA, and we show how this 
+leads to an automatic selection of the appropriate model dimensionality. Our approach 
+avoids a discrete model search, involving instead the use of continuous hyper-parameters 
+to determine an effective number of principal components. 
+Bayesian PCA 383 
+2 Maximum Likelihood PCA 
+Consider a data set D of observed d-dimensional vectors D = {t,} where n E 
+{1,... , N}. Conventional principal component analysis is obtained by first computing 
+the sample covariance matrix given by 
+N 
+S= Z(t.--)(t.--)T 
+(1) 
+where [ = N - 5-, t, is the sample mean. Next the eigenvectors ui and eigenvalues hi 
+of $ are found, where Sui = Aiui and i = 1,... , d. The eigenvectors corresponding 
+to the q largest eigenvalues (where q < d) are retained, and a reduced-dimensionality 
+representation of the data set is defined by x, = uT(tn -- ) where Uq = (u,... , Uq). 
+It is easily shown that PCA corresponds to the linear projection of a data set under which 
+the retained variance is a maximum, or equivalently the linear projection for which the 
+sum-of-squares reconstruction cost is minimized. 
+A significant limitation of conventional PCA is that it does not define a probability distri- 
+bution. Recently, however, Tipping and Bishop (1997b) showed how PCA can be reformu- 
+lated as the maximum likelihood solution of a specific latent variable model, as follows. 
+We first introduce a q-dimensional latent variable x whose prior distribution is a zero mean 
+Gaussian p(x) = Af(0, Iq) and Iq is the q-dimensional unit matrix. The observed variable t 
+is then defined as a linear transformation ofx with additive Gaussian noise t = Wx+/x+e 
+where W is a d x q matrix,/x is a d-dimensional vector and e is a zero-mean Gaussian- 
+distributed vector with covariance cr2It. Thus p(tlx) = A;(Wx + t, cr2It) ß The marginal 
+distribution of the observed variable is then given by the convolution of two Gaussians and 
+is itself Gaussian 
+p(t):/p(tlx)p(x)dx = C) 
+(2) 
+where the covariance matrix C = WW T + cr2Lt. The model (2) represents a constrained 
+Gaussian distribution governed by the parameters/x, W and o '2. 
+The log probability of the parameters under the observed data set D is then given by 
+L(kt, W, cr 2) - 
+N {dln(27r) + lnlC I + Tr [C-S] } (3) 
+2 
+where $ is the sample covariance matrix given by (1). The maximum likelihood solution 
+for/x is easily seen to be/XML -- . It was shown by Tipping and Bishop (1997b) that the 
+stationary points of the log likelihood with respect to W satisfy 
+WML -- Uq(Aq - 0'2Iq) 1/2 
+(4) 
+where the columns of Uq are eigenvectors of $, with corresponding eigenvalues in the 
+diagonal matrix Aq. It was also shown that the maximum of the likelihood is achieved when 
+the q largest eigenvalues are chosen, so that the columns of Uq correspond to the principal 
+eigenvectors, with all other choices of eigenvalues corresponding to saddle points. The 
+maximum likelihood solution for o '2 is then given by 
+d 
+O'IL -" d - q i=q+l 
+(5) 
+which has a natural interpretation as the average variance lost per discarded dimension. The 
+density model (2) thus represents a probabilistic formulation of PCA. It is easily verified 
+that conventional PCA is recovered in the limit o '2 --+ 0. 
+384 C. M. Bishop 
+Probabilistic PCA has been successfully applied to problems in data compression, density 
+estimation and data visualization, and has been extended to mixture and hierarchical mix- 
+ture models. As with conventional PCA, however, the model itself provides no mechanism 
+for determining the value of the latent-space dimensionality q. For q = d - 1 the model 
+is equivalent to a full-covariance Gaussian distribution, while for q < d - 1 it represents 
+a constrained Gaussian in which the variance in the remaining d - q directions is mod- 
+elled by the single parameter cr 2. Thus the choice of q corresponds to a problem in model 
+complexity optimization. If data is plentiful, then cross-validation to compare all possible 
+values of q offers a possible approach. However, this can quickly become intractable for 
+mixtures of probabilistic PCA models if we wish to allow each component to have its own 
+q value. 
+3 Bayesian PCA 
+The issue of model complexity can be handled naturally within a Bayesian paradigm. 
+Armed with the probabilistic reformulation of PCA defined in Section 2, a Bayesian treat- 
+ment of PCA is obtained by first introducing a prior distribution p(tt, W, cr 2) over the 
+parameters of the model. The corresponding posterior distribution p(tt, W, o '2 I D) is then 
+obtained by multiplying the prior by the likelihood function, whose logarithm is given by 
+(3), and normalizing. Finally, the predictive density is obtained by marginalizing over the 
+parameters, so that 
+p(tlD ):///p(t I/, W, a2)P(/, W, cr21D) dl der 2. 
+(6) 
+In order to implement this framework we must address two issues: (i) the choice of prior 
+distribution, and (ii) the formulation of a tractable algorithm. Our focus in this paper is on 
+the specific issue of controlling the effective dimensionality of the latent space (correspond- 
+ing to the number of retained principal components). Furthermore, we seek to avoid dis- 
+crete model selection and instead use continuous hyper-parameters to determine automat- 
+ically an appropriate effective dimensionality for the latent space as part of the process of 
+Bayesian inference. This is achieved by introducing a hierarchical prior p(Wlc) over the 
+matrix W, governed by a q-dimensional vector of hyper-parameters c = {c,... , Cq }. 
+The dimensionality of the latent space is set to its maximum possible value q = d - 1, and 
+each hyper-parameter controls one of the columns of the matrix W through a conditional 
+Gaussian distribution of the form 
+P(WIc): H \-] exp -11will 2 
+i=1 
+(7) 
+where {wi} are the columns of W. This form of prior is motivated by the framework 
+of automatic relevance determination (ARD) introduced in the context of neural networks 
+by Neal and MacKay (see MacKay, 1995). Each ci controls the inverse variance of the 
+corresponding wi, so that if a particular ci has a posterior distribution concentrated at 
+large values, the corresponding wi will tend to be small, and that direction in latent space 
+will be effectively 'switched off'. The probabilistic structure of the model is displayed 
+graphically in Figure 1. 
+In order to make use of this model in practice we must be able to marginalize over the 
+posterior distribution of W. Since this is analytically intractable we have developed three 
+alternative approaches based on (i) type-II maximum likelihood using a local Gaussian 
+approximation to a mode of the posterior distribution (MacKay, 1995), (ii) Markov chain 
+Monte Carlo using Gibbs sampling, and (iii) variational inference using a factorized ap- 
+proximation to the posterior distribution. Here we describe the first of these in more detail. 
+Bayesian PCA 385 
+Figure 1: Representation of Bayesian PCA as a probabilistic graphical model showing the hierarchi- 
+cal prior over W governed by the vector of hyper-parameters oe. The box denotes a 'plate' comprising 
+a data set of N independent observations of the visible vector t,, (shown shaded) together with the 
+corresponding hidden variables 
+The location WMp of the mode can be found by maximizing the log posterior distribution 
+given, from Bayes' theorem, by 
+ld-1 
+lnp(WlD) -- L-  Z cillwill 
+i=1 
+2 + const. (8) 
+where L is given by (3). For the purpose of controlling the effective dimensionality of 
+the latent space, it is sufficient to treat/, o '2 and c as parameters whose values are to 
+be estimated, rather than as random variables. In this case there is no need to introduce 
+priors over these variables, and we can determine/ and 0 '2 by maximum likelihood. To 
+estimate c we use type-II maximum likelihood, corresponding to maximizing the marginal 
+likelihood p(DIc) in which we have integrated over W using the quadratic approximation. 
+It is easily shown (Bishop, 1995) that this leads to a re-estimation formula for the hyper- 
+parameters ai of the form 
+7i (9) 
+ai :- [iwi[i 2 
+where 7i -- d - oiTri (H-  ) is the effective number of parameters in wi, H is the Hessian 
+matrix given by the second derivatives of ln p(WlD ) with respect to the elements of W 
+(evaluated at WMp), and Tri(.) denotes the trace of the sub-matrix corresponding to the 
+vector wi. 
+For the results presented in this paper, we make the further simplification of replacing 7i in 
+(9) by d, corresponding to the assumption that all model parameters are 'well-determined'. 
+This significantly reduces the computational cost since it avoids evaluation and manipula- 
+tion of the Hessian matrix. An additional consequence is that vectors wi for which there is 
+insufficient support from the data will be driven to zero, with the corresponding ai --5 x, 
+so that un-used dimensions are switched off completely. We define the effective dimension- 
+ality of the model to be the number of vectors wi whose values remain non-zero. 
+The solution for WMp can be found efficiently using the EM algorithm, in which the E- 
+step involves evaluation of the expected sufficient statistics of the latent-space posterior 
+distribution, given by 
+(x,} = M-W T(tn- t) 
+(XnxnT> = cr2M+(x>(x> T 
+(lO) 
+386 C. M. Bishop 
+where M = (wTw + 
+cr2Iq). The M-step involves updating the model parameters using 
+(12) 
+N 
+2 = 1 [2 
+N y {lltn- ttl -2(XnT)T(tn- kt)+ Tr [(XnXnT)T] } (13) 
+where A = diag(cti). Optimization of W and a 2 is alternated with re-estimation of c, 
+using (9) with 7i = d, until all of the parameters satisfy a suitable convergence criterion. 
+As an illustration of the operation of this algorithm, we consider a data set consisting of 300 
+points in 10 dimensions, in which the data is drawn from a Gaussian distribution having 
+standard deviation 1.0 in 3 directions and standard deviation 0.5 in the remaining 7 direc- 
+tions. The result of fitting both maximum likelihood and Bayesian PCA models is shown 
+in Figure 2. In this case the Bayesian model has an effective dimensionality of qef = 3. 
+Figure 2: Hinton diagrams of the matrix W for a data set in 10 dimensions having m = 3 directions 
+with larger variance than the remaining 7 directions. The left plot shows W from maximum likeli- 
+hood PCA while the right plot shows WMp from the Bayesian approach, showing how the model is 
+able to discover the appropriate dimensionality by suppressing the 6 surplus degrees of freedom. 
+The effective dimensionality found by Bayesian PCA will be dependent on the number N 
+of points in the data set. For N -+ x we expect qef -+ d- 1, and in this limit the maximum 
+likelihood framework and the Bayesian approach will give identical results. For finite data 
+sets the effective dimensionality may be reduced, with degrees of freedom for which there 
+is insufficient evidence in the data set being suppressed. The variance of the data in the re- 
+maining d- qf directions is then accounted for by the single degree of freedom defined by 
+o '2. This is illustrated by considering data in 10 dimensions generated from a Gaussian dis- 
+tribution with standard deviations given by {1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1}. 
+In Figure 3 we plot qf (averaged over 50 independent experiments) versus the number N 
+of points in the data set. 
+These results indicate that Bayesian PCA is able to determine automatically a suitable 
+effective dimensionality qef for the principal component subspace, and therefore offers a 
+practical alternative to exhaustive comparison of dimensionalities using techniques such as 
+cross-validation. As an illustration of the generalization capability of the resulting model 
+we consider a data set of 20 points in 10 dimensions generated from a Gaussian distribution 
+having standard deviations in 5 directions given by (1.0, 0.8, 0.6, 0.4, 0.2) and standard 
+deviation 0.04 in the remaining 5 directions. We fit maximum likelihood PCA models to 
+this data having q values in the range 1-9 and compare their log likelihoods on both the 
+training data and on an independent test set, with the results (averaged over 10 independent 
+experiments) shown in Figure 4. Also shown are the corresponding results obtained from 
+Bayesian PCA. 
+Bayesian PCA 387 
+lo 
+2'0 io io 400 
+N 
+Figure 3: Plot of the average effective dimensionality of the Bayesian PCA model versus the number 
+N of data points for data in a 10-dimensional space. 
+1 2 3 4 5 6 7 8 9 
+q 
+Figure 4: Plot of the log likelihood for the training set (dashed curve) and the test set (solid curve) 
+for maximum likelihood PCA models having q values in the range 1-9, showing that the best gener- 
+alization is achieved for q -- 5 which corresponds to the number of directions of significant variance 
+in the data set. Also shown are the training (circle) and test (cross) results from a Bayesian PCA 
+model, plotted at the average effective q value given by qeg ----- 5.2. We see that the Bayesian PCA 
+model automatically discovers the appropriate dimensionality for the principal component subspace, 
+and furthermore that it has a generalization performance which is close to that of the optimal fixed q 
+model. 
+4 Mixtures of Bayesian PCA Models 
+Given a probabilistic formulation of PCA it is straightforward to construct a mixture distri- 
+bution comprising a linear superposition of principal component analyzers. In the case of 
+maximum likelihood PCA we have to choose both the number M of components and the 
+latent space dimensionality q for each component. For moderate numbers of components 
+and data spaces of several dimensions it quickly becomes intractable to explore the expo- 
+nentially large number of combinations of q values for a given value of M. Here Bayesian 
+PCA offers a significant advantage in allowing the effective dimensionalities of the models 
+to be determined automatically. 
+As an illustration we consider a density estimation problem involving hand-written digits 
+from the CEDAR database. The data set comprises 8 x 8 scaled and smoothed gray-scale 
+images of the digits '2', '3' and '4', partitioned randomly into 1500 training, 900 validation 
+and 900 test points. For mixtures of maximum likelihood PCA the model parameters can be 
+388 C. M. Bishop 
+determined using the EM algorithm in which the M-step uses (4) and (5), with eigenvector 
+and eigenvalues obtained from the weighted covariance matrices in which the weighting co- 
+efficients are the posterior probabilities for the components determined in the E-step. Since, 
+for maximum likelihood PCA, it is computationally impractical to explore independent q 
+values for each component we consider mixtures in which every component has the same 
+dimensionality. We therefore train mixtures having M E {2, 4, 6, 8, 10, 12, 14, 16, 18} for 
+all values q E {2, 4, 8, 12, 16, 20, 25, 30, 40, 50}. In order to avoid singularities associ- 
+ated with the more complex models we omit any component from the mixture for which 
+the value of cr 2 goes to zero during the optimization. The highest log likelihood on the 
+validation set (-295) is obtained for M: 6 and q - 50. 
+For mixtures of Bayesian PCA models we need only explore alternative values for M, 
+which are taken from the same set as for the mixtures of maximum likelihood PCA. Again, 
+the best performance on the validation set (-293) is obtained for M: 6. The values of the 
+log likelihood for the test set were -295 (maximum likelihood PCA) and -293 (Bayesian 
+PCA). The mean vectors/i for each of the 6 components of the Bayesian PCA mixture 
+model are shown in Figure 5. 
+62 54 63 60 62 59 
+Figure 5: The mean vectors for each of the 6 components in the Bayesian PCA mixture model, 
+displayed as an 8 x 8 image, together with the corresponding values of the effective dimensionality. 
+The Bayesian treatment of PCA discussed in this paper can be particularly advantageous 
+for small data sets in high dimensions as it can avoid the singularities associated with 
+maximum likelihood (or conventional) PCA by suppressing unwanted degrees of freedom 
+in the model. This is especially helpful in a mixture modelling context, since the effective 
+number of data points associated with specific 'clusters' can be small even when the total 
+number of data points appears to be large. 
+References 
+Bishop, C. M. (1995). Neural Networks for Pattern Recognition. Oxford University 
+Press. 
+MacKay, D. J. C. (1995). Probable networks and plausible predictions - a review of 
+practical Bayesian methods for supervised neural networks. Network: Computation 
+in Neural Systems 6 (3), 469-505. 
+Tipping, M. E. and C. M. Bishop (1997a). Mixtures of principal component analysers. 
+In Proceedings IEE Fifth International Conference on Artificial Neural Networks, 
+Cambridge, U.K., July., pp. 13-18. 
+Tipping, M. E. and C. M. Bishop (1997b). Probabilistic principal component analysis. 
+Accepted for publication in the Journal of the Royal Statistical Society, B. 

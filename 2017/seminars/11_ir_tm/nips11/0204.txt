@@ -1,0 +1,290 @@
+Dynamically Adapting Kernels in Support 
+Vector Machines 
+Nello Cristianini 
+Dept. of Engineering Mathematics 
+University of Bristol, UK 
+nello. crist ianinibristol. ac. uk 
+Colin Campbell 
+Dept. of Engineering Mathematics 
+University of Bristol, UK 
+c. campbellbristol. ac. uk 
+John Shawe-Taylor 
+Dept. of Computer Science 
+Royal Holloway College 
+j ohnldcs. rhbnc. ac. uk 
+Abstract 
+The kernel-parameter is one of the few tunable parameters in Sup- 
+port Vector machines, controlling the complexity of the resulting 
+hypothesis. Its choice amounts to model selection and its value is 
+usually found by means of a validation set. We present an algo- 
+rithm which can automatically perform model selection with little 
+additional computational cost and with no need of a validation set. 
+In this procedure model selection and learning are not separate, 
+but kernels are dynamically adjusted during the learning process 
+to find the kernel parameter which provides the best possible upper 
+bound on the generalisation error. Theoretical results motivating 
+the approach and experimental results confirming its validity are 
+presented. 
+I Introduction 
+Support Vector Machines (SVMs) are learning systems designed to automatically 
+trade-off accuracy and complexity by minimizing an upper bound on the general- 
+isation error provided by VC theory. In practice, however, SVMs still have a few 
+tunable parameters which need to be determined in order to achieve the right bal- 
+ance and the values of these are usually found by means of a validation set. One 
+of the most important of these is the kernel-parameter which implicitly defines the 
+structure of the high dimensional feature space where the maximal margin hyper- 
+plane is found. Too rich a feature space would cause the system to overfit the data, 
+Dynamically Adapting Kernels in Support Vector Machines 205 
+and conversely the system can be unable to separate the data if the kernels are too 
+poor. Capacity control can therefore be performed by tuning the kernel parameter 
+subject to the margin being maximized. For noisy datasets, yet another quantity 
+needs to be set, namely the soft-margin parameter C. 
+SVMs therefore display a remarkable dimensionality reduction for model selection. 
+Systems such as neural networks need many different architectures to be tested and 
+decision trees are faced with a similar problem during the pruning phase. On the 
+other hand SVMs can shift from one model complexity to another by simply tuning 
+a continuous parameter. 
+Generally, model selection by SVMs is still performed in the standard way: by 
+learning different SVMs and testing them on a validation set in order to determine 
+the optimal value of the kernel-parameter. This is expensive in terms of computing 
+time and training data. In this paper we propose a different scheme which dy- 
+namically adjusts the kernel-parameter to explore the space of possible models at 
+little additional computational cost compared to fixed-kernel learning. Futhermore 
+this approach only makes use of training-set information so it is more efficient in a 
+sample complexity sense. 
+Before proposing the model selection procedure we first prove a theoretical result, 
+namely that the margin and structural risk minimization (SRM) bound on the gen- 
+eralization error depend smoothly on the kernel parameter. This can be exploited 
+by an algorithm which keeps the system close to maximal margin while the kernel 
+parameter is changed smoothly. During this phase, the theoretical bound given by 
+SRM theory can be computed. The best kernel-parameter is the one which gives the 
+lowest possible bound. In section 4 we present experimental results showing that 
+model selection can be efficiently performed using the proposed method (though we 
+only consider Gaussian kernels in the simulations outlined). 
+2 Support Vector Learning 
+The decision function implemented by SV machines can be written as: 
+where the (? are obtained by maximising the following Lagrangian (where m is the 
+number of patterns)' 
+L _._ 
+E (i- 1/2 E oqojYiYjK(xi,xj) 
+i=1 i,j=l 
+with respect to the oq, subject to the constraints 
+Oi _> 0  oqy i -- 0 
+i----1 
+and where the functions K(x, x') are called kernels. The kernels provide an expres- 
+sion for dot-products in a high-dimensional feature space [1]: 
+206 N. Cristianini, C. Campbell and d. Shawe-Taylor 
+and also implicitly define the nonlinear mapping Cg(x) of the training data into 
+feature space where they may be separated using the maximal margin hyperplane. 
+A number of choices of kernel-function can be made e.g. Gaussians kernels: 
+K(x, x') = e 
+The following upper bound can be proven from VC theory for the generalisation 
+error using hyperplanes in feature space [7, 9]' 
+where/ is the radius of the smallest ball containing the training set, m the number 
+of training points and '), the margin (cf. [2] for a complete survey of the generaliza- 
+tion properties of SV machines). 
+The Lagrange multipliers cq are usually found by means of a Quadratic Program- 
+ming optimization routine, while the kernel-parameters are found using a validation 
+set. As illustrated in Figure 1 there is a minimum of the generalisation error for 
+that value of the kernel-parameter which has the best trade-off between overfitting 
+and ability to find an efficient solution. 
+013 
+012 
+O09 
+0 O8 
+0 O7 
+006 
+0 O5 
+0 O4 
+3 4 
+5 6 7 8 9 10 
+Figure 1' Generalization error (y-axis) as a function of a (x-axis) for the mirror sym- 
+metry problem (for Gaussian kernels with zero training error and maximal margin, 
+m = 200, n = 30 and averaged over 105 examples). 
+3 Automatic Model Order Selection 
+We now prove a theorem which shows that the margin of the optimal hyperplane is a 
+smooth function of the kernel parameter, as is the upper bound on the generalisation 
+error. First we state the Implicit Function Theorem. 
+Implicit Function Theorem [10]: Let F(x,) be a continuously differentiable 
+function, 
+F'UCxVCP--} 
+and let (a,) C U x V be a solution to the equation (x,) = 0. Let the partial 
+OF  . 
+derivatives matrix mid = (b--, w.r.t y be full rank at (a,). Then, near (a,), 
+Dynamically Adapting Kernels in Support Vector Machines 207 
+there exists one and only one function  = (x) such that F(x,(x)) - 0, and such 
+function is continuous. 
+Theorem: The margin'7 of SV machines depends smoothly on the kernel parameter 
+0'. 
+Proof: Consider the function  ß E C_ R - A C_ RP,  ß rr  (5o, A) which given the 
+data maps the choice of rr to the optimal parameters (o and lagrange parameter A 
+of the SV machine with Kernel matrix Gij - yiYjK(o'; xi, xj)). Let 
+p 
+ra() =  i - 1/2  ijiYjK(ff; xi,xj) + ( Yii) 
+i=1 ,j i 
+be the functional that the SV machine maximizes. Fix a value of a and let o(a) be 
+the corresponding solution of W(5). Let I be the set of indices for which 5j(a)  O. 
+We may assume that the submatrix of G indexed by I is non-singular since otherwise 
+the maximal margin hyperplane could be expressed in terms of a subset of indices. 
+Now choose a mimal set of indices J containing I such that the corresponding 
+submatrix of G is non-singular and all of the points indexed by J have margin 1. 
+Now consider the function F(a, 5, A)i = ()j, ,i k 1, F(a, 5, A)0 = Ej YjSj in 
+the neighbourhood of a, where ji is an enumeration of the elements of J, 
+OW 
+= 1 - + 
+i 
+and satisfies the equation F(a,(a),A(a)) = 0 at the extremal points of W(5). 
+Then the SV function is the implicit function, (5o, A) = (a), and is continuous 
+(and unique) iff F is continuously differentiable and the partial derivatives matrix 
+w.r.t. 5, A is full rank. But the partial derivatives matrix H is given by 
+Sij -- Ojz = Yji Yjj K(a; Xj,, Xj ) = Hji, i, j  1, 
+for Ji,j  J, which was non-degenerate by definition of J, while 
+0F0 0F0 0Fj 
+H00 - OA - 0 and H0j - 0oj - yjj = 0& - Hj0,j  1. 
+Consider any non-zero ( satisfying y.j cUy j = O, and any A. We have 
+(o, ,k)TH(o, A) = oTG + 2AoTy : TGo > O. 
+Hence, the matrix H is non-singular for ( satisfying the given linear constraint. 
+Hence, by the implicit function theorem g is a continuous function of rr. The 
+following is proven in [2]' 
+--1 
+-- O i 
+i----1 
+which shows that 3' is a continuous function of rr. As the radius of the ball containing 
+the points is also a continuous function of rr, and the generalization error bound has 
+the form  _< C½)llø()11 for some constant C, we have the following corollary. 
+Corollary: The bound on the generalization error is smooth in 
+This means that, when the margin is optimal, small variations in the kernel pa- 
+rameter will produce small variations in the margin (and in the bound on the 
+generalisation error). Thus % m 3',+ and after updating the a, the system will 
+208 N. Cristianini, C. Campbell and J. Shawe-Taylor 
+still be in a sub-optimal position. This suggests the following strategy for Gaussian 
+kernels, for instance: 
+Kernel Selection Procedure 
+1. Initialize a to a very small value 
+2. Maximize the margin, then 
+ß Compute the SRM bound (or observe the validation error) 
+ß Increase the kernel parameter: a - a + 6a 
+3. Stop when a predetermined value of a is reached else repeat step 2. 
+This procedure takes advantage of the fact that for very small rr convergence is 
+generally very rapid (overfitting the data, of course), and that once the system is 
+near the equilibrium, few iterations will always be sufficient to move it back to the 
+maximal margin situation. In other words, this system is brought to a maximal 
+margin state in the beginning, when this is computationally very cheap, and then it 
+is actively kept in that situation by continuously adjusting the ct while the kernel- 
+parameter is gradually increased. 
+In the next section we will experimentally investigate this procedure for real-life 
+datasets. In the numerical simulations we have used the Kernel-Adatron (KA) 
+algorithm recently developed by two of the authors [4] which can be used to train SV 
+machines. We have chosen this algorithm because it can be regarded as a gradient 
+ascent procedure for maximising the Kuhn-Tucker Lagrangian L. Thus the ci for 
+a sub-optimal state are close to those for the optimum and so little computational 
+effort will be needed to bring the system back to a maximal margin position: 
+The Kernel-Adatron Algorithm. 
+1. (i = 1. 
+2. FORi= 1T0m 
+E m 
+ß Zi = j=lr3y3K(xi,xj) 
+ß /i : yizi 
+ß 6c i: r/(1 - -/i) 
+ß IF (c i + 5c i) _< 0 THEN O i = 0 ELSE O i -- c i + 6C . 
+ß margin = « (min (z/+) -- max (z-)) 
+(z/+ (z) = positively (negatively) labelled patterns) 
+3. IF(margin--1) THEN stop, ELSE go to step 2. 
+4 Experimental Results 
+In this section we implement the above algorithm for real-life datasets and plot the 
+upper bound given by VC theory and the generalization error as functions of rr. In 
+order to compute the bound, e <_ R2/m72 we need to estimate the radius of the ball 
+in feature space. In general his can be done explicitly by maximising the following 
+Lagrangian w.r.t. /ki using convex quadratic programming routines: 
+subject to the constraints Yi ,ki = 1 and ,ki _> 0. The radius is then found from [3]: 
+Dynamically Adapting Kernels in Support Vector Machines 209 
+t -- Z ijK(xi'xj) - 2  jK(xi,xj) q- Z K(xi, xi) 
+i,j i,j i 
+However, we can also get an upper bound for this quantity by noting that Gaussian 
+kernels always map training points to the surface of a sphere of radius I centered on 
+the origin of the feature space. This can be easily seen by noting that the distance 
+of a point from the origin is its norm: 
+In Figure 2 we give both these bounds (the upper bound is i oq/m) and general- 
+isation error (on a test set) for two standard datasets: the aspect-angle dependent 
+sonar classification dataset of Gorman and Sejnowski [5] and the Wisconsin breast 
+cancer dataset [8]. As we see from these plots there is little need for the addi- 
+tional computational cost of determining R from the above quadratic progamming 
+problem, at least for Gaussian kernels. In Fig. 3 we plot the bound '.i ci/m and 
+generalisation error for 2 figures from a United States Postal Service dataset of 
+handwritten digits [6]. In these, and other instances we have investigated, the mini- 
+mum of the bound approximately coincides with the minimum of the generalisation 
+error. This gives a good criterion for the most suitable choice for a. Furthermore, 
+this estimate for the best a is derived solely from training data without the need 
+for an additional validation set. 
+O2 04 O6 08  
+05 
+04 
+03 
+02 
+0 
+15 2 3 3 
+Figure 2: Generalisation error (solid curves) for the sonar classification (left Fig.) 
+and Wisconsin breast cancer datasets (right Fig.). The upper curves (dotted) show 
+the upper bounds from VC theory (for the top curves R=i). 
+Starting with a small a-value we have observed that the margin can be maximised 
+rapidly. Furthermore, the margin remains close to 1 if er is incremented by a small 
+amount. Consequently, we can study the performance of the system by traversing 
+a range of er-values, alternately incrementing er then maximising the margin using 
+the previous optimal set of c-values as a starting point. We have found that this 
+procedure does not add a significant computational cost in general. For example, 
+for the sonar classification dataset mentioned above and starting at er = 0.1 with 
+increments Aa = 0.1 it took 186 iterations to reach er = 1.0 and 4895 to reach 
+er = 2.0 as against 110 and 2624 iterations for learning at both these er-values. For 
+a rough doubling of the learning time it is possible to determine a reasonable value 
+for er for good generalisation without use of a validation set. 
+210 N. Cristianini, C. Campbell and J. Shawe-Taylor 
+09 
+07 
+06 
+05 
+04 
+O3 
+O2 
+O9 
+08 
+06 
+O4 
+O3 
+02 
+0 
+Figure 3: Generalisation error (solid curve) and upper bound from VC theory 
+(dashed curve with R=i) for digits 0 and 3 from the USPS dataset of handwritten 
+digits. 
+5 Conclusion 
+We have presented an algorithm which automatically learns the kernel parameter 
+with little additional cost, both in a computational and sample-complexity sense. 
+Model selection takes place during the learning process itself, and experimental 
+results are provided showing that this strategy provides a good estimate of the 
+correct model complexity. 
+References 
+[1] Aizerman, M., Braverman, E., and Rozonoer, L. (1964). Theoretical Foundations of 
+the Potential Function Method in Pattern Recognition Learning, Automations and 
+Remote Control, 25:821-837. 
+[2] Bartlett P., She[we-Taylor J., (1998). Generalization Performance of Support Vector 
+Machines and Other Pattern Classifiers. 'Advances in Kernel Methods - Support Vector 
+Learning', Bernhard Sch61kopf, Christopher J. C. Burges, and Alexander J. Smola 
+(eds.), MIT Press, Cambridge, USA. 
+[3] Burges C., (1998). A tutorial on support vector machines for pattern recognition. Data 
+Mining and Knowledge Discovery, 2:1. 
+[4] Friess T., Cristianini N., Campbell C., (1998) The Kernel-Adatron Algorithm: a Fast 
+and Simple Learning Procedure for Support Vector Machines, in Shavlik, J., ed., Ma- 
+chine Learning: Proceedings of the Fifteenth International Conference, Morgan Kauf- 
+mann Publishers, San Francisco, CA. 
+[5] Gorman R.P. k Sejnowski, T.J. (1988) Neural Networks 1:75-89. 
+[6] LeCun, Y., Jackel, L. D., Bottou, L., Brunot, A., Cortes, C., Denker, J. S., Drucker, H., 
+Guyon, I., Muller, U. A., SackingeL E., Simard, P. and Vapnik, V., (1995). Comparison 
+of learning algorithms for handwritten digit recognition, International Conference on 
+Artificial Neural Networks, Fogelman, F. and Gallinari, P. (Ed.), pp. 53-60. 
+[7] She[we-Taylor, J., Bartlett, P., Williamson, R. &: Anthony, M. (1996). Structural Risk 
+Minimization over Data-Dependent Hierarchies NeuroCOLT Technical Report NC- 
+TR-96-053 (ftp://ftp. dcs. rhbnc. ac. uk /pub/neurocolt/tech_reports). 
+[8] Ster, B., & Dobnikar, A. (1996) Neural networks in medical diagnosis: comparison with 
+other methods. In A. Bulsari et al. (ed.) Proceedings of the International Conference 
+EANN'96, p. 427-430. 
+[9] Vapnik, V. (1995) The Nature of Statistical Learning Theory, Springer Verlag. 
+[10] James, Robert C. (1966) Advanced calculus Belmont, Calif.: Wadsworth 

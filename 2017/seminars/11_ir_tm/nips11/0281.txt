@@ -1,0 +1,315 @@
+A Precise Characterization of the Class of 
+Languages Recognized by Neural Nets under 
+Gaussian and other Common Noise Distributions 
+Wolfgang Maass* 
+Inst. for Theoretical Computer Science, 
+Technische Universitit Graz 
+Klosterwiesgasse 32/2, 
+A-S010 Graz, Austria 
+email: maass@igi.tu-graz.ac.at 
+Eduardo D. Sontag 
+Dep. of Mathematics 
+Rutgers University 
+New Brunswick, NJ 08903, USA 
+email: sontag @hilbert.rutgers.edu 
+Abstract 
+We consider recurrent analog neural nets where each gate is subject to 
+Gaussian noise, or any other common noise distribution whose probabil- 
+ity density function is nonzero on a large set. We show that many regular 
+languages cannot be recognized by networks of this type, for example 
+the language {w C {0, 1}* I w begins with 0}, and we give a precise 
+characterization of those languages which can be recognized. This result 
+implies severe constraints on possibilities for constructing recurrent ana- 
+log neural nets that are robust against realistic types of analog noise. On 
+the other hand we present a method for constructingfeedforward analog 
+neural nets that are robust with regard to analog noise of this type. 
+1 Introduction 
+A fairly large literature (see [Omlin, Giles, 1996] and the references therein) is devoted 
+to the construction of analog neural nets that recognize regular languages. Any physical 
+realization of the analog computational units of an analog neural net in technological or 
+biological systems is bound to encounter some form of "imprecision" or analog noise at 
+its analog computational units. We show in this article that this effect has serious conse- 
+quences for the computational power of recurrent analog neural nets. We show that any 
+analog neural net whose computational units are subject to Gaussian or other common 
+noise distributions cannot recognize arbitrary regular languages. For example, such analog 
+neural net cannot recognize the regular language {w C {0, 1}'1 w begins with 0}. 
+* Partially supported by the Fonds zur FOrderung der wissenschaftlichen Forschnung (FWF), Aus- 
+tria, project P12153. 
+282 W. Maass and E. D. Sontag 
+A precise characterization of those regular languages which can be recognized by such 
+analog neural nets is given in Theorem 1.1. In section 3 we introduce a simple technique 
+for making feedforward neural nets robust with regard to the same types of analog noise. 
+This method is employed to prove the positive part of Theorem 1.1. The main difficulty in 
+proving Theorem 1.1 is its negative part, for which adequate theoretical tools are introduced 
+in section 2. 
+Before we can give the exact statement of Theorem 1.1 and discuss related preceding work 
+we have to give a precise definition of computations in noisy neural networks. From the 
+conceptual point of view this definition is basically the same as for computations in noisy 
+boolean circuits (see [Pippenger, 1985] and [Pippenger, 1990]). However it is technically 
+more involved since we have to deal here with an infinite state space. 
+We will first illustrate this definition for a concrete case, a recurrent sigmoidal neural net 
+with Gaussian noise, and then indicate the full generality of our result, which makes it 
+applicable to a very large class of other types of analog computational systems with analog 
+noise. Consider a recurrent sigmoidal neural net ./V' consisting of n units, that receives 
+at each time step t an input ut from some finite alphabet U (for example U = {0, 1}). 
+The internal state of./V' at the end of step t is described by a vector xt E [-1, 1] n, which 
+consists of the outputs of the n sigmoidal units at the end of step t. A computation step of 
+the network ./V' is described by 
+Xt+ 1 --- G(Wx t q- h q- utc q- Vt) 
+where W  nxn and c, h  11 n represent weight matrix and vectors, o' is a sigmoidal 
+activation function (e.g., a(y) = 1/(1 + e-U)) applied to each vector component, and 
+V1, V2,. ß ß is a sequence of n-vectors drawn independently from some Gaussian distribu- 
+tion. In analogy to the case of noisy boolean circuits [Pippenger, 1990] one says that this 
+network ./V' recognizes a language L C_ U* with reliability s (where s  (0, «] is some 
+given constant) if immediately after reading an arbitrary word w  U* the network ./V' is 
+with probability _>  + s in an accepting state in case that w  L, and with probability 
+< « - s in an accepting state in case that w  L . 
+We will show in this article that even if the parameters of the Gaussian noise distribution for 
+each sigmoidal unit can be determined by the designer of the neural net, it is impossible to 
+find a size n, weight matrix W, vectors h, c and a reliability s E (0, -}] so that the resulting 
+recurrent sigmoidal neural net with Gaussian noise accepts the simple regular language 
+{to {0, 1}*l to begins with 0} with reliability s. This result exhibits a fundamental 
+limitation for making a recurrent analog neural net noise robust, even in a case where the 
+noise distribution is known and of a rather benign type. This quite startling negative result 
+should be contrasted with the large number of known techniques for making a feedforward 
+boolean circuit robust against noise, see [Pippenger, 1990]. 
+Our negative result turns out to be of a very general nature, that holds for virtually all related 
+definitions of noisy analog neural nets and also for completely different models for analog 
+computation in the presence of Gaussian or similar noise. Instead of the state set [-1, 1] n 
+one can take any compact set  C_ 11 ' , and instead of the map (x, u)  Wx + h + uc one 
+can consider an arbitrary map ]' ß  x U .  for a compact set  C- 11 n where f (., u) is 
+Borel measurable for each fixed u  U. Instead of a sigmoidal activation function a and a 
+Gaussian distributed noise vector V it suffices to assume that a ß 11 n .  is some arbitrary 
+Borel measurable function and V is some 11 n-valued random variable with a density b(.) 
+that has a wide support 2. In order to define a computation in such system we consider for 
+According to this definition a network iV' that is after reading some w  U* in an accepting state 
+1 1 
+with probability strictly between [ - s and [ + s does not recognize any language L C_ U*. 
+2More precisely: We assume that there exists a subset fl0 of fl and some constant co > 0 such 
+Analog Neural Nets with Gaussian Noise 283 
+each u  U the stochastic kernel K, defined by K,(x,A):= Prob [a(f(x, u) + V)  A] 
+for a:  ft and A C_ fl. For each (signed, Borel) measure bt on ft, and each u  U, we 
+let  be the (signed, Borel) measure defined on fl by ()(A) := f K(, A)d() . 
+Note that  is a probability measure whenever  is. For any sequence of inputs w = 
+u, ..., u, we consider the composition of the evolution operators ' 
+ :2 or_ 1 o...o 1 (1) 
+If the probability distribution of states at any given instant is given by the measure , then 
+the distribution of states after a single computation step on input u E U is given by  , 
+and after r computation steps on inputs w = u,..., u, the new distribution is , 
+where we are using the notation (1). In picular, if the system stats at a pticular initial 
+state , then the distribution of states after r computation steps on w is  , where  is 
+the probability measure concentrated on {}. at is to say, for each measurable subset 
+FCfi 
+Prob[z+ E F lz = , input = w] = (8)(F). 
+We fix an initial state  E fi, a set of "accepting" or "final" states F, and a "reliability" 
+level s > 0, and say that the resulting noisy analog computational system M recognizes 
+the language L C U* if for all w E U* ß 
+- 1 
+1 
+In general a neural network that simulates a DFA will carry out not just one, but a fixed 
+number k of computation steps (=state transitions) of the form a:' = a(Wx + h + 
+ttc+ V) for each input symbol tt  U that it reads (see the constructions described in 
+[Omlin, Giles, 1996], and in section 3 of this article). This can easily be reflected in our 
+model by formally replacing any input sequence w = u, tt2, ..., tt,. from U* by a padded 
+sequence tb u, b t-, tt2 b t- , b t- from (U U {b})* where b is a blank sym- 
+bol not in U, and b k-  denotes a sequence of k - 1 copies of b (for some arbitrarily fixed 
+k _> 1). This completes our definition of language recognition by a noisy analog compu- 
+tational system M with discrete time. This definition essentially agrees with that given in 
+[Maass, Orponen, 1997]. 
+We employ the following common notations from formal language theory: We write w w2 
+for the concatenation of two strings w and w2, U" for the set of all concatenations of r 
+strings from U, U* for the set of all concatenations of any finite number of strings from U, 
+and UV for the set of all strings ww2 with w 6 U and w2 6 V. The main result of this 
+article is the following: 
+Theorem 1.1 Assume that U is some arbitrary finite alphabet. A language L C_ U* can 
+be recognized by a noisy analog computational system of the previously specified type if 
+and only if L = E [J U'E2 for two finite subsets E and E2 of U*. 
+A corresponding version of Theorem 1.1 for discrete computational systems was previously 
+shown in [Rabin, 1963]. More precisely, Rabin had shown that probabilistic automata with 
+strictly positive matrices can recognize exactly the same class of languages L that occur 
+in our Theorem 1.1. Rabin referred to these languages as definite languages. Language 
+recognition by analog computational systems with analog noise has previously been in- 
+vestigated in [Casey, 1996] for the special case of bounded noise and perfect reliability 
+that the following two properties hold: b(v) > co for all v 6 Q := a - (f0) -  (that is, Q is the 
+set consisting of all possible differences z - y, with a(z)  fo and y 6 2) and a - (f0) has finite 
+and nonzero Lebesgue measure m0 = X (a -1 (f0)) ß 
+284 W. Maass and E. D. Son tag 
+(i.e. fll-ll_<,O(v)dv = 1 for some small r/ > 0 and  = 1/2 in our terminology), and in 
+[Maass, Orponen, 1997] for the general case. It was shown in [Maass, Orponen, 1997] that 
+any such system can only recognize regular languages. Furthermore it was shown there 
+that if fllvll_< b(v)dv - 1 for some small r/ > 0 then all regular languages can be recog- 
+nized by such systems. In the present paper we focus on the complementary case where the 
+condition "fllvll_<, b(v)dv - 1 for some small r/> 0" is not satisfied, i.e. analog noise may 
+move states over larger distances in the state space. We show that even if the probability of 
+such event is arbitrarily small, the neural net will no longer be able to recognize arbitrary 
+regular languages. 
+2 A Constraint on Language Recognition 
+We prove in this section the following result for arbitrary noisy computational systems M 
+as specified at the end of section 1' 
+Theorem 2.1 Assume that U is some arbitrary alphabet. If a language L C U* is rec- 
+ognized by M, then there are subsets E1 and E2 of U -<r, for some integer r, such that 
+L = E1 [_J U'E2. In other words: whether a string w E U* belongs to the language L 
+can be decided by just inspecting the first r and the last r symbols of w. 
+2.1 A General Fact about Stochastic Kernels 
+Let (S, ,S) be a measure space, and let K be a stochastic kernel 3. As in the special case of 
+the K,'s above, for each (signed) measure/ on (S, ,S), we let 11qu be the (signed) measure 
+defined on ,S by (11qu)(A) := f K(x,A)dlu(X) . Observe that 11qu is a probability measure 
+whenever/ is. Let c > 0 be arbitrary. We say that K satisfies Doeblin's condition (with 
+constant c) if there is some probability measure p on (S, ,S) so that 
+K(x,A) _> cp(A) forallx E $,A ,S. (2) 
+(Necessarily c <_ 1, as is seen by considering the special case A = $.) This condition is 
+due to [Doeblin, 1937]. 
+We denote by I[/zll the total variation of the (signed) measure/. Recall that II11 is de- 
+fined as follows. One may decompose $ into a disjoint union of two sets A and B, in 
+such a manner that/z is nonnegative on A and nonpositive on B. Letting the restrictions 
+of/ to A and B be "/+" and "-/_" respectively (and zero on B and A respectively), 
+we may decompose/ as a difference of nonnegative measures with disjoint supports, 
+/ = /+ - u_ Then, IIt, II -- t,+(n) q- t-(B). The following Lemma is a "folk" 
+fact ([Papinicolaou, 1978]). 
+Lemma 2.2 Assume that K satisfies Doeblin's condition with constant c. Let lU be any 
+(signed) measure such that lu(S) -- O. Then IIll _< (1 - c)IIt'll-  
+2.2 Proof of Theorem 2.1 
+Lemma 2.3 There is a constant c > 0 such that K,, satisfies Doeblin's condition with 
+constant c, for every u  U. 
+Prooff Let Ft0, co, and 0 < m0 < 1 be as in the second footnote, and introduce the 
+following (Borel) probability measure on Ft0: 
+1 
+,0(A) ;- --, (0 '--1 (A)) . 
+m0 
+3That is to say, K(x, .) is a probability distribution for each x, and K(., A) is a measurable 
+function for each Borel measurable set A. 
+Analog Neural Nets with Gaussian Noise 285 
+A 
+Pick any measurable A C_ 2o and any y E Ft. Then, 
+Z(y,A) 
+= Prob[a(y + V) e A] = 
+= fA O(v) dv _> coX(Ay) 
+y 
+where Ay := a -1 (A) - {y} _C 
+Prob [y + V e a -1 (A)] 
+COX (O '--1 (A)) '- como/\o(A), 
+Q. We conclude that Z(y,A) _> cAo(A) for all y,A, 
+where c = como. Finally, we extend the measure Ao to all of Ft by assigning zero measure 
+to the complement of Fto, that is, p(A) := Ao(A n Fto) for all measurable subsets A of Ft. 
+Pick u  U; we will show that Ku satisfies Doeblin's condition with the above constant 
+c (and using p as the "comparison" measure in the definition). Consider any x  Ft and 
+measurable A C Ft. Then, 
+K,(x,A) = Z(f(x,u),A) _> z(f(x,u),AnFto ) _> cAo(An Fto)=cp(A), 
+as required. I 
+For every two probability measures 1, 2 on Ft, applying Lemma 2.2 to  := 1 - 2, we 
+know that IlYt,1 - mll _< (]. - c)lit,1 - t,ll for each u  U. Recursively, then, we 
+conclude: 
+IIm - ]t,11 _< (1 - c) ' lit,1 - t,ll _< 2(]. - c)" (3) 
+for all words w of length _> r. 
+Now pick any integer r such that (1 - c)" < 2e. From Equation (3), we have that 
+for all w of length _> r and any two probability measures ;q, it2. In particular, this means 
+that, for each measurable set A, 
+I(tIm)(A) - (lt2)(A)l < 2e 
+(4) 
+for all such w. (Because, for any two probability measures q and '2, and any measurable 
+set A, 2 [q (A) - '2(A)[ _< [1'1 -- 211.) 
+Lemma 2.4 Pick any v  U* and w  U r. Then 
+wL  vwL. 
+1 
+Prooff Assume that w e L, that is, (I5)(F) > +e. Applying inequality (4) to the mea- 
+sures ttl := 5 and tt2 := 1ISe and A = F, we have that 1(t%5)(F) - (lwSe)(F)l < 
+1 1 
+2e, and this implies that (lwSe)(F) > -e, i.e., vw ½ L. (Since  - < (lwS)(F) < 
+i + e is ruled out.) If w 9( L, the argument is similar. 1 
+2 
+We have proved that 
+So, 
+L(U*U ) : U*(LU). 
+;: (;N U (;n E1 U U'E2 
+where E1 := L n and E2 :- L n u,- are both included in U ?. This completes the 
+proof of Theorem 2.1. I 
+286 W. Maass and E. D. Sontag 
+3 Construction of Noise Robust Analog Neural Nets 
+In this section we exhibit a method for making feedforward analog neural nets robust with 
+regard to arbitrary analog noise of the type considered in the preceding sections. This 
+method will be used to prove in Corollary 3.2 the missing positive part of the claim of the 
+main result (Theorem 1.1) of this article. 
+Theorem 3.1 Let ½ be any (noiseless)feedforward threshold circuit, and let a ß 11 --> 
+[-1, 1] be some arbitrary function with a(u) --> 1 for u --> oc and a(u) --> -1 for 
+u --> -oc. Furthermore assume that rS, p  (0, 1) are some arbitrary given parameters. 
+Then one can transform for any given analog noise of the type considered in section 1 the 
+noiseless threshold circuit ½ into an analog neural net ./V'c with the same number of gates, 
+whose gates employ the given function a as activation function, so that for any circuit input 
+z__  {- 1, 1} m the output of the noisy analog neural net./V'c differs with probability _> 1 - (5 
+by at most p from the output of C. 
+Idea of the proof.' Let k be the maximal fan-in of a gate in ½, and let w be the maximal 
+absolute value of a weight in C. We choose R > 0 so large that the density function 5(.) of 
+the noise vector V satisfies for each gate with n inputs in ½ 
+/v q3(v) dv < 5 
+1 >  - 2n 
+for i = l,...,n. 
+Furthermore we choose u0 > 0 so large that a(u) _> 1 - p/(wk) for u _> uo and a(u) _< 
+-1 + p/(wk) for u _< -u0. Finally we choose a factor 7 > 0 so large that 7(1 - p) - R _> 
+u0. Let./V'c be the analog neural net that results from ½ through multiplication of all weights 
+and thresholds with 7 and through replacement of the Heaviside activation functions of the 
+gates in C by the given activation function a. I 
+The following Corollary provides the proof of the positive part of our main result Theorem 
+1.1. It holds for any a considered in Theorem 3.1. 
+Corollary 3.2 Assume that U is some arbitrary finite alphabet, and language L C_ U* is 
+of the form L = E1 J U'E2 for two arbitrary finite subsets E1 and E2 of U*. Then the 
+language L can be recognized by a noisy analog neural net ./V' with any desired reliability 
+  (0, «), in spite of arbitrary analog noise of the type considered in section 1. 
+Proof. We first construct a feedforward threshold circuit ½ for recognizing L, that receives 
+each input symbol from U in the form of a bitstring u  {0, 1} t (for some fixed I _> 
+log 2 IU[), that is encoded as the binary states of l input units of the boolean circuit ½. Via 
+a tapped delay line of fixed length d (which can easily be implemented in a feedforward 
+threshold circuit by d layers, each consisting of l gates that compute the identity function on 
+a single binary input from the preceding layer) one can achieve that the feedforward circuit 
+C computes any given boolean function of the last d sequences from {0, 1} t that were 
+presented to the circuit. On the other hand for any language of the form L = E1 tO U'E2 
+with El, E2 finite there exists some d  N such that for each w  U* one can decide 
+whether w  L by just inspecting the last d characters of w. Therefore a feedforward 
+threshold circuit ½ with a tapped delay line of the type described above can decide whether 
+We apply Theorem 3.1 to this circuit ½ for r5 -- p = min(-} - , ¬). We define the set F 
+of accepting states for the resulting analog neural net ./V'c as the set of those states where 
+the computation is completed and the output gate of ./V'c assumes a value _> 3/4. Then 
+according to Theorem 3.1 the analog neural net ./V'c recognizes L with reliability . To be 
+formally precise, one has to apply Theorem 3.1 to a threshold circuit ½ that receives its 
+Analog Neural Nets with Gaussian Noise 287 
+input not in a single batch, but through a sequence of d batches. The proof of Theorem 3.1 
+readily extends to this case. I 
+4 Conclusions 
+We have exhibited a fundamental limitation of analog neural nets with Gaussian or other 
+common noise distributions whose probability density function is nonzero on a large set: 
+They cannot accept the very simple regular language {w E {0, 1}*] w begins with 0}. 
+This holds even if the designer of the neural net is allowed to choose the parameters of 
+the Gaussian noise distribution and the architecture and parameters of the neural net. The 
+proof of this result introduces new mathematical arguments into the investigation of neural 
+computation, which can also be applied to other stochastic analog computational systems. 
+We also have presented a method for makingfeedforward analog neural nets robust against 
+the same type of noise. This implies that certain regular languages, such as for example 
+{w E {0, 1}'1 w ends with 0} can be recognized by a recurrent analog neural net with 
+Gaussian noise. In combination with our negative result this yields a precise characteri- 
+zation of all regular languages that can be recognized by recurrent analog neural nets with 
+Gaussian noise, or with any other noise distribution that has a large support. 
+References 
+[Casey, 1996] Casey, M., "The dynamics of discrete-time computation, with application to 
+recurrent neural networks and finite state machine extraction", Neural Computation 
+8, 1135-1178, 1996. 
+[Doeblin, 1937] Doeblin, W., "Sur le propri6t6s asymtotiques de mouvement r6gis par 
+certain types de chanes simples", Bull. Math. Soc. Roumaine Sci. 39(1): 57-115; (2) 
+3-61, 1937. 
+[Maass, Orponen, 1997] Maass, W., and Orponen, P. "On the effect of analog noise on 
+discrete-time analog computations", Advances in Neural Information Processing Sys- 
+tems 9, 1997, 218-224; journal version: Neural Computation 10(5), 1071-1095, 
+1998. 
+[Omlin, Giles, 1996] Omlin, C. W., Giles, C. L. "Constructing deterministic finite-state 
+automata in recurrent neural networks", J. Assoc. Comput. Mach. 43 (1996), 937- 
+972. 
+[Papinicolaou, 1978] Papinicolaou, G., "Asymptotic Analysis of Stochastic Equations", in 
+Studies in Probability Theory, MAA Studies in Mathematics, vol. 18, 111-179, edited 
+by M. Rosenblatt, Math. Assoc. of America, 1978. 
+[Pippenger, 1985] Pippenger, N., "On networks of noisy gates", IEEE Sympos. on Foun- 
+dations of Computer Science, vol. 26, IEEE Press, New York, 30-38, 1985. 
+[Pippenger, 1989] Pippenger, N., "Invariance of complexity measures for networks with 
+unreliable gates", J. of the ACM, vol. 36, 531-539, 1989. 
+[Pippenger, 1990] Pippenger, N., "Developments in 'The Synthesis of Reliable Organisms 
+from Unreliable Components' ", Proc. of Symposia in Pure Mathematics, vol. 50, 
+311-324, 1990. 
+[Rabin, 1963] Rabin, M., "Probabilistic automata", Information and Control, vol. 6, 230- 
+245, 1963. 

@@ -1,0 +1,301 @@
+Graph Matching for Shape Retrieval 
+Benoit Huet, Andrew D.J. Cross and Edwin R. Hancock* 
+Department of Computer Science, University of York 
+York, Y01 5DD, UK 
+Abstract 
+This paper describes a Bayesian graph matching algorithm for 
+data-mining from large structural data-bases. The matching al- 
+gorithm uses edge-consistency and node attribute similarity to de- 
+termine the a posterJori probability of a query graph for each of the 
+candidate matches in the data-base. The node feature-vectors are 
+constructed by computing normalised histograms of pairwise ge- 
+ometric attributes. Attribute similarity is assessed by computing 
+the Bhattacharyya distance between the histograms. Recognition 
+is realised by selecting the candidate from the data-base which has 
+the largest a posterJori probability. We illustrate the recognition 
+technique on a data-base containing 2500 line patterns extracted 
+from real-world imagery. Here the recognition technique is shown 
+to significantly outperform a number of algorithm alternatives. 
+I Introduction 
+Since Barrow and Poppiestone [1] first suggested that relational structures could be 
+used to represent and interpret 2D scenes, there has been considerable interest in the 
+machine vision literature in developing practical graph-matching algorithms [8, 3, 
+10]. The main computational issues are how to compare relational descriptions when 
+there is significant structural corruption [8, 10] and how to search for the best match 
+[3]. Despite resulting in significant improvements in the available methodology for 
+graph-matching, there has been little progress in applying the resulting algorithms 
+to large-scale object recognition problems. Most of the algorithms developed in the 
+literature are evaluated for the relatively simple problem of matching a model-graph 
+against a scene known to contain the relevant structure. A more realistic problem is 
+that of taking a large number (maybe thousands) of scenes and retrieving the ones 
+that best match the model. Although this problem is key to data-mining from large 
+libraries of visual information, it has invariably been approached using low-level 
+feature comparison techniques. Very little effort [7, 4] has been devoted to matching 
+*corresponding author erh@cs.york.ac.uk 
+Graph Matching for Shape Retrieval 897 
+higher-level structural primitives such as lines, curves or regions. Moreover, because 
+of the perceived fragility of the graph matching process, there has been even less 
+effort directed at attempting to retrieve shapes using relational information. 
+Here we aim to fill this gap in the literature by using graph-matching as a means 
+of retrieving the shape from a large data-based that most closely resembles a query 
+shape. Although the indexation images in large data-bases is a problem of current 
+topicality in the computer vision literature [5, 6, 9], the work presented in this 
+paper is more ambitious. Firsfly, we adopt a structural abstraction of the shape 
+recognition problem and match using attributed relational graphs. Each shape in 
+our data-base is a pattern of line-segments. The structural abstraction is a nearest 
+neighbour graph for the centre-points of the line-segments. In addition, we exploit 
+attribute information for the line patterns. Here the geometric arrangement of the 
+line-segments is encapsulated using a histogram of Euclidean invariant pairwise (bi- 
+nary) attributes. For each line-segment in turn we construct a normalised histogram 
+of relative angle and length with the remaining line-segments in the pattern. These 
+histograms capture the global geometric context of each line-segment. Moreover, 
+we interpret the pairwise geometric histograms as measurement densities for the 
+line-segments which we compare using the Bhattacharyya distance. 
+Once we have established the pattern representation, we realise object recognition 
+using a Bayesian graph-matching algorithm. This is a two-step process. Firsfly, 
+we establish correspondence matches between the individual tokens in the query 
+pattern and each of the patterns in the data-base. The correspondences matches 
+are sought so as to maximise the a posterJori measurement probability. Once the 
+MAP correspondence matches have been established, then the second step in our 
+recognition architecture involves selecting the line-pattern from the data-base which 
+has maximum matching probability. 
+2 MAP Framework 
+Formally our recognition problem is posed as follows. Each ARG in the database is 
+a triple, G = (VG, EG, Aa), where Va is the set of vertices (nodes), EG is the edge 
+set (EG C Va x ¾), and Aa is the set of node attributes. In our experimental 
+example, the nodes represent line-structures segmented from 2D images. The edges 
+are established by computing the N-nearest neighbout graph for the line-centres. 
+Each node j E VG is characterised by a vector of attributes, x_j and hence Aa = 
+{_xj[j EVa}. In the work reported here the attribute-vector is represents the 
+contents of a normalised pairwise attribute histogram. 
+The data-base of line-patterns is represented by the set of ARG's/) = {G}. The 
+goal is to retrieve from the data-base /), the individual ARG that most closely 
+resembles a query pattern Q = (VQ, EQ, AQ). We pose the retrieval process as one 
+of associating with the query the graph from the data-base that has the largest a 
+posteriori probability. In other words, the class identity of the graph which most 
+closely corresponds to the query is 
+WQ = arg max P(G]Q) 
+However, since we wish to make a detailed structural comparison of the graphs, 
+rather than comparing their overall statistical properties, we must first establish 
+a set of best-match correspondences between each ARG in the data-base and the 
+query Q. The set of correspondences between the query Q and the ARG G is 
+a relation fG ' VG  VQ over the vertex sets of the two graphs. The mapping 
+function consists of a set of Cartesian pairings between the nodes of the two graphs, 
+898 B. Huet, A.D. J. Cross and E. R. Hancock 
+i.e. fG = {(a, cO;a E VG,c e VQ} C_ VG x VQ. Although this may appear to be a 
+brute force method, it must be stressed that we view this process of correspondence 
+matching as the final step in the filtering of the line-patterns. We provide more 
+details of practical implementation in the experimental section of this paper. 
+With the correspondences to hand we can re-state our maximum a posteriori prob- 
+ability recognition objective as a two step process. For each graph G in turn, we 
+locate the maximum a posterJori probability mapping function fG onto the query 
+Q. The second step is to perform recognition by selecting the graph whose mapping 
+function results in the largest matching probability. These two steps are succinctly 
+captured by the following statement of the recognition condition 
+WQ = arg max maxP(fG, IG', Q) 
+G'D fa' 
+This global MAP condition is developed into a useful local update formula by apply- 
+ing the Bayes formula to the a posterJori matching probability. The simplification 
+is as follows 
+p(AG, AQIfo)P(fGIVo, EG, V o, EQ)P(VG, EG)P(VQ, EQ) 
+P(foIG, Q) = P(G)P(Q) 
+The terms on the right-hand side of the Bayes formula convey the following 
+meaning. The conditional measurement density p(Aa,AQlfG) models the mea- 
+surement similarity of the node-sets of the two graphs. The conditional prob- 
+ability P(falE,EQ) models the structural similarity of the two graphs under 
+the current set of correspondence matches. The assumptions used in develop- 
+ing our simplification of the a posteriori matching probability are as follows. 
+Firstly, we assume that the joint measurements are conditionally independent 
+of the structure of the two graphs provided that the set of correspondences is 
+known, i.e. P(AG,AQlf,E,VG,EQ,VQ) = P(A,AQlfG). Secondly, we as- 
+sume that there is conditional independence of the two graphs in the absence of 
+correspondences. In other words, P(VG,EG, VQ,EQ) = P(VQ,EQ)P(VG,EG) and 
+P(G,Q) = P(G)P(Q). Finally, the graph priors P(VG,EG), P(VQ,EQ) P(G) and 
+P(Q) are taken as uniform and are eliminated from the decision making process. 
+To continue our development, we first focus on the conditional measurement density, 
+p(AG,AQ]fG) which models the process of comparing attribute similarity on the 
+nodes of the two graphs. Assuming statistical independence of node attributes, the 
+conditional measurement density p(A, AQlf), can be factorised over the Cartesian 
+pairs (a, c)  VG x VQ which constitute the the correspondence match fo in the 
+following manner 
+p(AG,AQlfG) = H p(_Xa,_XlfG(a ) = c) 
+(a,) ß fa 
+As a result the correspondence matches may be optimised using a simple node-by- 
+node discrete relaxation procedure. The rule for updating the match assigned to 
+the node a of the graph G is 
+fo(a) = arg max _p(¾.,_x,)lf(a ) = ct)P(foIEG,EQ) 
+In order to model the structural consistency of the set of assigned matches,we turn 
+to the framework recently reported by Finch, Wilson and Hancock [2]. This work 
+provides a framework for computing graph-matching energies using the weighted 
+Hamming distance between matched cliques. Since we are dealing with a large-scale 
+object recognition system, we would like to minimise the computational overheads 
+associated with establishing correspondence matches. For this reason, rather than 
+Graph Matching for Shape Retrieval 899 
+working with graph neighbourhoods or cliques, we chose to work with the relational 
+units of the smallest practical size. In other words we satisfy ourself with measuring 
+consistency at the edge level. For edge-units, the structural matching probability 
+P(fo[Vo, Eo, VQ, EQ) is computed from the formula 
+lnP(fGIVG,EG,VG,EQ) = ' ' {ln(1-Pe)sa,sb,a+lnPe(1-sa,sb,a)} 
+(a,b)GEG (o,)GE 2 
+where Pe is the probability of an error appearing on one of the edges of the matched 
+structure. The Sa,, are assignment variables which are used to represent the current 
+state of match and convey the following meaning 
+1 if fo(a) = 
+sa,. = 0 otherwise 
+3 Histogram-based consistency 
+We now furnish some details of the shape retrieval task used in our experimental 
+evaluation of the recognition method. In particular, we focus on the problem of 
+recognising 2D line patterns in a manner which is invariant to rotation, translation 
+and scale. The raw information available for each line segment are its orientation 
+(angle with respect to the horizontal axis) and its length (see figure 1). To illustrate 
+how the Euclidean invariant pairwise feature attributes are computed, suppose that 
+we denote the line segments associated with the nodes indexed a and b by the 
+vectors v_ a and _vb respectively. The vectors are directed away from their point of 
+intersection. The pairwise relative angle attribute is given by 
+_V a ß _V b 
+Oa,* = arccos I_v. ill 
+From the relative angle we compute the directed relative angle. This involves giving 
+d 
+.   ab,cd = -- 
+ß  ..... '_ .... _'::: .... '_, 
+Figure 1: Geometry for shape representation 
+the relative angle a positive sign if the direction of the angle from the baseline v_ a to 
+its partner _vo is clockwise and a negative sign if it is counter-clockwise. This allows 
+us to extend the range of angles describing pairs of segments from [0,rc] to 
+The directed relative position Oa,, is represented by the normalised length ratio 
+between the oriented baseline vector _va and the vector v_t joining the end (b) of the 
+baseline segment (ab) to the intersection of the segment pair (cd). 
+1 
+Oa,b ---- 1 q_ Dio 
+900 B. Huet, A. D. J. Cross and E. R. Hancock 
+The physical range of this attribute is (0, 1]. A relative position of 0 indicates that 
+the two segments are parallel, while a relative position of I indicates that the two 
+segments intersect at the middle point of the baseline. 
+The Euclidean invariant angle and position attributes 0a,0 and 0a,0 are binned in a 
+histogram. Suppose that Sa(/,'): {(a,b)[O,, E A A Oa, e R A b  Vr)} is the 
+set of nodes whose pairwise geometric attributes with the node a are spanned by 
+the range of directed relative angles A, and the relative position attribute range 
+R. The contents of the histogram bin spanning the two attribute ranges is given 
+by H(,v) = [S(, v)[. Each histogram contains n relative angle bins and n 
+length ratio bins. The normalised geometric histogram bin-entries are computed as 
+follows 
+The probability of match between the pattern-vectors is computed using the Bhat- 
+tacharyya distance between the normalised histograms. 
+= = = exp[-B,,] 
+A 
+.=1 h. 
+With this modelling ingredient, the condition for recognition is 
+0 = arg min   {-Ba,a-Bb,+ln(1-P)sa,sb, 
++ln Pe(1-Sa,So,/3) } 
+4 Experiments 
+The aim in this section is to evaluate the graph-based recognition scheme on a data- 
+base of real-world line-patterns. We have conducted our recognition experiments 
+with a data-base of 2500 line-patterns each containing over a hundred lines. The 
+line-patterns have been obtained by applying line/edge detection algorithms to the 
+raw grey-scale images followed by polygonisation. For each line-pattern in the data- 
+base, we construct the six-nearest neighbout graph. The feature extraction process 
+together with other details of the data used in our study are described in recent 
+papers where we have focussed on the issues of histogram representation [4] and the 
+optimal choice of the relational structure for the purposes of recognition. In order to 
+prune the set of line-patterns for detailed graph-matching we select about 10% of the 
+data-base using a two-step process. This consists of first refining the data-base using 
+a global histogram of pairwise attributes [4]. The top quartile of matches selected 
+in this way are then further refined using a variant of the Haussdorff distance to 
+select the set of pairwise attributes that best match against the query. 
+The recognition task is posed as one of recovering the line-pattern which most closely 
+resembles a digital map. The original images from which our line-patterns have been 
+obtained are from a number of diverse sources. However, a subset of the images are 
+aerial infra-red line-scan views of southern England. Two of these infra-red images 
+correspond to different views of the area covered by the digital map. These views 
+are obtained when the line-scan device is flying at different altitudes. The line-scan 
+device used to obtain the aerial images introduces severe barrel distortions and 
+hence the map and aerial images are not simply related via a Euclidean or affine 
+transformation. The remaining line-patterns in the data-base have been extracted 
+from trademarks and logos. It is important to stress that although the raw images 
+are obtained from different sources, there is nothing salient about their associated 
+line-pattern representations that allows us to distinguish them from one-another. 
+Graph Matching for Shape Retrieval 901 
+(a) Digital Map 
+(b) Target 1 
+(c) Target 2 
+Figure 2: Images from the data-base 
+Moreover, since it is derived from a digital map rather than one of the images in 
+the data-base, the query is not identical to any of the line-patterns in the model 
+library. 
+We aim to assess the importance of different attributes representation on the re- 
+trieval process. To this end, we compare node-based and the histogram-based at- 
+tribute representation. We also consider the effect of taking the relative angle and 
+relative position attributes both singly and in tandem. The final aspect of the 
+comparison is to consider the effects of using the attributes purely for initialisation 
+purposes and also in a persistent way during the iteration of the matching process. 
+To this end we consider the following variants of our algorithm. 
+ß Non-Persistent Attributes: Here we ignore the attribute information 
+provided by the node-histograms after the first iteration and attempt to 
+maximise the structural congruence of the graphs. 
+ß Local attributes: Here we use only the single node attributes rather than 
+an attribute histogram to model the a posteriori matching probabilities. 
+Graph Matching Strategy Retrieval Iterations 
+Accuracy per recall 
+Rel. Position Attribute (Initialisation only) 39% 5.2 
+Rel. Angle Attribute (Initialisation only) 45% 4.75 
+Rel. Angle + Position Attributes (Initialisation only) 58% 4.27 
+1D Rel. Position Histogram (Initialisation only) 42% 4.7 
+1D Rel. Angle Histogram (Initialisation only) 59% 4.2 
+2D Histogram (Initialisation only) 68% 3.9 
+Rel. Position Attribute (Persistent) 63% 3.96 
+Rel. Angle Attribute (Persistent) 89% 3.59 
+Rel. Angle + Position Attributes (Persistent) 98% 3.31 
+1D Rel. Position Histogram (Persistent) 66% 3.46 
+1D Rel. Angle Histogram (Persistent) 92% 3.23 
+2D Histogram (Persistent) 100% 3.12 
+Table 1: Recognition performance of various recognition strategies averaged over 
+26 queries in a database of 260 line-patterns 
+In Table I we present the recognition performance for each of the recognition strate- 
+gies in turn. The table lists the recall performance together with the average number 
+902 B. Huet, A. D. J. Cross and E. R. Hancock 
+of iterations per recall for each of the recognition strategies in turn. The main fea- 
+tures to note from this table are as follows. Firstly, the iterative recall using the full 
+histogram representation outperforms each of the remaining recognition methods 
+in terms of both accuracy and computational overheads. Secondly, it is interesting 
+to compare the effect of using the histogram in the initialisation-only and iteration 
+persistent modes. In the latter case the recall performance is some 32% better than 
+in the former case. In the non-persistent mode the best recognition accuracy that 
+can be obtained is 68%. Moreover, the recall is typically achieved in only 3.12 it- 
+erations as opposed to 3.9 (average over 26 queries on a database of 260 images). 
+Finally, the histogram representation provides better performance, and more signif- 
+icantly, much faster recall than the single-attribute similarity measure. When the 
+attributes are used singly, rather than in tandem, then it is the relative angle that 
+appears to be the most powerful. 
+5 Conclusions 
+We have presented a practical graph-matching algorithm for data-mining in large 
+structural libraries. The main conclusion to be drawn from this study is that the 
+combined use of structural and histogram information improves both recognition 
+performance and recall speed. There are a number of ways in which the ideas 
+presented in this paper can be extended. Firstly, we intend to explore more a per- 
+ceptually meaningful representation of the line patterns, using grouping principals 
+derived from Gestalt psychology. Secondly, we are exploring the possibility of for- 
+mulating the filtering of line-patterns prior to graph matching using Bayes decision 
+trees. 
+References 
+[1] H. Barrow and R. Poppiestone. Relational descriptions in picture processing. 
+Machine Intelligence, 5:377-396, 1971. 
+[2] A. Finch, R. Wilson, and E. Hancock. Softening discrete relaxation. Advances 
+in NIPS 9, Edited by M. Mozer, M. Jordan and T. Petsche, MIT Press, pages 
+438-444, 1997. 
+[3] S. Gold and A. Rangarajan. A graduated assignment algorithm for graph 
+matching. IEEE PAMI, 18:377-388, 1996. 
+[4] B. Huet and E. Hancock. Relational histograms for shape indexing. IEEE 
+ICCV, pages 563-569, 1998. 
+[5] W. Niblack et al.. The QBIC project: Querying images by content using color, 
+texture and shape. Image and Vision Storage and Retrieval, 173-187, 1993. 
+[6] A. P. Pentland, R. W. Picard, and S. Scarloft. Photobook: tools for content- 
+based manipulation of image databases. Storage and Retrieval for Image and 
+Video Database H, pages 34-47, February 1994. 
+[7] K. Sengupta and K. Boyer. Organising large structural databases. IEEE PAMI, 
+17(4):321-332, 1995. 
+[8] L. Shapiro and R. Haralick. A metric for comparing relational descriptions. 
+IEEE PAMI, 7(1):90-94, 1985. 
+[9] M. Swain and D. Ballard. Color indexing. International Journal of Computer 
+Vision, 7(1):11-32, 1991. 
+[10] R. Wilson and E. R. Hancock. Structural matching by discrete relaxation. 
+IEEE PAMI, 19(6):634-648, June 1997. 

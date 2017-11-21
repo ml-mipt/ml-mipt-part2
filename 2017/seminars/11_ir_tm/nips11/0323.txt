@@ -1,0 +1,296 @@
+Tight Bounds for the VC-Dimension of 
+Piecewise Polynomial Networks 
+Akito Sakurai 
+School of Knowledge Science 
+Japan Advanced Institute of Science and Technology 
+Nomi-gun, Ishikawa 923-1211, Japan. 
+CREST, Japan Science and Technology Corporation. 
+A Sakurai@jaist. ac.jp 
+Abstract 
+O(ws(s log d q-log(dqh/s))) and O(ws((h/s) log q)q- log(dqh/s)) are 
+upper bounds for the VC-dimension of a set of neural networks of 
+units with piecewise polynomial activation functions, where s is 
+the depth of the network, h is the number of hidden units, w is 
+the number of adjustable parameters, q is the maximum of the 
+number of polynomial segments of the activation function, and d is 
+the maximum degree of the polynomials; also fl(wslog(dqh/s)) is 
+a lower bound for the VC-dimension of such a network set, which 
+are tight for the cases s - ©(h) and s is constant. For the special 
+case q -- 1, the VC-dimension is ©(ws log d). 
+1 Introduction 
+In spite of its importance, we had been unable to obtain VC-dimension values for 
+practical types of networks, until fairly tight upper and lower bounds were obtained 
+([6], [8], [9], and [10]) for linear threshold element networks in which all elements 
+perform a threshold function on weighted sum of inputs. Roughly, the lower bound 
+for the networks is (1/2)w log h and the upper bound is w log h where h is the number 
+of hidden elements and w is the number of connecting weights (for one-hidden-layer 
+case w  nh where n is the input dimension of the network). 
+In many applications, though, sigmoidal functions, specifically a typical sigmoid 
+function 1/(1 q- exp(-x)), or piecewise linear functions for economy of calculation, 
+are used instead of the threshold function. This is mainly because the differen- 
+tiability of the functions is needed to perform backpropagation or other learning 
+algorithms. Unfortunately explicit bounds obtained so far for the VC-dimension of 
+sigmoidal networks exhibit large gaps (O(w2h 2) ([3]), (wlog h) for bounded depth 
+324 .4. Sakurai 
+and f/(wh) for unbounded depth) and are hard to improve. For the piecewise linear 
+case, Maass obtained a result that the VG-dimension is O(w ' log q), where q is the 
+number of linear pieces of the function ([5]). 
+Recently Koiran and Sontag ([4]) proved a lower bound f(w ') for the piecewise 
+polynomial case and they claimed that an open problem that Maass posed if there 
+is a matching w ' lower bound for the type of networks is solved. But we still have 
+something to do, since they showed it only for the case w = ©(h) and the number 
+of hidden layers being unbounded; also O(w ') bound has room to improve. 
+We in this paper improve the bounds obtained by Maass, Koiran and Sontag and 
+consequently show the role of polynomials, which can not be played by linear func- 
+tions, and the role of the constant functions that could appear for piecewise poly- 
+nomial case, which cannot be played by polynomial functions. 
+After submission of the draft, we found that Bartlett, Maiorov, and Meir haA ob- 
+tained similar results prior to ours (also in this proceedings). Our advantage is that 
+we clarified the role played by the degree and number of segments concerning the 
+both bounds. 
+2 Terminology and Notation 
+log stands for the logarithm base 2 throughout the paper. 
+The depth of a network is the length of the longest path from its external inputs to 
+its external output, where the length is the number of units on the path. Likewise 
+we can assign a depth to each unit in a network as the length of the longest path 
+from the external input to the output of the unit. A hidden layer is a set of units at 
+the same depth other than the depth of the network. Therefore a depth L network 
+has L - 1 hidden layers. 
+In many cases w will stand for a vector composed of all the connection weights in 
+the network (including threshold values for the threshold units) and w is the length 
+of w. The number of units in the network, excluding "input units," will be denoted 
+by h; in other words, the number of hidden units plus one, or sometimes just the 
+number of hidden units. A function whose range is {0, 1} (a set of 0 and 1) is 
+called a Boolean-valued function. 
+3 Upper Bounds 
+To obtain upper bounds for the VC-dimension we use a region counting argument, 
+developed by Goldberg and Jerrum [2]. The VC-dimension of the network, that is, 
+the VC-dimension of the function set {fG(w;' ) Iwer is upper bounded by 
+where Nc(.) is the number of connected components and .Af(f) is the set 
+{w I f(w)=0}. 
+The following two theorems are convenient. Refer [11] and [7] for the first theorem. 
+The lemma followed is easily proven. 
+Theorem 3.1. Let f6(w; xj) (1 _< i <_ N) be real polynomials in w, each of degree 
+a or less. The number of connected components of the set gix{wlfo(w;xl)= 0} 
+is bounded from above by 2(2d) w where w is the length ofw. 
+Tight Bounds for the VC-Dimension of Piecewise Polynomial Networks 325 
+Lemn'ta 3.2. If m _> w(log C + loglog C + 1), then 2 m > (me/w) u' for C >_ 4. 
+First let us consider the polynomial activation function case. 
+Theorem 3.3. Suppose that the activation function are polynomials of degree at 
+most d. O(wslog d) is an upper bound of the VU-dimension for the networks with 
+depth s. Wen s = O(h) the bound is O(whlogd). More precisely ws(logd + 
+log loud + 2) is an upper bound. Note that if we allow a polynomial as the input 
+function, dd. will replace d above where d is the maximum degree of the input 
+functions and d. is that of the activation functions. 
+The theorem is clear from the fcts that the network function (fa in (3.1)) is a 
+polynomial of degree at most d s + d s- + .-. + d, Theorem 3.1 and Lemma 3.2. 
+For the piecewise linear case, we have two types of bounds. The first one is suitable 
+for bounded depth cases (i.e. the depth s - o(h)) and the second one for the 
+unbounded depth case (i.e. s = ©(h)). 
+Theorem 3.4. Suppose that the activation functions are piecewise polynomials with 
+at most q segments of polynomials degree at most d. O(ws(slogd + log(dqh/s))) 
+and O(ws((h/s) log q) + log(dqh/s)) are upper bounds for the VU-dimension, where 
+s is the depth of the network. More precisely, ws((s/2)logd + log(qh)) and 
+ws((h/s) log q +log d) are asymptotic upper bounds. Note that if we allow a polyno- 
+mial as the input function then d d. will replace d above where d is the maximum 
+degree of the input functions and d. is that of the activation functions. 
+Proof. 
+We have two different ways to calculate the bounds. First 
+s 
+-< II m= - o... o 
+' +... + + 
+j=l 
+<__ (8eNqd(S+a)/2(h/s) )os 
+where hi is the number of hidden units in the i-th layer and o is an operator to 
+form a new vector by concatenating the two. From this we get an asymptotic upper 
+bound ws((s/2)log d + log(qh)) for the VC-dimension. 
+Secondly 
+Ncc(7w Jv .N' _ _ qh (8eNqad s) 
+From this we get an asymptotic upper bound ws((h/s)logq + loud) for the VC- 
+dimension. Combining these two bounds we get the result. Note that s in log(dqh/s) 
+in it is introduced to eliminate unduly large term emerging when s = O(h). [] 
+4 Lower Bounds for Polynomial Networks 
+Theorem 4.1 Let us consider the case that the activation function are polynomials 
+of degree at most d. f(wslogd) is a lower bound of the VU-dimension for the 
+networks with depth s. When s = ©(h) the bound is f/(whlogd), More precisely, 
+326 ,4. Salatrai 
+(1/16)w(s-6) log d is an asymptotic lower bound where d is the degree of activation 
+functions and is a power of two and h is restricted to O(n ') for input dimension n. 
+The proof consists of several lemmas. The network we are constructing will have 
+two parts: an encoder and a decoder. We deliberately fix the N input points. The 
+decoder part has fixed underlying architecture but also fixed connecting weights 
+whereas the encoder part has variable weights so that for any given binary outputs 
+for the input points the decoder could output the specified value from the codes in 
+which the output value is encoded by the encoder. 
+First we consider the decoder, which has two real inputs and one real output. One 
+of the two inputs y holds a code of a binary sequence bx, b.,..., bm and the other x 
+holds a code of a binary sequence cx, c.,..., cm. The elements of the latter sequence 
+are all O's except for cj - 1, where cj - 1 orders the decoder to output bj from it 
+and consequently from the network. 
+We show two types of networks; one of which has activation functions of degree at 
+most two and has the VC-dimension w(s- 1) and the other has activation functions 
+of degree d a power of two and has the VC-dimension w(s - 5) log d. 
+We use for convenience two functions 7/0(x) - 1 if x _> 0 and 0 otherwise and 
+7/0,4 (x) = 1 if x _> b, 0 if x _< 0, and undefined otherwise. Throughout this section 
+we will use a simple logistic function p(x) = (16/3)x(1 - x) which has the following 
+property. 
+Lemma 4.2. For any binary sequence b, b2, . . . , bin, there exists an interval [x, x2] 
+such that bi = }'l/4,3/4(pi(x)) and 0 <_ pi(x) _ 1 for any x  [xx, x2]. 
+The next lemmas are easily proven. 
+Lemma 4.3. For any binary sequence cx,c2,...,cm which are all O's except for 
+i 
+cj = 1, there exists xo such that ci - Tg/4,a/4(p (xo)). Specifically we will take xo '- 
+where pZ(x) is the inverse of(x) on [0, 1/2]. Then = 1/4, 
+pJ(xo) = 1, pi(Xo) = 0 for all i > j, and pj-i(xo) <_ (1/4) i for all positive i _< j. 
+Proof. Clear from the fact that p(x) _> 4x on [0,1/4]. 
+Lemma 4.4. For any binary sequence bx, b2,...,bm, take y such that 
+7tl/4,a/4(pi(y)) and 0 _< pi(y) _< 1 for all i and x0 = pZ(/-x)(1/4), 
+Tl,/x2,a/4 (Ei Pi(xo)pi(y)) = bj, i.e. Tlo (Eix pi(xo)Pi(Y) - 213) = 
+[] 
+then 
+Proof. If bj = O, Ei=x pi(xo)Pi(Y) J 1- i 
+m = Ei=X Pi(Xo)Pi(Y) --< pJ(y) + Ei=X (1/4) < 
+pJ(y) + (1/3) _< 7/12. If bj = 1, Ei=x pi(xo)pi(y) > pi(xo)pJ(y) _> 3/4. [] 
+By the above lemmas, the network in Figure 1 (left) has the following function: 
+Suppose that a binary sequence bx,..., bm and an integer j is given. Then we 
+can present y that depends only on bx,..., bm and x0 that depends only on j 
+such that bj is output from the decoder. 
+Note that we use (x + y)2 _ (x - y)2 = 4xy to realize a multiplication unit. 
+For the case of degree of higher than two we have to construct a bit more complicated 
+one by using another simple logistic function/(x) = (36/5)x(1 - x). We need the 
+next lemma. 
+--1 
+Lemma 4.5. Take x0 = /(1-x)(1/6), where t; (x) is the inverse of t(z) on 
+[0,1/2]. Then//-i(x0) = 1/6,/J(x0)-' 1, tff(xo)- 0 for all i > j, and tJ-i(xo)- 
+Tight Bounds for the VC-Dimension of Piecewise Polynomial Networks 327 
+x y 
+Figure 1: Network architecture consisting of polynomials of order two (left) and 
+those of order of power of two (right). 
+(1/6) i for all i > 0 and _ j. 
+Proof. Clear from the fact that/z(x) _ 6x on [0, 1/6]. 
+Lemma 4.6. For any binary sequence bx,b2,..,bk, bk+x,b+2,...,b2, 
+ß .., b(m-x)+x,...,bm take y such that bi = 7tx/4,3/4(pi(y)) and 0 _ pi(y) _ 1 
+for all i. Moreover for any i _ j _ m and any i _ l _ k take 
+]z(J-1)(1/6), and xo - /xZ(l-1)(1/6k). Then for z -- im__l pik(y)lik(Xl), 
+= 
+Lemma 4.7. IfO < pi(x) < 1 for anyO < i _ l, take an e such that (16/3)te < 1/4. 
+Then p'(x) - (161s)t < p'(x + < pt(x) + (lõlS)t. 
+Proof. There are four cases depending on whether pt-l(x + e) is on the uphill or 
+downhill of p and whether x is on the uphill or downhill of pt-X. The proofs are 
+done by induction. 
+First suppose that the two are on the uphill. Then pt(x + e) = p(pt-(x + e)) < 
+p(pt-(x) + (16/3)t-xe)) < pt(x) + (16/3)te. Secondly suppose that pt-X(x + e) 
+is on the uphill but x is on the downhill. Then pt(x + e) = p(pt-X(x  e)) > 
+p(pt-X(x) -(16/3)t-xe)) > pt(x) - (16/3)te. The other two cases are similar. [] 
+Proof of Lemma ,.6. We will show that the difference between 
+k-1 pi m 
+and i=o (z)/i(xo) is sufficiently small. Clearly z -' i=x/xik(xx)pi(y) - 
+j ß 
+Ei=x /i(xx)pi(Y) Z P'(Y)q-E{:(116k) i < PJ(Y)q-11(6-1) and pJ(y) < z. If 
+1- pi 
+z is on the uphill of pt then by using the above lemma, we get i=0 (z)tzi(xo) -' 
+l 
+E,:=o p'(z)l'(Xo) < pt(z) + 1/(6 k - 1) < pj+t(y) + (1 + (16/3)t)(1/(6  - 1)) < 
+pi+t(y) + 1/4 (note that l _ k- 1 and k _> 2). If z is on the downhill of pt then 
+-  
+by using the above lemma, we get i=0 Pi(Z)tZi(xo)-' i=0 (z)tzi(xo)  
+pt(pjk(y))_ (16/3),(1/(6  - 1)) > p1+t(y)_ 1/4. [] 
+Next we show the encoding scheme we adopted. We show only the case w = ©(h ') 
+since the case w = ©(h) or more generally w = O(h ') is easily obtained from this. 
+Theorem 4.8 There is a network of 2n inputs, 2h hidden units with h ' weights w, 
+328 A. Sakurai 
+and h 2 sets of input values xx,... ,xh such that for any set of values yx,..., yh 
+we can chose w to satisfy Yi - f6(w; xi). 
+Proof. We extensively utilize the fact that monomials obtained by choosing at most 
+k variables from n variables with repetition allowed (say xx2x6) are all linearly 
+independent ([1]). Note that the number of monomials thus formed is (nmm). 
+Suppose for simplicity that we have 2n inputs and 2h main hidden units (we have 
+other hidden units too), and h = (n,). By using multiplication units (in fact each 
+is a composite of two squaring units and the outputs are supposed to be summed up 
+as in Figure 1), we can form h = (nm) linearly independent monomials composed 
+of variables Xl,..., x by using at most (m- 1)h multiplication units (or h nominal 
+units when m = 1). In the same way, we can form h linearly independent monomials 
+composed of variables x+x,...,x2. Let us denote the monomials by ux,..., ua 
+and vl, ß ß ß, 
+We form a subnetwork to calculate jx 
+(i= wi,jui)vj by using h multiplication 
+units. Clearly the calculated result y is the weighted sum of monomials described 
+above where the weights are wi,j for 1 _ i,j _ h. 
+Since y = f6(w;x) is a linear combination of linearly independent terms, if we 
+choose appropriately h 2 sets of values xx,... ,xh for x = (xx,...,x2) , then for 
+any assignment of h 2 values yx,..., ya to y we have a set of weights w such that 
+Yi = f(xl, w)' [] 
+Proof of Theorem .1. The whole network consists of the decoder and the encoder. 
+The input points are the Cartesian product of the above xx,..., x: and {x0 defined 
+in Lemma 4.4 for b I = 1[1 _ j _ s } for some h where s  is the number of bits to 
+be encoded. This means that we have h2s points that can be shattered. 
+Let the number of hidden layers of the decoder be s. The number of units used 
+for the decoder is 4(s - 1) + 1 (for the degree 2 case which can decode at most s 
+bits) or 4(s - 3) + 4(k - 1) + 1 (for the degree 2 k case which can decode at most 
+(s - 2)k bits). The number of units used for the encoder is less than 4h; we though 
+have constraints on s (which dominates the depth of the network) and h (which 
+dominates the number of units in the network) that h _ (nm) and m = O(s) or 
+roughly log h = O(s) be satisfied. 
+Let us chose m = 2 (m = log s is a better choise). As a result, by using 4h + 4(s - 
+1) + 1 (or 4h + 4(s - 3) + 4(k - 1) + 1) units in s + 2 layers, we can shatter h2s (or 
+h 2 (s - 2)log d) points; or asymptotically by using h units s layers we can shatter 
+(1/16)w(s - 3) (or (1/16)w(s- 5)log d) points. [] 
+5 Piecewise Polynomial Case 
+Theorem 5.1. Let us consider a set of networks of units with linear input func- 
+tions and piecewise polynomial (with q polynomial segments) activation functions. 
+(wslog(dqh/s)) is a lower bound of the VC-dimension, where s is the depth of the 
+network and d is the maximum degree of the activation functions. More precisely, 
+(1/16)w(s - 6)(log d -[- log(h/s) - log q) is an asymptotic lower bound. 
+For the scarcity of space, we give just an outline of the proof. Our proof is based 
+on that of the polynomial networks. We will use h units with activation function 
+of q _ 2 polynomial segments of degree at most d in place of each of pk unit in the 
+decoder, which give the ability of decoding log dqh bits in one layer and s log dqh 
+bits in total by ©(sh) units in total. If h designates the total number of units, the 
+Tight Bounds for the VC-Dimension of Piecewise Polynomial Networks 329 
+number of the decodable bits is represented as log(dqh/s). 
+In the following for simplicity we suppose that dqh is a power of 2. Let pk(x) be 
+the k composition of p(x) as usual i.e. pk(x) = p(p-t(x)) and pi(x)= p(x). Let 
+pløga,(x) = pløga()d(x)), where )(x) = 4x if x <_ 1/2 and 4- 4x otherwise, which 
+by the way has 2  polynomial segments. 
+Now the p unit in the polynomial case is replaced by the array pOg a,og q,iog h(x ) of 
+h units that is defined as follows: 
+.... , p ()) where 
+(i) oiøga'iøgq'i(x) is an array of two units' one is loga,loge()+ x )+(x) = 
+4x if x < 1 / 2 and 0 otherwise and the other is plOg a,,og e ()- (x)) where )- (x) = 0 
+if x < 1/2 and 4- 4x otherwise. 
+(ii) pløga,øge'"(x) is the array of 2 " units, each with one of the functions 
+pløga,løg()+(...()?(x))...)) where )?(... ()?(x))..-) is the m composition 
+of )+(x) or )-(x). Note that )ñ(... () (x))...) has at most three linear seg- 
+ments (one is linear and the others are constant 0) and the sum of 2 " possible 
+combinations f(),+(... (),+(x))...)) is equal to f(),"(x)) for any function f 
+such that f(0) = 0. 
+Then lemmas similar to the ones in the polynomial case follow. 
+References 
+[10] 
+[11] 
+[1] Anthony, M: Classification by polynomial surfaces, Neuro COLT Technical Re- 
+port Series, NC-TR-95-011 (1995). 
+[2] Goldberg, P. and M. Jetrum: Bounding the Vapnik-Chervonenkis dimension 
+of concept classes parameterized by real numbers, Proc. Sixth Annual ACM 
+Conference on Computational Learning Theory, 361-369 (1993). 
+[3] Karpinski, M. and A. Macintyre, Polynomial bounds for VC dimension of sig- 
+moidal neural networks, Proc. 27th A CM Symposium on Theory of Computing, 
+200-208 (1995). 
+[4] Koiran, P. and E. D. Sontag: Neural networks with quadratic VC dimension, 
+Journ. Comp. Syst. Sci., 54, 190-198(1997). 
+[5] Maass, W. G.: Bounds for the computational power and learning complexity of 
+analog neural nets, Proc. 25th Annual Symposium of the Theory of Computing, 
+335-344 (1993). 
+[6] Maass, W. G.: Neural nets with superlinear VC-dimension, Neural Computa- 
+tion, 6, 877-884 (1994) 
+[7] Milnor, J.: On the Betti numbers of real varieties, Proc. of the AMS, 15, 
+275-28o (1964). 
+[8] Sakurai, A.: Tighter Bounds of the VC-Dimension of Three-layer Networks, 
+Proc. WCNN'93, III, 540-543 (1993). 
+[9] Sakurai, A.: On the VC-dimension of depth four threshold circuits and the 
+complexity of Boolean-valued functions, Proc. ALT93 (LNAI 744), 251-264 
+(1993); refined version is in Theoretical Computer Science, 137, 109-127 (1995). 
+Sakurai, A.: On the VC-dimension of neural networks with a large number of 
+hidden layers, Proc. NOLTA'93, IEICE, 239-242 (1993). 
+Warren, H. E.: Lower bounds for approximation by nonlinear manifolds, Trans. 
+AMS, 133, 167-178, (1968). 

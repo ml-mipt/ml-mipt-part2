@@ -1,0 +1,360 @@
+Improved Switching 
+among Temporally Abstract Actions 
+Richard S. Sutton Satinder Singh 
+AT&T Labs 
+Florham Park, NJ 07932 
+{sutton,baveja} @research.att.com 
+Doina Precup Balaraman Ravindran 
+University of Massachusetts 
+Amherst, MA 01003-4610 
+{ dprecup,ravi } @ c s. umas s. edu 
+Abstract 
+In robotics and other control applications it is commonplace to have a pre- 
+existing set of controllers for solving subtasks, perhaps hand-crafted or 
+previously learned or planned, and still face a difficult problem of how to 
+choose and switch among the controllers to solve an overall task as well as 
+possible. In this paper we present a framework based on Markov decision 
+processes and semi-Markov decision processes for phrasing this problem, 
+a basic theorem regarding the improvement in performance that can be ob- 
+tained by switching flexibly between given controllers, and example appli- 
+cations of the theorem. In particular, we show how an agent can plan with 
+these high-level controllers and then use the results of such planning to find 
+an even better plan, by modifying the existing controllers, with negligible 
+additional cost and no re-planning. In one of our examples, the complexity 
+of the problem is reduced from 24 billion state-action pairs to less than a 
+million state-controller pairs. 
+In many applications, solutions to parts of a task are known, either because they were hand- 
+crafted by people or because they were previously learned or planned. For example, in 
+robotics applications, there may exist controllers for moving joints to positions, picking up 
+objects, controlling eye movements, or navigating along hallways. More generally, an intelli- 
+gent system may have available to it several temporally extended courses of action to choose 
+from. In such cases, a key challenge is to take full advantage of the existing temporally ex- 
+tended actions, to choose or switch among them effectively, and to plan at their level rather 
+than at the level of individual actions. 
+Recently, several researchers have begun to address these challenges within the framework of 
+reinforcement learning and Markov decision processes (e.g., Singh, 1992; Kaelbling, 1993; 
+Dayan & Hinton, 1993; Thrun and Schwartz, 1995; Sutton, 1995; Dietterich, 1998; Parr & 
+Russell, 1998; McGovern, Sutton & Fagg, 1997). Common to much of this recent work is 
+the modeling of a temporally extended action as a policy (controller) and a condition for 
+terminating, which we together refer to as an option (Sutton, Precup & Singh, 1998). In 
+this paper we consider the problem of effectively combining given options into one overall 
+policy, generalizing prior work by Kaelbling (1993). Sections 1-3 introduce the framework; 
+our new results are in Sections 4 and 5. 
+Improved Switching among Temporally Abstract Actions 1067 
+1 Reinforcement Learning (MDP) Framework 
+In a Markov decision process (MDP), an agent interacts with an environment at some dis- 
+crete, lowest-level time scale t -- 0, 1, 2,... On each time step, the agent perceives the state 
+of the environment, st E ,_q, and on that basis chooses aprimitive action, at  ,4. In response 
+to each action, at, the environment produces one step later a numerical reward, rt+l, and 
+a next state, st+l. The one-step model of the environment consists of the one-step state- 
+transition probabilities and the one-step expected rewards, 
+a = = a) and : E{g'tq-1 I st: 8,at: a) 
+Pss' = Pr{St+l = s' [ st s, at r s , 
+for all s, s  E ,_q and a E .4. The agent's objective is to learn an optimal Markov policy, a 
+mapping from states to probabilities of taking each available primitive action, 7r ß ,_q x .4 --+ 
+[0, 1], that maximizes the expected discounted future reward from each state s: 
+Vr(s) = E{rt+ + ffrt+2 +... [ st 
+= E r(s,a)[r +Eps,V(s')], 
+aEA s  
+where 7r(s, a) is the probability with which the policy 7r chooses action a  .4s in state $, and 
+7  [0, 1] is a discount-rate parameter. V  (s) is called the value of state s under policy 7r, and 
+V  is called the state-value function for 7r. The optimal state-value function gives the value of 
+a state under an optimal policy: V* (s) = max V  (s): maxE As [r +  Ys, Ps' V* (s')]. 
+Given V*, an optimal policy is easily formed by choosing in each state $ any action that 
+achieves the maximum in this equation. A parallel set of value functions, denoted Q and Q*, 
+and Bellman equations can be defined for state-action pairs, rather than for states. Planning 
+in reinforcement learning refers to the use of models of the environment to compute value 
+functions and thereby to optimize or improve policies. 
+2 Options 
+We use the term options for our generalization of primitive actions to include temporally 
+extended courses of action. Let ht,T = st, at, rt+l, st+i, at+i, ß ß ß, rT, ST be the history 
+sequence from time t < T to time T, and let f denote the set of all possible histories in 
+the given MDP. Options consist of three components: an initiation set 27 C_ ,3, a policy 
+7r ß f x .4 --+ [0, 1], and a termination condition/3 ß f --+ [0, 1]. An option o = (27, 7r,/3) 
+can be taken in state $ if and only if $ E 27. If o is taken in state st, the next action at 
+is selected according to 7c($t, .). The environment then makes a transition to st+i, where 
+o terminates with probability/3(ht,t+), or else continues, determining at+l according to 
+7r(ht,t+l, .), and transitioning to state st+e, where o terminates with probability 
+etc. We call the general options defined above semi-Markov because 7r and/3 depend on the 
+history sequence; in Markov options 7r and/3 depend only on the current state. Semi-Markov 
+options allow "timeouts", i.e., termination after some period of time has elapsed, and other 
+extensions which cannot be handled by Markov options. 
+The initiation set and termination condition of an option together limit the states over which 
+the option's policy must be defined. For example, a h.and-crafted policy 7r for a mobile robot 
+to dock with its battery charger might be defined only for states 27 in which the battery charger 
+is within sight. The termination condition/3 would be defined to be 1 outside of 27 and when 
+the robot is successfu.lly docked. 
+We can now define policies over options. Let the set of options available in state $ be denoted 
+Os; the set of all options is denoted (_9 = [-Js$ Os. When initiated in a state st, the Markov 
+policy over options  ß ,_q x (_9 --+ [0, 1] selects an option o E Ost according to the probability 
+distribution la($t, '). The option o is then taken in st, determining actions until it terminates 
+in st+k, at which point a new option is selected, according to ($t+k, '), and so on. In this 
+way a policy over options, , determines a (non-stationary) policy over actions, or fiat policy, 
+7r: f(). We define the value of a state $ under a general flat policy 7r as the expected return 
+1068 R. S. Sutton, S. Singh, D. Precup and B. Ravindran 
+if the policy is started in s: 
+vrr(8) de_f E{rt+l + h'rt+2 + '" [ œ(r,s,t)}, 
+where œ(r, s, t) denotes the event of r being initiated in s at time t. The value of a state 
+under a general policy (i.e., a policy over options)/ can then be defined as the value of 
+the state under the corresponding flat policy: V'(s) de____f Vf(/)(8). An analogous definition 
+can be used for the option-value function, Q'(s, o). For semi-Markov options it is useful 
+to define Q' (h, o) as the expected discounted future reward after having followed option o 
+through history h. 
+3 SMDP Planning 
+Options are closely related to the actions in a special kind of decision problem known as a 
+semi-Markov decision process, or SMDP (Puterman, 1994; see also Singh, 1992; Bradtke & 
+Duff, 1995; Mahadevan et. al., 1997; Parr & Russell, 1998). In fact, any MDP with a fixed 
+set of options is an SMDP. Accordingly, the theory of SMDPs provides an important basis for 
+a theory of options. In this section, we review the standard SMDP framework for planning, 
+which will provide the basis for our extension. 
+Planning with options requires a model of their consequences. The form of this model is 
+given by prior work with SMDPs. The reward part of the model of o for state s E $ is the 
+total reward received along the way: 
+r: = E{rt+ + h, rt+2 + ... + h,k-rt+k l œ(o,s,t) }, 
+where œ(o, s, t) denotes the event of o being initiated in state s at time t. The state-prediction 
+part of the model is 
+oo 
+PTs' : EP(s',k)3'k,E{h'6*'s+ I œ(o,s,t)}, 
+k=l 
+for all s' E $, where p(s , k) is the probability that the option terminates in s' after k steps. 
+We call this kind of model a multi-time model because it describes the outcome of an option 
+not at a single time but at potentially many different times, appropriately combined. 
+Using multi-time models we can write Bellman equations for general policies and options. 
+For any general Markov policy/, its value functions satisfy the equations: 
+V(s) = E /(s,o)[rø+ Ep:s,V'(s')] and Q'(s,o): r:+ Ep:s,V'(s'). 
+oGO, s' s' 
+Let us denote a restricted set of options by (9 and the set of all policies selecting only from 
+options in (9 by I1((9). Then the optimal value function given that we can select only from (9 
+is Vc(s ) = maxo6Os [r + Es, P8' Vc(s')]' A corresponding optimal policy, denoted/, 
+is any policy that achieves Vc, i.e., for which V'3 (s) -- Vc(8 ) in all states 8 E $. If Vc and 
+the models of the options are known, then/ can be formed.by choosing in any proportion 
+among the maximizing options in the equation above for Vc. 
+It is straightforward to extend MDP planning methods to SMDPs. For example, synchronous 
+value iteration with options initializes an approximate value function Vo(s) arbitrarily and 
+then updates it by: 
++ s. 
+o0 
+Note that this algorithm reduces to conventional value iteration in the special case in which 
+(9 = ,A. Standard results from SMDP theory guarantee that such processes converge for 
+Improved Switching among Temporally Abstract Actions 1069 
+general semi-Markov options: limk-m Vk (s) = Vc (s) for all s E 8, o E O, and for all O. 
+The policies found using temporally abstract options are approximate in the sense that they 
+achieve only Vc, which is typically less than the maximum possible, V*. 
+4 Interrupting Options 
+We are now ready to present the main new insight and result of this paper. SMDP meth- 
+ods apply to options, but only when they are treated as opaque indivisible units. Once an 
+option has been selected, such methods require that its policy be followed until the option 
+terminates. More interesting and potentially more powerful methods are possible by looking 
+inside options and by altering their internal structure (e.g. Sutton, Precup & Singh, 1998). 
+In particular, suppose we have determined the option-value function Q' (s, o) for some policy 
+/ and for all state-options pairs s, o that could be encountered while following/. This 
+function tells us how well we do while following/ committing irrevocably to each option, 
+but it can also be used to re-evaluate our commitment on each step. Suppose at time t we 
+are in the midst of executing option o. If o is Markov in s, then we can compare the value 
+of continuing with o, which is Q' (st, o), to the value of interrupting o and selecting a new 
+option according to p, which is Vt'(s) = Yo' p(s, d)Qt'(s, o). If the latter is more highly 
+valued, then why not interrupt o and allow the switch? This new way of behaving is indeed 
+better, as shown below. 
+We can characterize the new way of behaving as following a policy tt  that is the same as the 
+original one, but over new options, i.e. trY(s, o ) = tt(s, o), for all s  ,S. Each new option 
+o  is the same as the corresponding old option o except that it terminates whenever switching 
+seems better than continuing according to Qt,. We call such att  an interrupted policy of 
+We will now state a general theorem, which extends the case described above, in that options 
+may be semi-Markov (instead of Markov) and interruption is optional at each state where it 
+could be done. The latter extension lifts the requirement that Qt, be completely known, since 
+the interruption can be restricted to states for which this information is available. 
+Theorem 1 (Interruption) For any MDP, any set of options (_9, and any Markov policy 
+: ,_q x (.9 --> [0, 1], define a new set of options, 0 , with a one-to-one mapping between 
+the two option sets as follows: for every o = (Z, 7r,/) E O we define a corresponding 
+o' = (Z, Tr,/')  0', where t' = t except that for any history h in which Qt' ( h, o) 
+where s is the final state of h, we may choose to set t(h) = 1. Any histories whose termina- 
+tion conditions are changed in this way are called interrupted histories. Let  be the policy 
+over o' corresponding to : '(s, o') = (s, o), where o is the option in 0 corresponding to 
+o , for all s E ,_q. Then 
+1. V t" (s) _> Vt'(s) for all s 
+2. If from state s  ,_q there is a non-zero probability of encountering an interrupted 
+history upon initiating ' in s, then V t" (s) > V t' (s). 
+Proof: The idea is to show that, for an arbitrary start state s, executing the option given by 
+the termination improved policy/ and then following policy/ thereafter is no worse than 
+always following policy/. In other words, we show that the following inequality holds: 
+! t t 
+Ztt'(s,o )[r ø + Epøs, Vt'(s')] >_ Vt'(s) = Ett(s,o)[r + Eps, Vt'(s')]. (1) 
+0 t S t 0 S t 
+If this is true, then we can use it to expand the left-hand side, repeatedly replacing every 
+occurrence of Vt' (z) on the left by the corresponding o, tt' (z, o') [rg' + Yx' ,,o' t/t, (z,)] 
+In the limit, the left-hand side becomes V '', proving that V '' >_ V '. Since trY(s, o ) = 
+tt(s, o) Vs  S, we need to show that 
+o t o 
+r s + Ep:'s, Vt'(s' ) _> r: + Epss, Vt'(s'). (2) 
+S t S t 
+1070 R. S. Sutton, S. Singh, D. Precup and B. Ravindran 
+Let I' denote the set of all interrupted histories: I' = {h eft:/3(h) /3'(h)). Then, the left 
+hand side of (2) can be re-written as 
+where s t, r, and k are the next state, cumulative reward, and number of elapsed steps fol- 
+lowing option o from s (hs,, is the history from s to st). Trajectories that end because of 
+encountering a history hs,, q I' never encounter a history in I', and therefore also occur 
+with the same probability and expected reward upon executing option o in state s. There- 
+fore, we can re-write the right hand side of (2)as E{r + 7kV'(s')lœ(o',s),h,,,  F} + 
+This proves (1) because for all Ass, e F, ' V ' 
+Qo (hss,, o) _< (s'). Note that strict inequality 
+holds in (2) if Q(hs,, ,o) < VU(s ') for at least one history h**, E F that ends a trajectory 
+generated by o  with non-zero probability. o 
+As one application of this result, consider the case in which ft is an optimal policy for a given 
+set of Markov options (.9. The interruption theorem gives us a way of improving over ft 
+with just the cost of checking (on each time step) if a better option exists, which is negligible 
+compared to the combinatorial process of computing Q or Vc. Kaelbling (1993) and Di- 
+etterich (1998) demonstrated a similar performance improvement by interrupting temporally 
+extended actions in a different setting. 
+5 Illustration 
+Figure 1 shows a simple example of the gain that can be obtained by interrupting options. 
+The task is to navigate from a start location to a goal location within a continuous two- 
+dimensional state space. The actions are movements of length 0.01 in any direction from the 
+current state. Rather than work with these low-level actions, infinite in number, we introduce 
+seven landmark locations in the space. For each landmark we define a controller that takes us 
+to the landmark in a direct path. Each controller is only applicable within a limited range of 
+states, in this case within a certain distance of the corresponding landmark. Each controller 
+then defines an option: the circular region around the controllet's landmark is the option's 
+initiation set, the controller itself is the policy, and the arrival at the target landmark is the 
+termination condition. We denote the set of seven landmark options by (9. Any action within 
+0.01 of the goal location transitions to the terminal state, 7 = 1, and the reward is -1 on all 
+transitions, which makes this a minimum-time task. 
+One of the landmarks coincides with the goal, so it is possible to reach the goal while picking 
+only from (9. The optimal policy within II(O) runs from landmark to landmark, as shown 
+by the thin line in Figure 1. This is the optimal solution to the $MDP defined by (9 and is 
+indeed the best that one can do while picking only from these options. But of course one can 
+do better if the options are not followed all the way to each landmark. The trajectory shown 
+by the thick line in Figure 1 cuts the corners and is shorter. This is the interrupted policy 
+with respect to the SMDP-optimal policy. The interrupted policy takes 474 steps from start 
+to goal which, while not as good as the optimal policy (425 steps), is much better than the 
+SMDP-optimal policy, which takes 600 steps. The state-value functions, V ' and V " for 
+the two policies are also shown in Figure 1. 
+Figure 2 presents a more complex, mission planning task. A mission is a flight from base to 
+observe as many of a given set of sites as possible and to return to base without running out 
+of fuel. The local weather at each site flips from cloudy to clear according to independent 
+We note that the same proof would also apply for switching to other options (not selected by it) if 
+they improved over continuing with o. That result would be more general and closer to conventional 
+policy improvement. We prefer the result given here because it emphasizes its primary application. 
+Improved Switching among Temporally Abstract Actions 1071 
+V.. 
+Trajectories through .  - - 
+Space of Landmarks / ' o 
+ -100 
+.r -;' I -200 
+Interrupted Solution /  / 'A   
+(474 Steps) / ?( /l', / -300 
+\ - , - .. f ,-_.__/..  .,,  -4oo 
+-600- 
+.... - (6 Steps) 
+1 2 3 
+SMDP Value Function 
+o 
+-lOO 
+-2oo 
+-3oo 
+-500 
+-oo- 'llllE-' 
+Values with Interruption 
+Figure 1: Using interruption to improve navigation with landmark-directed controllers. The task (left) 
+is to navigate from S to G in minimum time using options based on controllers that run each to one 
+of seven landmarks (the black dots). The circles show the region around each landmark within which 
+the controllers operate. The thin line shows the optimal behavior that uses only these controllers run to 
+termination, and the thick line shows the corresponding interrupted behavior, which cuts the comers. 
+The right panels show the state-value functions for the SMDP-optimal and interrupted policies. 
+Poisson processes. If the sky at a given site is cloudy when the plane gets there, no observa- 
+tion is made and the reward is 0. If the sky is clear, the plane gets a reward, according to the 
+importance of the site. The positions, rewards, and mean time between two weather changes 
+for each site are given in Figure 2. The plane has a limited amount of fuel, and it consumes 
+one unit of fuel during each time tick. If the fuel runs out before reaching the base, the plane 
+crashes and receives a reward of -100. 
+The primitive actions are tiny movements in any direction (there is no inertia). The state of 
+the system is described by several variables: the current position of the plane, the fuel level, 
+the sites that have been observed so far, and the current weather at each of the remaining sites. 
+The state-action space has approximately 24.3 billion elements (assuming 100 discretization 
+levels of the continuous variables) and is intractable by normal dynamic programming meth- 
+ods. We introduced options that can take the plane to each of the sites (including the base), 
+from any position in the state space. The resulting SMDP has only 874,800 elements and it 
+is feasible to exactly determine Vc(S ) for all sites s . From this solution and the model of 
+* = o q_ Es' o 
+the options. we can determine Qo(s,o) r s Pss, Ve(s ) for any option o and any 
+state s in the whole space. 
+We performed asynchronous value iteration using the options in order to compute the optimal 
+option-value function, and then used the interruption approach based on the values computed. 
+The policies obtained by both approaches were compared to the results of a static planner, 
+which exhaustively searches for the best tour assuming the weather does not change, and 
+then re-plans whenever the weather does change. The graph in Figure 2 shows the reward 
+obtained by each of these methods, averaged over 100 independent simulated missions. The 
+policy obtained by interruption performs significantly better than the SMDP policy, which in 
+turn is significantly better than the static planner. 2 
+6 Closing 
+This paper has developed a natural, even obvious, observation--that one can do better by 
+continually re-evaluating one's commitment to courses of action than one can by commit- 
+ting irrevocably to them. Our contribution has been to formulate this observation precisely 
+enough to prove it and to demonstrate it empirically. Our final example suggests that this 
+technique can be used in applications far too large to be solved at the level of primitive ac- 
+tions. Note that this was achieved using exact methods, without function approximators to 
+represent the value function. With function approximators and other reinforcement learning 
+techniques, it should be possible to address problems that are substantially larger still. 
+2In preliminary experiments, we also used interruption on a crudely learned estimate of Q>. The 
+performance of the interrupted solution was very close to the result reported here. 
+1072 R. S. Sutton, S. Singh, D. Precup and B. Ravindran 
+25 
+.-';2'/% 15 (reward) 
+//"',?*',>,. 0 . 
+'A( -  25 (mean time eeen 
+50 / weather changes) 
+options /   8 
+100  /  2'/ 
+decision ' :Z Z( ;'] / /'" 
+0 10 
+%o 
+Base 
+60. 
+Expected 
+Reward 
+per 50 
+Mission 
+4O 
+Interruption 
+l ;';-i ':SMDP 
+ I --'::Static 
+:' ' Re-planner 
+High Fuel Low Fuel 
+Figure 2: The mission planning task and the performance of policies constructed by SMDP meth- 
+ods, interruption of the SMDP policy, and an optimal static re-planner that does not take into account 
+possible changes in weather conditions. 
+Acknowledgments 
+The authors gratefully acknowledge the substantial help they have received from many col- 
+leagues, including especially Amy McGovern, Andrew Barto, Ron Parr, Tom Dietterich, 
+Andrew Fagg, Leo Zelevinsky and Manfred Huber. We also thank Paul Cohen, Robbie Moll, 
+Mance Harmon, Sascha Engelbrecht, and Ted Perkins for helpful reactions and constructive 
+criticism. This work was supported by NSF grant ECS-9511805 and grant AFOSR-F49620- 
+96-1-0254, both to Andrew Barto and Richard Sutton. Satinder Singh was supported by NSF 
+grant IIS-9711753. 
+References 
+Bradtke, S. J. & Duff, M. O. (1995). Reinforcement learning methods for continuous-time Markov 
+decision problems. In NIPS 7 (393-500). MIT Press. 
+Dayan, P. & Hinton, G. E. (1993). Feudal reinforcement learning. In NIPS 5 (271-278). MIT Press. 
+Dietterich, T. G. (1998). The MAXQ method for hierarchical reinforcement learning. In Proceedings 
+of the Fifteenth International Conference on Machine Learning. Morgan Kaufmann. 
+Kaelbling, L. P. (1993). Hierarchical learning in stochastic domains: Preliminary results. In Proceed- 
+ings of the Tenth International Conference on Machine Learning (167-173). Morgan Kaufmann. 
+Mahadevan, S., Marchallek, N., Das, T. K. & Gosavi, A. (1997). Self-improving factory simulation 
+using continuous-time average-reward reinforcement learning. In Proceedings of the Fourteenth 
+International Conference on Machine Learning (202-210). Morgan Kaufmann. 
+McGovern, A., Sutton, R. S., & Fagg, A. H. (1997). Roles of macro-actions in accelerating reinforce- 
+ment learning. In Grace Hopper Celebration of Women in Computing (13-17). 
+Parr, R. & Russell, S. (1998). Reinforcement learning with hierarchies of machines. In NIPS 10. MIT 
+Press. 
+Puterman, M. L. (1994). Markov Decision Processes: Discrete Stochastic Dynamic Programming. 
+Wiley. 
+Singh, S. P. (1992). Reinforcement learning with a hierarchy of abstract models. In Proceedings of the 
+Tenth National Conference on Artificial Intelligence (202-207). MIT/AAAI Press. 
+Sutton, R. S. (1995). TD models: Modeling the world as a mixture of time scales. In Proceedings of 
+the Twelfth International Conference on Machine Learning (531-539). Morgan Kaufmann. 
+Sutton, R. S., Precup, D. & Singh, S. (1998). Intra-option learning about temporally abstract actions. In 
+Proceedings of the Fifteenth International Conference on Machine Learning. Morgan Kaufman. 
+Sutton, R. S., Precup, D. & Singh, S. (1998). Between MDPs and Semi-MDPs: learning, planning, 
+and representing knowledge at multiple temporal scales. TR 98-74, Department of Comp. Sci., 
+University of Massachusetts, Amherst. 
+Thmn, S. & Schwartz, A. (1995). Finding structure in reinforcement learning. In NIPS 7 (385-392). 
+MIT Press. 

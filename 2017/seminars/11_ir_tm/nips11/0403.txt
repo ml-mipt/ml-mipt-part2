@@ -1,0 +1,366 @@
+Fisher Scoring and a Mixture of Modes 
+Approach for Approximate Inference and 
+Learning in Nonlinear State Space Models 
+Thomas Briegel and Volker Tresp 
+Siemens AG, Corporate Technology 
+Dept. Information and Communications 
+Otto-Hahn-Ring 6, 81730 Munich, Germany 
+{Thomas.Briegel, Volker. Tresp} @mchp.siemens.de 
+Abstract 
+We present Monte-Carlo generalized EM equations for learning in non- 
+linear state space models. The difficulties lie in the Monte-Carlo E-step 
+which consists of sampling from the posterior distribution of the hidden 
+variables given the observations. The new idea presented in this paper is 
+to generate samples from a Gaussian approximation to the true posterior 
+from which it is easy to obtain independent samples. The parameters of 
+the Gaussian approximation are either derived from the extended Kalman 
+filter or the Fisher scoring algorithm. In case the posterior density is mul- 
+timodal we propose to approximate the posterior by a sum of Gaussians 
+(mixture of modes approach). We show that sampling from the approxi- 
+mate posterior densities obtained by the above algorithms leads to better 
+models than using point estimates for the hidden states. In our exper- 
+iment, the Fisher scoring algorithm obtained a better approximation of 
+the posterior mode than the EKF. For a multimodal distribution, the mix- 
+ture of modes approach gave superior results. 
+1 INTRODUCTION 
+Nonlinear state space models (NSSM) are a general framework for representing nonlinear 
+time series. In particular, any NARMAX model (nonlinear auto-regressive moving average 
+model with external inputs) can be translated into an equivalent NSSM. Mathematically, a 
+NSSM is described by the system equation 
+:rt -- fw(:rt-, ut) --I- et (1) 
+where xt denotes a hidden state variable, et denotes zero-mean uncorrelated Gaussian noise 
+with covariance Qt and ut is an exogenous (deterministic) input vector. The time-series 
+measurements yt are related to the unobserved hidden states xt through the observation 
+equation 
+yt = gv(xt, ut) + vt (2) 
+where vt is uncorrelated Gaussian noise with covariance Vt. In the following we assume 
+that the nonlinear mappings fw (.) and gv (.) are neural networks with weight vectors w 
+and v, respectively. The initial state x0 is assumed to be Gaussian distributed with mean 
+ao and covariance Qo. All variables are in general multidimensional. The two challenges 
+404 T. Briegel and V. Tresp 
+in NSSMs are the interrelated tasks of inference and learning. In inference we try to es- 
+timate the states of unknown variables :rs given some measurements//, ...,//t (typically 
+the states of past (s < t), present (s - t) or future (s > t) values ofxt) and in learning we 
+want to adapt some unknown parameters in the model (i.e. neural network weight vectors 
+w and v) given a set of measurementsfi In the special case of linear state space models 
+with Gaussian noise, efficient algorithms for inference and maximum likelihood learning 
+exist. The latter can be implemented using EM update equations in which the E-step is 
+implemented using forward-backward Kalman filtering (Shumway & Stoffer, 1982). If 
+the system is nonlinear, however, the problem of inference and learning leads to complex 
+integrals which are usually considered intractable (Anderson & Moore, 1979). A useful 
+approximation is presented in section 3 where we show how the learning equations for 
+NSSMs can be implemented using two steps which are repeated until convergence. First in 
+the (Monte-Carlo) E-step, random samples are generated from the unknown variables (e.g. 
+the hidden variables xt) given the measurements. In the second step (a generalized M-step) 
+those samples are treated as real data and are used to adapt fw (.) and #v(.) using some 
+version of the backpropagation algorithm. The problem lies in the first step, since it is dif- 
+ficult to generate independent samples from a general multidimensional distribution. Since 
+it is difficult to generate samples from the proper distribution the next best thing might be 
+to generate samples using an approximation to the proper distribution which is the idea 
+pursued in this paper. The first thing which might come to mind is to approximate the 
+posterior distribution of the hidden variables by a multidimensional Gaussian distribution 
+since generating samples from such a distribution is simple. In the first approach we use the 
+extended Kalman filter and smoother to obtain mode and covariance of this Gaussian? Al- 
+ternatively, we estimate the mode and the covariance of the posterior distribution using an 
+efficient implementation of Fisher scoring derived by Fahrmeir and Kaufmann (1991) and 
+use those as parameters of the Gaussian. In some cases the approximation of the posterior 
+mode by a single Gaussian might be considered too crude. Therefore, as a third solution, 
+we approximate the posterior distribution by a sum of Gaussians (mixture of modes ap- 
+proach). Modes and covariances of those Gaussians are obtained using the Fisher scoring 
+algorithm. The weights of the Gaussians are derived from the likelihood of the observed 
+data given the individual Gaussian. In the following section we derive the gradient of the 
+log-likelihood with respect to the weights in fw (.) and #v (.). In section 3, we show that 
+the network weights can be updated using a Monte-Carlo E-step and a generalized M-step. 
+Furthermore, we derive the different Gaussian approximations to the posterior distribution 
+and introduce the mixture of modes approach. In section 4 we validate our algorithms using 
+a standard nonlinear stochastic time-series model. In section 5 we present conclusions. 
+2 THE GRADIENTS FOR NONLINEAR STATE SPACE MODELS 
+Given our assumptions we can write the joint probability of the complete data for t -- 
+1,..., T as 3 
+p( xr , ¾r , ur ) = 
+(3) 
+ In this paper we focus on the case s _< t (smoothing and offline learning, respectively). 
+2Independently from our work, a single Gaussian approximation to the E-step using the EKFS 
+has been proposed by Ghahramani & Roweis (1998) for the special case of a RBF network. They 
+show that one obtains a closed form M-step when just adapting the linear parameters by holding 
+the nonlinear parameters fixed. Although avoiding sampling, the computational load of their M-step 
+seems to be significant. 
+aIn the following, each probability density is conditioned on the current model. For notational 
+convenience, we do not indicate this fact explicitly. 
+Fisher Scoring and Mixture of Modes for Inference and Learning in NSSM 405 
+where UT = {ui,..., u-} is a set of known inputs which means that p(UT) is irrelevant 
+in the following. Since only YT = {Yl,. -., YT} and UT are observed, the log-likelihood 
+of the model is 
+log 
+with X, : 
+gradients of 
+respectively 
+0 log L 
+Ow 
+log L 
+Ov 
+L: log f f (4) 
+{x0, ..., xy}. By inserting the Gaussian noise assumptions we obtain the 
+the log-likelihood with respect to the neural network weight vectors w and v, 
+(Tresp & Hofmann, 1995) 
+T 
+ff Ofw(Xt-l,t) (Xt- fw(Xt-l,t))p(xt,Xt-llVT CT)dXt-ld2t 
+t=l 0W  
+T 
+ f Og(xt, ut) (Yt--g(xt, ut))p(xt[YT UT)dxt. (5) 
+t=l OV  
+3 APPROXIMATIONS TO THE E-STEP 
+3.1 Monte-Carlo Generalized EM Learning 
+The integrals in the previous equations can be solved using Monte-Carlo integration which 
+leads to the following learning algorithm. 
+1. Generate $ samples {/:), }s from p(XT IYT, UT) assuming the current 
+ß ß '  s=l 
+model is correct (Monte-Carlo E-Step). 
+0 1ogL and v new -- 
+2. Treat those samples as real data and update w new : w øld q- ] Ow 
+alog with stepsize and 
+v øld + r/ Ov 
+01ogL 1 T S Ofw(Xt_l, ltt 
+tl s1 
+OlogL 1 T S 
+Ov 
+t=l 
+(generalized M-step). Go back to step one. 
+(i:- fw(i:_,ut)) (6) 
+=&7_ 
+(Yt-g(&,ut)) 
+(7) 
+The second step is simply a stochastic gradient step. The computational difficulties lie 
+in the first step. Methods which produce samples from multivariate distributions such as 
+Gibbs sampling and other Markov chain Monte-Carlo methods have (at least) two prob- 
+lems. First, the sampling process has to "forget" its initial condition which means that the 
+first samples have to be discarded and there are no simple analytical tools available to de- 
+termine how many samples must be discarded. Secondly, subsequent samples are highly 
+correlated which means that many samples have to be generated before a sufficient amount 
+of independent samples is available. Since it is so difficult to sample from the correct 
+posterior distribution p(XT IYT, UT) the idea in this paper is to generate samples from an 
+approximate distribution from which it is easy to draw samples. In the next sections we 
+present approximations using a multivariate Gaussian and a mixture of Gaussians. 
+3.2 Approximate Mode Estimation Using the Extended Kalman Filter 
+Whereas the Kalman filter is an optimal state estimator for linear state space models the 
+extended Kalman filter is a suboptimal state estimator for NSSMs based on local lineariza- 
+tions of the nonlinearities. 4 The extended Kalmanfilter and smoother (EKFS) algorithm is 
+4 Note that we do not include the parameters in the NSSM as additional states to be estimated as 
+done by other authors, e.g. Puskorius & Feldkamp (1994). 
+406 T. Briegel and V. Tresp 
+a forward-backward algorithm and can be derived as an approximation to posterior mode 
+estimation for Gaussian error sequences (Sage & Melsa, 1971). Its application to our frame- 
+work amounts to approximating :c[ nøae  /:t :¾s where/:t :¾s is the smoothed estimate 
+of :ct obtained from forward-backward extended Kalman filtering over the set of measure- 
+ments YT and :c øae is the mode of the posterior distribution p(:tlYr, Ur). We use S:t 
+as the center of the approximating Gaussian. The EKFS also provides an estimate of the 
+error covariance of the state vector at each time step ! which can be used to form the covari- 
+ance matrix of the approximating Gaussian. The EKFS equations can be found in Anderson 
+& Moore (1979). To generate samples we recursively apply the following algorithm. Given 
+/: _ 1 is a s ample from the Gau ssi an approximation of p (c t -  I Y T, UT) at time t -- 1 draw 
+a sample /:5 from P(Ctlt-1 -" .s , . 
+t-i, YT UT) The last conditional density is Gaussian 
+with mean and covariance calculated from the EKFS approximation and the lag-one error 
+covariances derived in Shumway & Stoffer (1982), respectively. 
+3.3 Exact Mode Estimation Using the Fisher Scoring Algorithm 
+If the system is highly nonlinear, however, the EKFS can perform badly in finding the 
+posterior mode due to the fact that it uses a first order Taylor series expansion of the non- 
+linearities fw (.) and #v (.) (for an illustration, see Figure 1 ). A uscful- and computationally 
+tractable - alternative to the EKFS is to compute the "exact" posterior mode by maximizing 
+1ogp(XT [YT, UT) with respect to XT. A suitable way to determine a stationary point of 
+the log posterior, or equivalently, of p(XT, YrlUT) (derived from (3) by dropping p(UT)) 
+¾FS,old 
+is to apply Fisher scoring. With the current estimate 'T we get a better estimate 
+xFS,new _ XTFS,old 'Jr- r] t for the unknown state sequence XT where  is the solution of 
+T -- 
+FS,old  ,FS,old  
+$(x r ) = sta r (8) 
+with the score function s(X,) = Ologp(XT,YTIUr) and the expected information matrix 
+OXT 
+,-q(XT)- E[ -ø2ø$p(Xr'YrlUT) . 
+oxrox ]  By extending the arguments given in Fahrmeir & 
+Kaufmann (1991) to nonlinear state space models it turns out that solving equation (8) - 
+e.g. to compute the inverse of the expected information matrix - can be performed by 
+Cholesky decomposition in one forward and backward passfi The forward-backward steps 
+can be implemented as a fast EKFS-like algorithm which has to be iterated to obtain the 
+maximum posterior estimates :c øae -/:t s (see Appendix). Figure 1 shows the estimate 
+obtained by the Fisher scoring procedure for a bimodal posterior density. Fisher scoring 
+is successful in finding the "exact" mode, the EKFS algorithm is not. Samples of the 
+approximating Gaussian are generated in the same way as in the last section. 
+3.4 The Mixture of Modes Approach 
+The previous two approaches to posterior mode smoothing can be viewed as single Gaus- 
+sian approximations of the mode of p(XTIYT, UT). In some cases the approximation of 
+the posterior density by a single Gaussian might be considered too crude, in particular if 
+the posterior distribution is multimodal. In this section we approximate the posterior by a 
+weighted sum of m Gaussians p(XT[YT, UT)  km__l ap(XTI k) where p(XTlk) is the 
+k-th Gaussian. If the individual Gaussians model the different modes we are able to model 
+multimodal posterior distributions accurately. The approximations of the individual modes 
+are local maxima of the Fisher scoring algorithm which are f9und by starting the algorithm 
+using different initial conditions. Given the different Gaussians, the optimal weighting fac- 
+tors are a  = p(Yr[k)p(k)/p(YT) where p(YT[k) = fp(YrlXr)p(Xrll)dXr is the 
+*Note that the difference Ietween the Fisher scoring and the Gauss-Newton update is that in the 
+former we take the expectation of the information matrix. 
+OThe expected information matrix is a positive definite block-tridiagonal matrix. 
+Fisher Scoring and Mixture of Modes for Inference and Learning in NSSM 407 
+likelihood of the data given mode k. If we approximate that integral by inserting the Fisher 
+scoring solutions/:t s'' for each time step t and linearize the nonlinearity #v (.) about the 
+Fisher scoring solutions, we obtain a closed form solution for computing the a ' (see Ap- 
+pendix). The resulting estimator is a weighted sum of the m single Fisher scoring estimates 
+?M __ Ekm__l OktFS,k. The mixture of modes algorithm can be found in the Appendix. 
+For the learning task samples of the mixture of Gaussians are based on samples of each of 
+the m single Gaussians which are obtained the same way as in subsection 3.2. 
+4 EXPERIMENTAL RESULTS 
+In the first experiment we want to test how well the different approaches can approximate 
+the posterior distribution of a nonlinear time series (inference). As a time-series model we 
+chose 
+Xt--1 q- 8COS(1.2(t-- 1)), g(xt) = 21----Xt 2 (9) 
+f(xt-1, ttt) -- 0.5Xt-1 q- 251 q- Xt2_l 0 ' 
+the covariances Qt = 10, Vt - 1 and initial conditions ao = 0 and Qo = 5 which is 
+considered a hard inference problem (Kitagawa, 1987). At each time step we calculate the 
+expected value of the hidden variables xt, t = 1, ..., 400 based on a set of measurements 
+Y4oo = {yx, ..., y400} (which is the optimal estimator in the mean squared sense) and based 
+on the different approximations presented in the last section. Note that for the single mode 
+approximation, X[ nøde is the best estimate of xt based on the approximating Gaussian. For 
+the mixture of modes approach, the best estimate is Et,__  a t'/:t vs't' where/:t vs't' is the mode 
+of the k-th Gaussian in the dimension of xt. Figure 2 (left) shows the mean squared error 
+(MSE) of the smoothed estimates using the different approaches. The Fisher scoring (FS) 
+algorithm is significantly better than the EKFS approach. In this experiment, the mixture of 
+modes (MM) approach is significantly better than both the EKFS and Fisher scoring. The 
+reason is that the posterior probability is multimodal as shown in Figure 1. 
+In the second experiment we used the same time-series model and trained a neural net- 
+work to approximate fw (.) where all covariances were assumed to be fixed and known. 
+For adaptation we used the learning rules of section 3 using the various approximations 
+to the posterior distribution of XT. Figure 2 (right) shows the results. The experiments 
+show that truly sampling from the approximating Gaussians gives significantly better re- 
+sults than using the expected value as a point estimate. Furthermore, using the mixture 
+of modes approach in conjunction with sampling gave significantly better results than the 
+approximations using a single Gaussian. When used for inference, the network trained us- 
+ing the mixture of modes approach was not significantly worse than the true model (5% 
+significance level, based on 20 experiments). 
+5 CONCLUSIONS 
+In our paper we presented novel approaches for inference and learning in NSSMs. The 
+application of Fisher scoring and the mixture of modes approach to nonlinear models as 
+presented in our paper is new. Also the idea of sampling from an approximation to the 
+posterior distribution of the hidden variables is presented here for the first time. Our results 
+indicate that the Fisher scoring algorithm gives better estimates of the expected value of 
+the hidden variable than the EKFS based approximations. Note that the Fisher scoring al- 
+gorithm is more complex in requiring typically 5 forward-backward passes instead of only 
+one forward-backward pass for the EKFS approach. Our experiments also showed that if 
+the posterior distribution is multimodal, the mixture of modes approach gives significantly 
+better estimates if compared to the approaches based on a single Gaussian approximation. 
+Our learning experiments show that it is important to sample from the approximate dis- 
+tributions and that it is not sufficient to simply substitute point estimates. Based on the 
+408 T. Briegel and V. Tresp 
+0.2 
+0.16 
+0.14 
+0.02 
+0 
+0 10 
+t=294 
+0.4 
+0_35 
+0.3 
+--10 0 
+t=295 
+Figure 1: Approximations to the posterior distributionp(xt IY40o, U4o0) for t = 294 and t - 
+295. The continuous line shows the posterior distribution based on Gibbs sampling using 
+1000 samples and can be considered a close approximation to the true posterior. The EKFS 
+approximation (dotted) does not converge to a mode. The Fisher scoring solution (dash- 
+dotted) finds the largest mode. The mixture of modes approach with 50 modes (dashed) 
+correctly finds the two modes. 
+sampling approach it is also possible to estimate hyperparameters (e.g. the covariance ma- 
+trices) which was not done in this paper. The approaches can also be extended towards 
+online learning and estimation in various ways (e.g. missing data problems). 
+Appendix: Mixture of Modes Algorithm 
+The mixture of modes estimate M is derived as a weighted sum of k = 1,..., m individual Fisher 
+scoring (mode) estimates [s,k. For m = 1 we obtain the Fisherscoring algorithm of subsection 3.3. 
+First, one performs the set of forward recursions (t = 1,..., T) for each single mode estimator k. 
+k  t ^FS,k'. x-k T ^FS,k 
+tlt--1 = t[t--1 )t--llt--lt [t--1 }  Qt (lO) 
+B -- k T FS,kxzk x--1 
+-- t-l] t-lrt [xt- )[*1*-) (11) 
+k --1   FS,k 
+((s.-1) 
+- )) 
+k  FS,k 
+7 - s,t, I+B *  
+- 7,_ (13) 
+ FS,kx 
+with the initialization E1o = Qo, 7o = so o ). en, one peffos the set of backward smooth- 
+ing recursions (t = T,..., 1) 
+(D-i) -1 = -llt-1 - Blt-lB T (4) 
+k k --1 kkk T 
+Z,_ = (D,_) +,, (15) 
+- + 
+= = and 
+with F,(z) = o_ o 
+initialization 6   s, 
+= E7. e k individual mode estimates w, are obtained by iterative applica- 
+yFS,k . .FS,k yFS,k rFS,k FS,k 
+tion of the update mle  :=  A with stepsize whe = o , .-.,w 
+and 6 = {6,...,  }. After convergence we obtain the mixture of modes estimate as the weighted 
+sum M k=l kFS,k 
+=  a w, with weighting coefficients a := a where a(t = T - 1,..., 0) 
+1 
+are computed recursively starting with a unifo prior a =  ((wlp, ) stands for a Gaussian 
+with center p and covafiance  evaluated at w): 
+ +l(,l ( s' , 
+=  xsj (17) 
+   FS,kxk FS,kT 
+- , ) , ) + (18) 
+Fisher Scoring and Mixture of Modes for Inference and Learning in NSSM 409 
+9 
+8 
+7 
+0.8 
+0.7 
+0.6 
+0.5 
+uJ (3,.4 
+0.3 
+0.2 
+0.1 
+0 
+Figure 2: Left (inference): The heights of the bars indicate the mean squared error between 
+the true :et (which we know since we simulated the system) and the estimates using the 
+various approximations. The error bars show the standard deviation derived from 20 rep- 
+etitions of the experiment. Based on the paired t-test, Fisher scoring is significantly better 
+than the EKFS and all mixture of modes approaches are significantly better than both EKFS 
+and Fisher scoring based on a 1% rejection region. The mixture of modes approximation 
+with 50 modes (MM 50) is significantly better than the approximation using 20 modes. The 
+improvement of the approximation using 20 modes (MM 20) is not significantly better than 
+the approximation with 10 (MM 10) modes using a 5% rejection region. 
+Right (learning): The heights of the bars indicate the mean squared error between the true 
+fo (.) (which is known) and the approximations using a multi-layer perceptron with 3 hid- 
+den units and T = 200. Shown are results using the EKFS approximation, (left) the Fisher 
+scoring approximation (center) and the mixture of modes approximation (right). There are 
+two bars for each experiment: The left bars show results where the expected value of :et 
+calculated using the approximating Gaussians are used as (single) samples for the general- 
+ized M-step - in other words - we use a point estimate for :et. Using the point estimates, the 
+results of all three approximations are not significantly different based on a 5% significance 
+level. The right bars shows the result where $ = 50 samples are generated for approxi- 
+mating the gradient using the Gaussian approximations. The results using sampling are all 
+significantly better than the results using point estimates (1% significance level). The sam- 
+pling approach using the mixture of modes approximation is significantly better than the 
+other two sampling-based approaches (1% significance level). If compared to the inference 
+results of the experiments shown on the left, we achieved a mean squared error of 6.02 for 
+the mixture of modes approach with 10 modes which is not significantly worse than the 
+results the with the true model of 5.87 (5% significance level). 
+References 
+Anderson, B. and Moore, J. (1979) Optimal Filtering, Prentice-Hall, New Jersey. 
+Fahrmeir, L. and Kaufmann, H. (1991) On Kalman Filtering, Posterior Mode Estimation and Fisher 
+Scoring in Dynamic Exponential Family Regression, Metrika, 38, pp. 37-60. 
+Ghahramani, Z. and Roweis, S. (1999) Learning Nonlinear Stochastic Dynamics using the Gener- 
+alized EM Algorithm, Advances in Neural Information Processing Systems 11, et:ls. M. Keams, S. 
+Solla, D. Cohn, MIT Press, Cambridge, MA. 
+Kitagawa, G. (1987) Non-Gaussian State Space Modeling of Nonstationary Time Series (with Com- 
+ments), JASA 82, pp. 1032-1063. 
+Puskorius, G. and Feldkamp, L. (1994) Neurocontrol of Nonlinear Dynamical Systems with Kalman 
+Filter Trained Recurrent Networks, IEEE Transactions on Neural Networks, 5:2, pp. 279-297. 
+Sage, A. and Melsa, J. (1971 ) Estimation Theory with Applications to Communications and Control, 
+McGraw-Hill, New York. 
+Shumway, R. and Stoffer, D. (1982) Time Series Smoothing and Forecasting Using the EM Algo- 
+rithm, Technical Report No. 27, Division of Statistics, UC Davis. 
+Tresp, V. and Hofmann, R. (1995) Missing and Noisy Data in Nonlinear Time-Series Prediction, 
+Neural Networks for Signal Processing 5, IEEE Sig. Pmc. Soc., pp. 1-10. 

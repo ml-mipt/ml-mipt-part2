@@ -1,0 +1,4 @@
+Log file created at: 2017/11/20 21:08:35
+Running on machine: MacBook-Pro-Anastasia.local
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E1120 21:08:35.434363 2806096704 c_interface.cc:59] DiskReadException :  File vocab.kos.txt does not exist.

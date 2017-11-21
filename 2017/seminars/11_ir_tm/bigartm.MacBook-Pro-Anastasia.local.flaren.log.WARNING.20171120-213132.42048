@@ -1,0 +1,6 @@
+Log file created at: 2017/11/20 21:31:32
+Running on machine: MacBook-Pro-Anastasia.local
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W1120 21:31:32.272179 2806096704 check_messages.h:1075] Inconsistent fields size in ThetaMatrix: 3430 vs 0 vs 3430 vs 0;
+E1120 21:31:45.875831 265465856 processor.cc:749] Unable to open file kos_test/test_docs.batch, the batch will be skipped.
+E1120 21:31:45.876735 251772928 c_interface.cc:59] InvalidOperation :  Transform: no batches to process

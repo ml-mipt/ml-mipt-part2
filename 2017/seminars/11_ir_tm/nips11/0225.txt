@@ -1,0 +1,333 @@
+Linear Hinge Loss and Average Margin 
+Claudio Gentile 
+DSI, Universita' di Milano, 
+Via Comelico 39, 
+20135 Milano. Italy 
+gentile@dsi .unimi. it 
+Manfred K. Warmuth* 
+Computer Science Department, 
+University of California, 
+95064 Santa Cruz, USA 
+manfred@cse.ucsc. edu 
+Abstract 
+We describe a unifying method for proving relative loss bounds for on- 
+line linear threshold classification algorithms, such as the Perceptron and 
+the Winnow algorithms. For classification problems the discrete loss is 
+used, i.e., the total number of prediction mistakes. We introduce a con- 
+tinuous loss function, called the "linear hinge loss", that can be employed 
+to derive the updates of the algorithms. We first prove bounds w.r.t. the 
+linear hinge loss and then convert them to the discrete loss. We intro- 
+duce a notion of "average margin" of a set of examples. We show how 
+relative loss bounds based on the linear hinge loss can be converted to 
+relative loss bounds i.t.o. the discrete loss using the average margin. 
+1 Introduction 
+Consider the classical Perceptron algorithm. The hypothesis of this algorithm at trial t 
+is a linear threshold function determined by a weight vector tot  7 '. For an instance 
+a:t  7 ' the linear activation at -- tot ß a:t is passed through a threshold function ar 
+which is -1 on arguments less than the threshold r and +1 otherwise. Thus the prediction 
+of the algorithm is binary and -1, +1 denote the two classes. The Perceptron algorithm 
+is aimed at learning a classification problem where the examples have the form (mr, l/t)  
+x 
+After seeing T examples (xt, Yt)i<t<r, the algorithm predicts with r+ = cr,.(Wr+ ß 
+xr+i) on the next instance xr+. If the algorithm's prediction r+l agrees with the label 
+YT+ on the instance xr+, then its loss is zero. If the prediction and the label disagree, 
+then the loss is one. We call this loss the discrete loss. 
+The convergence of the Perceptron algorithm is established in the Perceptron convergence 
+theorem. There is a second by now classical algorithm for learning with linear threshold 
+functions: the Winnow algorithm of Nick Littlestone [Lit88]. This algorithm also maintains 
+a weight vector and predicts with the same linear threshold function defined by the current 
+weight vector tot. However, the update of the weight vector tot = (wt.i, ..., 
+* Supported by NSF grant CCR-970020 I. 
+226 C. Gentile and M. K. V/arrnuth 
+performed by the two algorithms is radically different: 
+Perceptron: 
+Winnow: In Wt+l,i 
+The Perceptron algorithm performs a simple additive update. The parameter r/is a positive 
+learning rate and (t equals (t - lt)/2, which lies in {-1, 0, +1}. When (t -' 0 the pre- 
+diction of the algorithm is correct and no update occurs. Both the Perceptron algorithm and 
+Winnow update conservatively, i.e., they update only when the prediction of the algorithm 
+is wrong. Ift -' +1 and//t -- -1 then the algorithm overshot and (t = +1. This causes 
+the Perceptron to subtract r/a:t from the current weight wt. Similarly if t -- -1 and 
+//t - +1 then the algorithm undershot and (t = -1. Now the Perceptron adds r :rt to the 
+current weight wt. We will later interpret (t a:t as a gradient of a loss function. Winnow 
+uses the same gradient but the update is done through the componentwise logarithm of the 
+weight vector. One can also rewrite Winnow's update as 
+wt+,i := wt,i exp (-r/ 
+so that the gradient appears in the exponents of factors that multiply the old weights. The 
+factors are now used to correct the weights in the right direction when the algorithm under 
+or overshot. 
+The algorithms are good for different purposes and, generally speaking, incomparable (see 
+[KWA97] for a discussion). In [KW97] a framework was introduced for deriving simple 
+on-line learning updates. This framework has been applied to a variety of different learning 
+algorithms and differentiable loss functions [HKW95, KW98]. The updates are always 
+derived by approximately solving the following minimization problem 
+Wt+l :=argminwS(w), whereS(w)=d(w, wt)+rlloss(yt, ar(w.xt)). (1) 
+Here loss denotes the chosen loss function. In our setting this would be the discrete loss. 
+What is different now is that the prediction of the algorithm t = rrr(wt ß xt) and the 
+discrete loss are discontinuous in the weight vector wt. We will return to this point later 
+after discussing the other parts of the above minimization problem. The parameter r is the 
+learning rate mentioned above and, most importantly, d(w, wt) is a divergence measuring 
+how far w is from wt. The divergence function has two purposes. It motivates the update 
+and it becomes the potential function in the amortized analysis used to prove loss bounds 
+for the corresponding algorithm. 
+The use of an amortized analysis in the context of learning essentially goes back to [Lit89] 
+and the method for deriving updates based on the divergence was introduced in [KW97]. 
+The divergence may be seen as a regularization term and may also serve as a barrier func- 
+tion in the optimization problem (1) for the purpose of keeping the weights in a particular 
+region. The additive algorithms, such as gradient descent and the Perceptron algorithm, use 
+d(w, w,) - IIw - will2/2 as the divergence. This can be used as a potential function for 
+the proof of the Perceptron convergence theorem. Multiplicative update algorithms such as 
+Winnow and various exponentiated gradient algorithms use entropy-based divergences as 
+potential functions [HKW95, KW98]. The function U in (1) is minimized by differentiat- 
+ing w.r.t.w. This works very well when the loss function is convex and differentiable. For 
+example for linear regression, when the loss function is the square loss (wt ß xt - gtt)2/2, 
+then minimizing U(w) with the divergence [[w - wt[[2/2 gives the Widrow-Hoff update: 
+Various exponentiated gradient algorithms [KW97] can be derived in the same way when 
+entropic divergences are used instead. However, in our case we cannot differentiate the 
+discrete loss since it is discontinuous. 
+We asked ourselves which loss function motivates the Perceptron and Winnow algorithms 
+in this framework. We will see that the loss function that achieves this is continuous and 
+Linear Hinge Loss and Average Margin 227 
+its gradient w.r.t. wt is 5tXt, where 5t  {-1, O, +1}. We call this loss the (linear) hinge 
+loss (HL) and we believe this is the key tool for understanding linear threshold algorithms 
+such as the Perceptron and Winnow. However, in the process of changing the discrete 
+loss to the HL we also changed our learning problem from a classification to a regression 
+problem. There are now two versions of each algorithm, a classification version and a 
+regression version. The classification version predicts with a binary label using its linearly 
+thresholded prediction. The loss function is the discrete loss. The regression version, on 
+the other hand, predicts on the next instance xt with its linear activation at = wt .xt. In the 
+classification problem the labels Yt of the examples are -1 and +1, while in the regression 
+problem the labels at are -c and +c. We will see that both versions of each algorithm 
+use the same rule to update the weight vector wt. 
+Another strong hint that the HL is related to Perceptron and Winnow comes from the fact 
+that this loss may be seen as a limiting case of the entropic loss used in logistic regression. 
+In logistic regression the threshold function a,. is replaced by the smooth t:anh function. 
+There is a technical way of associating a "matching loss function" with a given increasing 
+transfer function [HKW95]. The matching loss for the t:anh transfer function is the en- 
+tropic loss. We will show that by making this transfer function steeper and by taking the 
+right viewpoint of the matching loss, the entropic loss converges to the HL. In the limiting 
+case the slope of the transfer function is infinite, i.e., it becomes the threshold function 
+The question is whether this introduction of the HL buys us anything. We believe so. 
+We can prove a unifying meta-theorem for the whole class of general additive algorithms 
+[GLS97, KW98], when defined w.r.t. the HL. The bounds for the regression versions of the 
+Perceptron and Winnow are simple special cases. These loss bounds can then be converted 
+to loss bounds for the corresponding classification problems w.r.t. the discrete loss. This 
+conversion is carried out through working with the "average margin" of a set of examples 
+relative to a linear threshold classifier. The conversion of the HL described in this paper 
+can then be considered a principled way of deriving average margin-based mistake bounds. 
+The average margin reveals the inner structure of mistake bound results that have been 
+proven thus far for conservative on-line algorithms. Previously used definitions, such as 
+the deviation [FS98] and the attribute error [Lit91], can easily be related to the average 
+margin or reinterpreted in terms of the HL and the average margin. 
+2 Preliminaries and the linear hinge loss 
+We define two subsets of 7gr: the weight domain W and the instance domain X. The 
+weights w maintained by the algorithms always lie in the weight domain and the instances 
+x of the examples always lie in the instance domain. We require I/V be convex. 
+A general additive algorithm and a divergence are defined in terms of a link function f. 
+Such a function is a vector valued function from the interior int W of the weight domain 
+I/V onto 7g n, with the property that its Jacobian is strictly positive definite everywhere in 
+int W. A link function f has a unique inverse f-1 : 7gn _ int 142. We assume that f 
+is the gradient of a (potential) function Pf from int 142 to 7g, i.e., f(w) = VPf(w) for 
+w  int 142. It is easy to extend the domain of Pf such that it includes the boundary of 142. 
+For any link function f, a (Bregman) divergence function df : 142 X int 142 --> [0, c) is 
+defined as [Bre67]: 
+w) = _pf (u) - _pf - (u - f(w). (2) 
+Thus dr(u, to) is the difference between Pf(u) and its first order Taylor expansion around 
+w. Since f has a strictly positive definite Jacobian everywhere in int 142, the potential Pf is 
+strictly convex over W. Thus dr(u, w) _> 0 with equality holding iff u = w. 
+The Perceptron algorithm is motivated by the identity link f(w) = w, with weight domain 
+142 = 7g '. The corresponding divergence is df (u, w) = I lu - w ll 2/2. For Winnow the 
+228 C. Gentile and M. K. Warmuth 
+I-IL (a, a) 
+0 r 
+tyr(a) = --1 
+i-m(a,a) 
+0 r 
+tyv(a) = -F1 
+):(a) 
+a=,-  (v) 
+y:() 
+Figure 2: The matching loss 
+ML,= (V, ,). 
+ (y, )) 
+Figure 1: HL(&, a) as a function of & for the two 
+cases a- (a) = - 1, + 1. 
+weight domain is 142 -- [0, oe)". The link function is the componentwise logarithm. The 
+divergence related to this link function is the un-normalized relative entropy dr(u, w) = 
+Y]i=l ui In  + wi - ui. Note that now u  142, but w must lie in int 142. 
+The following key property immediately follows from the definition of the divergence dr. 
+Lemma 1 [KW98] For any u  ]IV and Wl, W 2  int W.' 
+df(u, w2) - dr(u, Wl) - dr(w1, w2) -- (u - Wl)-(f(wl) - f(w2)). 
+In this paper we focus on a single neuron using a hard threshold as the transfer function (see 
+beginning of the introduction). We will view such a neuron in two ways. In the standard 
+view the neuron is used for binary classification. It outputs  - a,. (&) trying to predict the 
+desired label y using a threshold r. In the new view the neuron is a regressor. It outputs the 
+linear activation &  7g and is trying to predict a 
+1 
+For classification we use the discrete loss DL(y, 9) = 1 - yl {0, l}. For regression 
+we use the linear hinge loss (HL) parameterized by a threshold r: 
+For any a,& E 7g' HLr(&,a):= «(at(&)-rrr(a))(&-r) = DL(y,O)la- 'l- 
+Note that the arguments in the two losses DL and HLr are switched. This is intentional and 
+will be discussed later on. 
+It can be easily shown that HL,.(w ß x, a) is convex in w and that the gradient of this 
+loss w.r.t. w is VwHL,.(w .x,a) = 1 
+(ar(&) - ar(a))x. Note that 6 = (a.(&) - 
+a(a))/2 can only take the three values 0, -1, and +1 mentioned in the introduction. 
+Strictly speaking, this gradient is not defined when w ß x equals the threshold r. But we 
+will show in the subsequent sections that even in that case 6 x has the properties we need. 
+Figure 1 provides a graphical representation of HL,.. The threshold function a,. "transfers" 
+the linear activation & = w. x to a prediction ) which is a hard classification in {-1, +1}. 
+(For the remaining discussion of this section we can assume with no loss of generality that 
+the threshold r is 0.) Smooth transfer functions such as the tanh are commonly used 
+in neural networks, e.g., ) = tanh(&), and relative loss bounds have been proven when 
+the comparison class consists of single neurons with any increasing differentiable transfer 
+function rr [HKW95, KW98]. However, for this to work a loss function that "matches" the 
+transfer function has to be used. This loss is defined  as follows [HKW95] (see Figure 2): 
+r - y dz = 
+ML-(y,) := s-(y) 
+The matching loss for a(z) - z is the square loss (linear regression) and the matching 
+loss for a(z) - tanh(z) is the entropic loss (logistic regression), which is defined as: 
+In [HKW95] the notation L,(y, ) is used for the matching loss ML,,- (y, ,0). We use here the 
+subscript a-  instead of a to stress a connection between the matching loss and the divergence that 
+is discussed at the end of this section. 
+Linear Hinge Loss and Average Margin 229 
+ML-(y 0)= - y)In }- +  1+)' 
+, 21_(1 - 1 (1 + y) In l+y The entropic loss is finite when y  
+[-1, +1] and 0 = tanh(&)  (-1, +1). ese e the ranges for  and  needed for 
+logistic regression. We now want to use this type of loss for classification with line 
+threshold functions, i.e., when ,   {-1, +1} and the slope s of the earth function is 
+increased until in the limit it becomes the hind threshold ao. Obviously, a -1 (-1) = - 
+and a-X(+l) = + for any slope s. us the matching loss is infinite for all slopes. 
+Also, the known relative loss bounds based on the above notion of matching loss grow with 
+the slope of the ansfer function. us it seems to be impossible to use the matching loss 
+when the ansfer function is the hd threshold ao. However, we can still make sense of 
+the matching loss by viewing the neuron as a regressor. e matching loss is now rewritten 
+as another Bregman divergence: 
+(3) 
+where P is any function such that P3(a) = a(a). We now increase the slope of the ansfer 
+function tanh while keeping a and a fixed. In the limiting case (hind threshold ao) the 
+above loss becomes twice the linem hinge loss with threshold zero, i.e., ML o (fi, a) = 
+2 HLo(a, a) = (ao(a) - ao(a))(a - 0). Finally, observe that the two views of the neuron 
+e related to a duality property [AW98] of Bregman divergences: 
+da- (y, ) = ML,- (y, ) = MLa(a, a) = d,(a, a). (4) 
+3 The algorithms 
+In this paper we always associate two general additive algorithms with a given 
+link function: a classification algorithm and a regression algorithm. Such algo- 
+rithms, given in the next table, correspond to the two views of a linear thresh- 
+old neuron discussed in the last section. For brevity, we will call the two al- 
+gorithms "the classification algorithm" and "the regression algorithm", respectively. 
+Gen. add. classification algorithm: 
+For t = 1,2,... 
+Instance: xt 
+Prediction: 
+Label: Yt  {-1, +1} 
+Update: 
+Gen. add. regression algorithm: 
+For t- 1,2,... 
+Instance: xt E 7g n 
+Prediction: at = tot ß xt 
+Label: 2 at = ytc 
+Update: 
+_f-1 
+Discrete loss: 
+The classification algorithm receives a 
+tot+l= f - (f(tot)-(o'r(&t)-o',-(at))xt) 
+Linear hinge loss: 
+1 
+HL,.(at,at)= (ar(at)-o'r(at))(fit-r) 
+bel Yt  {-1, +1}, while the regression algo- 
+rithm receives the infinite label at with the sign of Yt. This assures that Yt = rr,.(at). The 
+classification algorithm predicts with )t = o'r(&t), and the regression algorithm with its 
+linear activation at. The loss for the classification algorithm is the discrete loss DL(yt, 
+while for the regression algorithm we use HLr (at, at). The updates of the two algorithms 
+are equivalent. The update of the regression algorithm is motivated by the minimization 
+problem: 
+wt+ := argminwU(w)where U(w) = dr(to, tot) + r/HL(w 'xt,at). 
+By setting the gradient of U(to) w.r.t. to to zero we get the follow- 
+ing equilibrium equation that holds at the minimum of U(to): wt = 
+f- (f(wt) - 2(o',.(wt+ ß xt)-rrr(at))xt). We approximately solve this equation by re- 
+placing wt+ 'xt by at = wt 'xt, i.e., wt+ = f- (f(wt) - 2(ar(&t)-a(at))xt). 
+2This is a short-hand meaning at ---- -t-oc if yt = 1 and at ---= --oc if yt = --1. 
+230 C. Gentile and M. K. Warmuth 
+Both versions of the Perceptron and Winnow are obtained by using the link functions 
+f(w) = w and f(w) = (In(wl), ..., In(w,)), respectively. 
+4 Relative loss bounds 
+The following lemma relates the hinge loss of the regression algorithm to the hinge loss of 
+an arbitrary linear predictor u. 
+(5) 
+Proof. We have df(u, wt) - dt(u, Wt+l) + df(wt,Wt+l) = (u - 'tot). (f(wt+l) - 
+= - - = - - = 
+r (HL(at, at) - HLr(u ß xt, at) + HLr(u ß xt, at)). The first equality follows Lemma 1 
+and the second follows from the update rule of the regression algorithm. The last equality 
+uses HL(&t, at) as a divergence d (at, at) (see (4)) and again Lemma 1. [] 
+By summing the first equality of (5) over all trials t we could relate the total HLr of the 
+regression algorithm to the total HLr of the regressor u. However, our goal is to obtain 
+bounds on the number of mistakes on the classification algorithm. It is therefore natural 
+to interpret u too as a linear threshold classifier, with the same threshold r used by the 
+classification algorithm. We use the second equality of (5) and sum up over all T trials: 
+E=l - y)(a - = 
+Note that the sums in the above equality are unaffected by trials in which no mistake occurs. 
+In such trials, t - Yt and wt+i = wt. Thus the above is equivalent to the following, where 
+.M is the set of trials in which a mistake occurs: 
+l(df(U, Wl) dr(u, )+Y-te.4 dr(wt Wt+l ) 
+l(l)t--Yt)(&t--U'Xt) =  -- WT+i , ß 
+Since «(t -Yt) = -Yt when t  M and dr(u, WT+t) > 0 we get the following theorem: 
+Theorem 3 Let .M C_ {1,... , T} be the set of trials in which the classification algorithm 
+makes a mistake. Then for every u  ]A; we have 
+Throughout the rest of this section the classification algorithm is compared to the perfor- 
+mance of a linear threshold classifier u with threshold r = 0. We now apply Theorem 3 to 
+the Perceptron algorithm with Wl -- 0, giving a bound i.t.o. the average margin of a linear 
+threshold classifier u with threshold 0 on a trial sequence .M: 
+1 
+'U,M :=  -t.X4 ytU ' Xt. 
+Since Yt tt <_ 0 for t  M, the l.h.s. of the inequality of Theorem 3 is at least 
+IMl3u,4. By the update rule, 5-teM dr(wt,wt+) = -4.x4 lla:tlt2 2 <- IMIX, 
+where 11l12  x2 for t  M. Since in eorem 3 u is an mbiy vector, we replace 
+u by  u therein, and set  = x nWhen we solve the resulting inequality for IMI the 
+dependence on  cancels out. is gives us the following bound on the number of mistakes: 
+Linear Hinge Loss and Average Margin 231 
+Note that in the usual mistake bound for the Perceptron algorithm the average u,4 is re- 
+placed by mint634 ytu .xt.3 Also, observe that the predictions of the Perceptron algorithm 
+with r = 0 and Wl = 0 are not affected by r/. Hence the previous bound holds for any 
+r/>0. 
+Next, we apply Theorem 3 to a normalized version of Winnow. This version of Winnow 
+keeps weights in the probability simplex and is obtained by a slight modification of Win- 
+now's link function. We assume r = 0 and choose ,-Y = {x  7P,." : [lx[Ioo _< Xoo}. 
+Unlike the Perceptron algorithm, a Winnow-like algorithm heavily depends on the learning 
+rate, so a careful tuning is needed. One can show (details omitted due to space limitations) 
+that ifr/is such that r/5'u,.x4 +r/Xoo -In ( e2" 
+2 > 0 then this normalized version of 
+Winnow achieves the bound 
+IMI _< 
+df(U, Wl) 
+rl 'U,.,V t + rl Xoo -- ln ( e2"x2ø + l ) ' 
+where dr(u, Wl) is the relative entropy between the two probability vectors u and w. 
+Conclusions: In the full paper we study the case when there is no consistent threshold u 
+more carefully and give more involved bounds for the Winnow and normalized Winnow 
+algorithms as well as for the p-norm Perceptron algorithm [GLS97]. 
+References 
+[AW98] K. Azoury and M. K. Warmuth", "Relative loss bounds and the exponential 
+family of distributions", "1998", Unpublished manuscript. 
+[Bre67] L.M. Bregman. The relaxation method of finding the common point of convex 
+sets and its application to the solution of problems in convex programming. 
+USSR Computational Mathematics and Physics, 7:200-217, 1967. 
+[FS98] Y. Freund and R. Schapire. Large margin classification using the perceptton 
+algorithm. In 11th COLT, pp. 209-217, ACM, 1998. 
+[GLS97] A.J. Grove, N. Littlestone, and D. Schuurmans. General convergence results 
+for linear discriminant updates. In loth COLT, pp. 171-183. ACM, 1997. 
+[HKW95] D. P. Helmbold, J. Kivinen, and M. K. Warmuth. Worst-case loss bounds for 
+sigmoided linear neurons. In NIPS 1995, pp. 309-315. MIT Press, 1995. 
+[KW97] J. Kivinen and M. K. Warmuth. Additive versus exponentiated gradient updates 
+for linear prediction. Inform. and Cornput., 132( 1): 1-64, 1997. 
+[KW98] J. Kivinen and M. K. Warmuth. Relative loss bounds for multidimensional re- 
+gression problems. In NIPS 10, pp. 287-293. MIT Press, 1998. 
+[KWA97] J. Kivinen, M. K. Warmuth, and P. Auer. The perceptton algorithm rs. winnow: 
+linear vs. logarithmic mistake bounds when few input variables are relevant. 
+Artificial Intelligence, 97:325-343, 1997. 
+[Lit88] N. Littlestone. Learning when irrelevant attributes abound: A new linear- 
+threshold algorithm. Machine Learning, 2:285-318, 1988. 
+[Lit89] N. Littlestone. Mistake Bounds and Logarithmic Linear-threshold Learning 
+Algorithms. PhD thesis, Umversity of California Santa Cruz, 1989. 
+[Lit91 ] N. Littlestone. Redundant noisy attributes, attribute errors, and linear threshold 
+learning using Winnow. In 4th COLT, pp. 147-156, Morgan Kaufmann, 1991. 
+3The average margin r,u.,4 may be positive even though u is not consistent. 

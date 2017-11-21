@@ -1,0 +1,305 @@
+Kernel PCA and De-Noising in Feature Spaces 
+Sebastian Mika, Bernhard Schiilkopf, Alex Smola 
+Klaus-Robert Miiller, Matthias Scholz, Gunnar Ritsch 
+GMD FIRST, Rudower Chaussee 5, 12489 Berlin, Germany 
+{mika, bs, smola, klaus, scholz, raetsch} @first. gmd.de 
+Abstract 
+Kernel PCA as a nonlinear feature extractor has proven powerful as a 
+preprocessing step for classification algorithms. But it can also be con- 
+sidered as a natural generalization of linear principal component anal- 
+ysis. This gives rise to the question how to use nonlinear features for 
+data compression, reconstruction, and de-noising, applications common 
+in linear PCA. This is a nontrivial task, as the results provided by ker- 
+nel PCA live in some high dimensional feature space and need not have 
+pre-images in input space. This work presents ideas for finding approxi- 
+mate pre-images, focusing on Gaussian kernels, and shows experimental 
+results using these pre-images in data reconstruction and de-noising on 
+toy examples as well as on real world data. 
+1 PCA and Feature Spaces 
+Principal Component Analysis (PCA) (e.g. [3]) is an orthogonal basis transformation. 
+The new basis is found by diagonalizing the centered covariance matrix of a data set 
+{xk e RVlk = 1,... ,œ}, defined by (7 = ((xi - (xk))(xi - (Xk))T). The coordi- 
+nates in the Eigenvector basis are called principal components. The size of an Eigenvalue 
+A corresponding to an Eigenvector v of (7 equals the amount of variance in the direction 
+of v. Furthermore, the directions of the first n Eigenvectors corresponding to the biggest 
+n Eigenvalues cover as much variance as possible by n orthogonal directions. In many ap- 
+plications they contain the most interesting information: for instance, in data compression, 
+where we project onto the directions with biggest variance to retain as much information 
+as possible, or in de-noising, where we deliberately drop directions with small variance. 
+Clearly, one cannot assert that linear PCA will always detect all structure in a given data set. 
+By the use of suitable nonlinear features, one can extract more information. Kernel PCA 
+is very well suited to extract interesting nonlinear structures in the data [9]. The purpose of 
+this work is therefore (i) to consider nonlinear de-noising based on Kernel PCA and (ii) to 
+clarify the connection between feature space expansions and meaningful patterns in input 
+space. Kernel PCA first maps the data into some feature space F via a (usually nonlinear) 
+function {I, and then performs linear PCA on the mapped data. As the feature space F 
+might be very high dimensional (e.g. when mapping into the space of all possible d-th 
+order monomials of input space), kernel PCA employs Mercer kernels instead of carrying 
+Kernel PCA and De-Noising in Feature Spaces 537 
+out the mapping ß explicitly. A Mercer kernel is a function k(x, y) which for all data 
+sets {xi} gives rise to a positive matrix Kij -- k(a:i, a:j) [6]. One can show that using 
+k instead of a dot product in input space corresponds to mapping the data with some ß 
+to a feature space F [1], i.e. k(x,y) = ((x) ß (y)). Kernels that have proven useful 
+include Gaussian kernels k(x, y) = exp(- [Ix - ull 2c) and polynomial kernels k(x, y) = 
+(x. y)d. Clearly, all algorithms that can be formulated in terms of dot products, e.g. Support 
+Vector Machines [1], can be carried out in some feature space F without mapping the data 
+explicitly. All these algorithms construct their solutions as expansions in the potentially 
+infinite-dimensional feature space. 
+The paper is organized as follows: in the next section, we briefly describe the kernel PCA 
+algorithm. In section 3, we present an algorithm for finding approximate pre-images of 
+expansions in feature space. Experimental results on toy and real world data are given in 
+section 4, followed by a discussion of our findings (section 5). 
+2 Kernel PCA and Reconstruction 
+To perform PCA in feature space, we need to find Eigenvalues A > 0 and Eigenvectors 
+V E F\{0} satisfying AV -- V with  - ((xk)(xk)r). l Substituting  into the 
+Eigenvector equation, we note that all solutions V must lie in the span of -images of the 
+training data. This implies that we can consider the equivalent system 
+A((xk)' V) = ((xk).V)for all k = 1,... ,œ (1) 
+and that there exist coefficients Oil,... , Otœ such that 
+v = -w(xi) (2) 
+i=1 
+Substituting  and (2) into (1), and defining an œ x œ matrix K by Kij := ( (xi). (I, (xj)) = 
+k(a:i, a:j), we arrive at a problem which is cast in terms of dot products: solve 
+œ,,Xot = Kot (3) 
+where a = (Oil, . . . , otœ) T (for details see [7]). Normalizing the solutions V k, i.e. (V k ß 
+V k) = 1, translates into k(a k ß o k) = 1. To extract nonlinear principal components 
+for the -image of a test point x we compute the projection onto the k-th component by 
+k k(x, xi). For feature extraction, we thus have to evaluate œ 
+]k := ( vk '(I)(x)) = El21 
+kernel functions instead of a dot product in F, which is expensive if F is high-dimensional 
+(or, as for Gaussian kernels, infinite-dimensional). To reconstruct the -image of a vector 
+x from its projections/k onto the first n principal components in F (assuming that the 
+Eigenvectors are ordered by decreasing Eigenvalue size), we define a projection operator 
+Pn by 
+Pn(g) --  k V k (4) 
+k=l 
+If n is large enough to take into account all directions belonging to Eigenvectors with non- 
+zero Eigenvalue, we have Pn(a:i) -- (a:i). Otherwise (kernel) PCA still satisfies (i) that 
+the overall squared reconstruction error i II Pn(a:i) -- (a:i)II 2 is minimal and (ii) the 
+retained variance is maximal among all projections onto orthogonal directions in F. In 
+common applications, however, we are interested in a reconstruction in input space rather 
+than in F. The present work attempts to achieve this by computing a vector z satisfying 
+ß (z) = Pn(X). The hope is that for the kernel used, such a z will be a good approxi- 
+mation of x in input space. However, (i) such a z will not always exist and (ii) if it exists, 
+For simplicity, we assume that the mapped data are centered in F. Otherwise, we have to go 
+through the same algebra using (x) := (x) - ((I'(xi)). 
+538 S. Mika et al. 
+it need be not unique. 2 As an example for (i), we consider a possible representation of F. 
+One can show [7] that  can be thought of as a map (m) = k(x, .) into a Hilbert space 7-/k 
+of functions i cti k(mi, .) with a dot product satisfying (k(m, .). k(gt, .)) = k(m, gt). Then 
+7-/k is called reproducing kernel Hilbert space (e.g. [6]). Now, for a Gaussian kernel, 7-/k 
+contains all linear superpositions of Gaussian bumps on R N (plus limit points), whereas 
+by definition of {I, only single bumps k(m, .) have pre-images under {I,. When the vector 
+Pn(m) has no pre-image z we try to approximate it by minimizing 
+p(z) = II'(z) - Pn(m)112 (5) 
+This is a special case of the reduced set method [2]. Replacing terms independent of z by 
+f, we obtain 
+p(z) -II(z)112- Pn(m)) + f (6) 
+Substituting (4) and (2) into (6), we arrive at an expression which is written in terms of 
+dot products. Consequently, we can introduce a kernel to obtain a formula for p (and thus 
+Vz p) which does not rely on carrying out {I, explicitly 
+n 
+k k(z, mi) + f (7) 
+k=l i=1 
+3 Pre-Images for Gaussian Kernels 
+To optimize (7) we employed standard gradient descent methods. If we restrict our attention 
+to kernels of the form k(m,//) = k(llm - ll 2) (and thus satisfying k(m, m) = const. for all 
+m), an optimal z can be determined as follows (cf. [8]): we deduce from (6) that we have 
+to maximize 
+p(z) = ((z). Pn(X)) + ft'= E 7ik(z,xi) + fY 
+i=1 
+(8) 
+" k (for some ft' independent of z). For an extremum, the 
+where we set 7i = 
+gradient with respect to z has to vanish: V,p(z) = 5']i= 7ik'(llz - m,ll2)(z - m,) -- 0. 
+This leads to a necessary condition for the extremum: z = 5'], 6, m,/5']j 6, with 6, = 
+7, k'([I z - a:i[12). For a Gaussian kernel k(m,//) = exp(-[Im - 2/c) we get 
+z -- E=x 7, exp(-IIz - mill 2c)mi (9) 
+Ei=i 7i exp(-llz - m, ll 2 
+We note that the denominator equals ((z)- Pn(I)(m)) (cf. (8)). Making the assumption that 
+Pn(X)  0, we have ((x) ß Pn(X)) = (Pn(X) - Pn(X)) > 0. AS k is smooth, we 
+conclude that there exists a neighborhood of the extremum of (8) in which the denominator 
+of (9) is  0. Thus we can devise an iteration scheme for z by 
+E,= 7, exp(-llzt - m, II 2/c)m, 
+Zt+ 1 -- œ (10) 
+Ei:I 7i exp(-Ilzt - m112/c) 
+Numerical instabilities related to ({I, (z) ß Pn{I ' (m)) being small can be dealt with by restart- 
+ing the iteration with a different starting value. Furthermore we note that any fixed-point 
+of (10) will be a linear combination of the kernel PCA training data mi. If we regard (10) 
+in the context of clustering we see that it resembles an iteration step for the estimation of 
+2If the kernel allows reconstruction of the dot-product in input space, and under the assumption 
+that a pre-image exists, it is possible to construct it explicitly (cf. [7]). But clearly, these conditions 
+do not hold true in general. 
+Kernel PCA and De-Noising in Feature Spaces 539 
+the center of a single Gaussian cluster. The weights or 'probabilities' 7i reflect the (anti-) 
+correlation between the amount of (a:) in Eigenvector direction V k and the contribution 
+of (a:i) to this Eigenvector. So the 'cluster center' z is drawn towards training patterns 
+with positive 7i and pushed away from those with negative 7i, i.e. for a fixed-point z the 
+influence of training patterns with smaller distance to a: will tend to be bigger. 
+4 Experiments 
+To test the feasibility of the proposed algorithm, we run several toy and real world ex- 
+periments. They were performed using (10) and Gaussian kernels of the form k(a:, y) = 
+exp(- (llx - y where n equals the dimension of input space. We mainly focused 
+on the application of de-noising, which differs from reconstruction by the fact that we are 
+allowed to make use of the original test data as starting points in the iteration. 
+Toy examples: In the first experiment (table 1), we generated a data set from eleven Gaus- 
+sians in R io with zero mean and variance r 2 in each component, by selecting from each 
+source 100 points as a training set and 33 points for a test set (centers of the Gaussians ran- 
+domly chosen in [-1, 1]ø). Then we applied kernel PCA to the training set and computed 
+the projections/3k of the points in the test set. With these, we carried out de-noising, yield- 
+ing an approximate pre-image in R iO for each test point. This procedure was repeated for 
+different numbers of components in reconstruction, and for different values of a. For the 
+kernel, we used c - 2a . We compared the results provided by our algorithm to those of 
+linear PCA via the mean squared distance of all de-noised test points to their correspond- 
+ing center. Table 1 shows the ratio of these values; here and below, ratios larger than one 
+indicate that kernel PCA performed better than linear PCA. For almost every choice of 
+n and a, kernel PCA did better. Note that using all 10 components, linear PCA is just a 
+basis transformation and hence cannot de-noise. The extreme superiority of kernel PCA 
+for small a is due to the fact that all test points are in this case located close to the eleven 
+spots in input space, and linear PCA has to cover them with less than ten directions. Ker- 
+nel PCA moves each point to the correct source even when using only a small number of 
+components. 
+I n=l 2 3 4 5 6 7 8 9 ] 
+0.05 2058.42 1238.36 846.14 565.41 309.64 170.36 125.97 104.40 92.23 
+0.1 10.22 31.32 21.51 29.24 27.66 23.53 29.64 40.07 63.41 
+0.2 0.99 1.12 1.18 1.50 2.11 2.73 3.72 5.09 6.32 
+0.4 1.07 1.26 1.44 1.64 1.91 2.08 2.22 2.34 2.47 
+0.8 1.23 1.39 1.54 1.70 1.80 1.96 2.10 2.25 2.39 
+Table 1: De-noising Gaussans in R io (see text). Performance ratios larger than one indi- 
+cate how much better kernel PCA did, compared to linear PCA, for different choices of the 
+Gaussians' std. dev. a, and different numbers of components used in reconstruction. 
+To get some intuitive understanding in a low-dimensional case, figure 1 depicts the results 
+of de-noising a half circle and a square in the plane, using kernel PCA, a nonlinear au- 
+toencoder, principal curves, and linear PCA. The principal curves algorithm [4] iteratively 
+estimates a curve capturing the structure of the data. The data are projected to the closest 
+point on a curve which the algorithm tries to construct such that each point is the average 
+of all data points projecting onto it. It can be shown that the only straight lines satisfying 
+the latter are principal components, so principal curves are a generalization of the latter. 
+The algorithm uses a smoothing parameter which is annealed during the iteration. In the 
+nonlinear autoencoder algorithm, a 'bottleneck' 5-layer network is trained to reproduce the 
+input values as outputs (i.e. it is used in autoassociative mode). The hidden unit activations 
+in the third layer form a lower-dimensional representation of the data, closely related to 
+540 $. Mika et al. 
+PCA (see for instance [3]). Training is done by conjugate gradient descent. In all algo- 
+rithms, parameter values were selected such that the best possible de-noising result was 
+obtained. The figure shows that on the closed square problem, kernel PCA does (subjec- 
+tively) best, followed by principal curves and the nonlinear autoencoder; linear PCA fails 
+completely. However, note that all algorithms except for kernel PCA actually provide an 
+explicit one-dimensional parameterization of the data, whereas kernel PCA only provides 
+us with a means of mapping points to their de-noised versions (in this case, we used four 
+kernel PCA features, and hence obtain a four-dimensional parameterization). 
+kernel PCA nonlinear autoencoder Principal Curves linear PCA 
+ß . r.:: ','., ... r. . ',;' .. r.;, '.' ..  , e ;." '.i' ... 
+.... '' ' ]i:.' :r... ..,...:., .-..," i . , ¾.: 
+". '-. ..'%,.':.x' '7 ' ii  
+.:'::'..½' .:';.,- ,.½? .:'::' 
+....... ;7'r : 
+i ,- ß :- '.: , ,'. f'[,:. :; ': i': ( 2- 2: ". i'{7:i ½' ,..: ,' 
+.... ß " '""::*'"'" ...... '*""*" ': , . . ;..'...x. ': r;:',:;i!:.½(5', ß 
+Figure 1: De-noising in 2-d (see text). Depicted are the data set (small points) and its 
+de-noised version (big points, joining up to solid lines). For linear PCA, we used one 
+component for reconstruction, as using two components, reconstruction is perfect and thus 
+does not de-noise. Note that all algorithms except for our approach have problems in 
+capturing the circular structure in the bottom example. 
+USPS example: To test our approach on real-world data, we also applied the algorithm 
+to the USPS database of 256-dimensional handwritten digits. For each of the ten digits, 
+we randomly chose 300 examples from the training set and 50 examples from the test 
+set. We used (10) and Gaussian kernels with c -- 0.50, equaling twice the average of 
+the data's variance in each dimensions. In figure 4, we give two possible depictlobs of 
+Figure 2: Visualization of Eigenvectors (see 
+text). Depicted are the 20,... , 28-th Eigen- 
+vector (from left to right). First row: linear 
+PCA, second and third row: different visual- 
+izations for kernel PCA. 
+the Eigenvectors found by kernel PCA, compared to those found by linear PCA for the 
+USPS set. The second row shows the approximate pre-images of the Eigenvectors V k, 
+k = 2ø,... , 28, found by our algorithm. In the third row each image is computed as 
+follows: Pixel i is the projection of the {I,-image of the i-th canonical basis vector in input 
+space onto the corresponding Eigenvector in features space (upper left {I'(el ) ß V k, lower 
+right ß (e256) ß V ). In the linear case, both methods would simply yield the Eigenvectors 
+of linear PCA depicted in the first row; in this sense, they may be considered as generalized 
+Eigenvectors in input space. We see that the first Eigenvectors are almost identical (except 
+for signs). But we also see, that Eigenvectors in linear PCA start to concentrate on high- 
+frequency structures already at smaller Eigenvalue size. To understand this, note that in 
+linear PCA we only have a maximum number of 256 Eigenvectors, contrary to kernel PCA 
+which gives us the number of training examples (here 3000) possible Eigenvectors. This 
+Kernel PCA and De-Noising in Feature Spaces 541 
+1.02 1.02 1.01 0.93 1.04 0.98 0.98 0.98 1.01 0.60 0.78 0.76 0.52 0.73 0.74 0.77 0.80 0.74 0.74 0.72 
+Figure 3: Reconstruction of USPS data. Depicted are the reconstructions of the first digit 
+in the test set (original in last column) from the first n -- 1,... , 20 components for linear 
+PCA (first row) and kernel PCA (second row) case. The numbers in between denote the 
+fraction of squared distance measured towards the original example. For a small number 
+of components both algorithms do nearly the same. For more components, we see that 
+linear PCA yields a result resembling the original digit, whereas kernel PCA gives a result 
+resembling a more prototypical 'three' 
+also explains some of the results we found when working with the USPS set. In these 
+experiments, linear and kernel PCA were trained with the original data. Then we added (i) 
+additive Gaussian noise with zero mean and standard deviation a = 0.5 or (ii) 'speckle' 
+noise with probability p = 0.4 (i.e. each pixel flips to black or white with probability 
+p/2) to the test set. For the noisy test sets we computed the projections onto the first n 
+linear and nonlinear components, and carried out reconstruction for each case. The results 
+were compared by taking the mean squared distance of each reconstructed digit from the 
+noisy test set to its original counterpart. As a third experiment we did the same for the 
+original test set (hence doing reconstruction, not de-noising). In the latter case, where 
+the task is to reconstruct a given example as exactly as possible, linear PCA did better, 
+at least when using more than about 10 components (figure 3). This is due to the fact 
+that linear PCA starts earlier to account for fine structures, but at the same time it starts 
+to reconstruct noise, as we will see in figure 4. Kernel PCA, on the other hand, yields 
+recognizable results even for a small number of components, representing a prototype of 
+the desired example. This is one reason why our approach did better than linear PCA for the 
+de-noising example (figure 4). Taking the mean squared distance measured over the whole 
+test set for the optimal number of components in linear and kernel PCA, our approach did 
+better by a factor of 1.6 for the Gaussian noise, and 1.2 times better for the 'speckle' noise 
+(the optimal number of components were 32 in linear PCA, and 512 and 256 in kernel 
+PCA, respectively). Taking identical numbers of components in both algorithms, kernel 
+PCA becomes up to 8 (!) times better than linear PCA. However, note that kernel PCA 
+comes with a higher computational complexity. 
+5 Discussion 
+We have studied the problem of finding approximate pre-images of vectors in feature space, 
+and proposed an algorithm to solve it. The algorithm can be applied to both reconstruction 
+and de-noising. In the former case, results were comparable to linear PCA, while in the 
+latter case, we obtained significantly better results. Our interpretation of this finding is as 
+follows. Linear PCA can extract at most N components, where N is the dimensionality of 
+the data. Being a basis transform, all N components together fully describe the data. If the 
+data are noisy, this implies that a certain fraction of the components will be devoted to the 
+extraction of noise. Kernel PCA, on the other hand, allows the extraction of up to œ features, 
+where œ is the number of training examples. Accordingly, kernel PCA can provide a larger 
+number of features carrying information about the structure in the data (in our experiments, 
+we had œ > N). In addition, if the structure to be extracted is nonlinear, then linear PCA 
+must necessarily fail, as we have illustrated with toy examples. 
+These methods, along with depictions of pre-images of vectors in feature space, provide 
+some understanding of kernel methods which have recently attracted increasing attention. 
+Open questions include (i) what kind of results kernels other than Gaussians will provide, 
+542 MikaetaL 
+Gaussian noise [ 'speckle' noise 
+noisy ---=.,.c ..... . L ' '-' ..-_., ,.- :.,,.-,_ . .. -t '. 
+_ -----.   .. ß 
+256 --' [, r ; '-'- "'; -'z: '' 
+: ':' .. ' 
+Figure 4: De-Noising of USPS data (see text). The left half shows: top: the first occurrence 
+of each digit in the test set, second row: the upper digit with additive Gaussian noise (a - 
+0.15), following five rows: the reconstruction for linear PCA using n = 1, 4, 1õ, õ4,215õ 
+components, and, last five rows: the results of our approach using the same number of 
+components. In the right half we show the same but for 'speckle' noise with probability 
+p = 0.4. 
+(ii) whether there is a more efficient way to solve either (6) or (8), and (iii) the comparison 
+(and connection) to alternative nonlinear de-noising methods (cf. [5]). 
+References 
+[1] B. Boser, I. Guyon, and V.N. Vapnik. A training algorithm for optimal margin clas- 
+sifiers. In D. Haussler, editor, Proc. COLT, pages 144-152, Pittsburgh, 1992. ACM 
+Press. 
+[2] C.J.C. Burges. Simplified support vector decision rules. In L. Saitta, editor, Prooceed- 
+ings, 13th ICML, pages 71-77, San Mateo, CA, 1996. 
+[3] K.I. Diamantaras and S.Y. Kung. Principal Component Neural Networks. Wiley, New 
+York, 1996. 
+[4] T. Hastie and W. Stuetzle. Principal curves. JASA, 84:502-516, 1989. 
+[5] S. Mallat and Z. Zhang. Matching Pursuits with time-frequency dictionaries. IEEE 
+Transactions on Signal Processing, 41 (12):3397-3415, December 1993. 
+[6] S. Saitoh. Theory of Reproducing Kernels and its Applications. Longman Scientific & 
+Technical, Harlow, England, 1988. 
+[7] B. Sch61kopf. Support vector learning. Oldenbourg Verlag, Munich, 1997. 
+[8] B. Sch61kopf, P. Knirsch, A. Smola, and C. Burges. Fast approximation of support vec- 
+tor kernel expansions, and an interpretation of clustering as approximation in feature 
+spaces. In P. Levi et. al., editor, DAGM'98, pages 124 - 132, Berlin, 1998. Springer. 
+[9] B. Sch61kopf, A.J. Smola, and K.-R. Mtiller. Nonlinear component analysis as a kernel 
+eigenvalue problem. Neural Computation, 10:1299-1319, 1998. 

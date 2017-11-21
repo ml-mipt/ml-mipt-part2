@@ -1,0 +1,302 @@
+Very Fast EM-based Mixture Model 
+Clustering using Multiresolution kd-trees 
+Andrew W. Moore 
+[/obot. ics Institute, Carnegie Mellon University 
+Pit. t.sburgh, PA 15213. awm'G'cs.cllltl.edu 
+Abstract 
+C. lustering is important in many fields ilcluding nanufac[uring, 
+biology, finance, and astronolny. Mixt. ure models are a popular ap- 
+proach due to their st. atist. ical foundat. ions, and EM is a very pop- 
+ular method for finding mixt. ure models. EM, however, requires 
+many accesses of the data, and thus has been di.missed as imprac- 
+tical (e.g. [.9]) for data mining of enormous dat, aset.s. We present a 
+new algorit. hm, based on the nmltiresolut. ion/cd-trees of [5], which 
+dramatically reduces the cost of EM-based clustering, wit, h savings 
+rising linearly with the nmnber of datapoints. Although present. ed 
+here for maxinmm likelihood est. imat.ion of Gaussian mixt, ure mod- 
+els, it, isalso applicable t.o non-(4aussian models (provided class 
+densit.ies are monotonic in Mahalanobis dist, ance), mixed categori- 
+cal/nnmeric (:lust. ers. and Bayesian met. hods such as Autoclass [1]. 
+1 Learning Mixture Models 
+In a (_aussian mixture model (e.g. [3]), we assume t, hat datapoints {xl...xa] have 
+been generated indel)elcleltly by the following process. For each x ill turn, nature 
+begins by ran(lolnly picking a class, c., from a discrete set of ('lasses {c...cx}. 
+Then nat ure draws x from an 1I-dilnensional Gaussial whose mean tt,i and ('ovari- 
+ante E. del)end on th(  class. Thus we have 
+where O denotes all the paramet, ers of the mixt. ure: tile class probabilities P.i (where 
+P.i - P(cj 10)), the (:lass cent, ers Itj and the class covariances E. 
+The job of a mixt, ure model learner is t.o find a good est. imate of t. he model, and 
+Expect. ation Maximization (EM), also known as "Fuzzy k-means", is a popular 
+544 A. W. Moore 
+algorit, hm for doing so. The /th iteration of EM begins with an estimate O r of the 
+model, and ends with a.n improved estimate 0 t+t Write 
+0 t = (p .... px./ti .... ttx,E,..., 
+(2) 
+Ell iterates over each point.-cla. ss combinalJon, computing tr ea. ch class c d and each 
+datapoint xi, the extent to which xi is "owned" by c./. The ownership is simply 
+tt'i.i = P(c.i ] x;, 0). Throughout this paper we will use t, he following notation: 
+: P(c.i J xi, 0) : aijP.i/Y-]k= ai.p.(by Ba3es Hule) 
+Then the new value of the centtold, ttS, of the jt, h class in the new model 0 t+ is 
+simply the weighted mean of all the datapoints, using the values { wL, u,-,.i,... tcq.i } 
+as the weights. A similar weighted procedure gives the new est. imates of the (:lass 
+probabilities and the class covariances: 
+where sxx',i = , :i9. Thus each iteration of EN[ visits 
+meaning \'R evahlations of a g/-dimensional Gaussian, 
+arithmetic operations per iteration. This paper ailns to 
+An mr/,'d-tree (Multiresohltion I(D-tree), introduced in 
+every data.point-class pair. 
+and so needing 
+reduce that cost. 
+[2] and developed further 
+in [5], is a. binary tree in which each node is associated with a subset of the data- 
+points. The root node owns all the datapoints. Each non-leaf-node has two children. 
+defined by a splitting dimension ND.SPLITDIM and a splitt, ing value ND.SPLITVAL. The 
+two children divide their parent,'s datapoints between t. hem, with the left child ow- 
+ing those datapoints that. are strictly less than the splitting value in the splitting 
+dirnension, and the right child owning the remainder of the parent's datapoints: 
+Xi  ND.LEFT  xi[ND.SPLITDIM] < ND.SPLITVAL and xi G ND (4) 
+Xi  ND.RIGHT  xi[ND.$PLITDIM]  ND.SPLITVAL and xi  ND (5) 
+The distinguishing feature of mrkd-trees is that their nodes contain the following: 
+ß ND.NUMPOINTS' The number of points owned by N (equivalently, the av- 
+erage densi[y in N). 
+ß N.C'ENTaOm' The centtold of the points owned by N (equivalently, the 
+first toomen[ of the density below ND). 
+ß ND.('OV: The covariance of the I)oint, s owned by ND (equiva.lently, the second 
+lnOluent of the density below ND). 
+ß ND.HYPERRECT: The 1)ounding hyl)er-rectangle of the points 1)elow ND 
+We construct mrkd-tl'ees top-down, identifying the botmding box of the current. 
+node, and splitting in t.h cen[er of the wides dimension. A node is declared to be 
+a. leaf, and is left, unsl)lit, if the widest dimension of its bounding box is % some 
+threshold, MB IlL If AIB W is zero, then all leaf nodes denote singlet, on or coincident 
+points, the tree has O(R) nodes and so requires O(M2R) memory, and (with some 
+care) the construction cos is O(2/2R+ AIR log R). In practice, we set MB 1[' t,o 1(, 
+of the range of the datapoint components. The tree size and construction thus cost 
+Very Fast EM-Based Mixture Model Clustering Using Multiresolution Kd-Trees 545 
+considerably less t, han these bounds because ill dense regions, tim; leaf node.,: were 
+able to SUlnmarize dozens of datal)oints. Note to() that [he cost, of tree-building is 
+alnorl;ized---the tree nmst be built. once, vet ENI performs many iterations. 
+-' S 
+To 1)erforln an it, eration of EM with tile mckcl-tree, we call the function MAKESTAT/ 
+(described below) on t, he root of the tree. IM,:;,STVrS(ND, 0 r) oul;puts :tN values: 
+(sw, sw._,,... swx, swx .... swxx, swxx .... swxx,,v) where 
+X,  ND X  ND X,  ND 
+The result, s of }lAI,:ESTATS(PooT) provide sufficient, st, atistics to construct 0 
+lj 4- SW.i// , ttj -- SWXj/SW. j -- (SWXX.i/SW.i) -- It.iltf (7) 
+If 5lAKESTATS is called on a leaf node, we simply conlpute, for each j, 
+k:l 
+where  : ND.('NTnOD, and where all the items in the right hand equation 
+are easily coml)ut, ed. We then return swj = '.i X ND.NUMPOINTS, SWXj -- 
+'j X ND.NUMPOINTS X  and swxxj : t(i x ND.NUMPOINT X ND.('OV. The rea- 
+uon we can do thi is that, if the leaf node is very small, t. here will be little variation 
+in t',.; for the points owned by t, he node and so, for example  tc?.ix i  
+In the experiments below we use very [inv leaf nodes, ensuring accuracy. 
+If MAKESTATS is called on a non-leaf-node, it can easily coml)ut.e it, s answer by 
+recursivelv calling MAKESTATS on its two children and then retm'ning the sum of 
+the two sets of answers. In general, that, is exactly how we will proceed. If that 
+was the end of the story, we would have lit. t, le coml)utational improvement over 
+conventional EM, because one pass would fully traverse the tree, which contain 
+O(R) nodes, doing O(N.1[ ) work per node. 
+We will win if we ever spot that, at some intermediate node. we can /;/'t/e. 
+evaluate the node as if it were a leaf, without searching its descendents, but without 
+introducing significant error into the coml)ut. at, iol. 
+To do this, we will COml)ute, for each j, the minimuxn and maxinmm tt'ij that any 
+point inside the node could have. This procedure is more complex than in the (rase 
+of locally weighted regression [5]. 
+We wish to coinpure tc mm and '"' ' e' 
+ttj for each j. xxh_le tcj is a lower l>otmd 
+3 
+on minx, G ND lt'ij and tcf x is an upper bound on maxx,  h'D tci.. This is hard 
+because tt,f ' is deterlnined not only by the mean and covariance of the jth class 
+but also the other claues. For example, in Figm'e 1, tt'3U is apl)roximately 0.5. but 
+it would be much larger if ct were fitrther to the left, or had a thinner ('ovariance. 
+But remember that the tt'ij'S are defined in terms of aij's, thus' 
+ajl).j/X.=l a,.l;.. We (.ttlt put bounds on t, he clij' relatively easily. It simply 
+require that for each j we COml)te t the closest and furthest point from It.i within 
+Comlmting lhese point requires non-trivial comput. ational geometry because the co- 
+variance matriceb are not necessarily axi-aligned. There is no space here for details. 
+546 A.  Moore 
+Maximizer of a 2 
+I -'.x 3 ..  'LMinimizerofa 1 
+ 1 Maximi=zer of a 1  Minimizer of a 2 
+Figure 1: The rectangle denot. e. a hyl)er- 
+rectangle in t, he mrkd-tree. The small 
+squares denote datapoints "owned" by 
+the node. Suppose t, here m'e just two 
+classes, with the given means, and co- 
+variances depicted by the ellipses. Small 
+circles indicate the locations wkhin the 
+node for which a9 (i.e. P(.r I c)) would 
+be extremized. 
+ND.HYPERRECT, using the Mahalanobis distance ;tlHD(x, x') = (x--x/)TE-t(x--x ') 
+(]'all these short. est ancl furthest squared distances :IIHD tt' and 3IHD mx. Then 
+'"i ((2rr) u '. 1/'-'exp( i MHD "ax) (9) 
+is a lower bOulKl for minx, G ND Cti.i, with a similar deftnit. ion of ay TM. Then write 
+rain u'ij 
+Xt  ND 
+,mx The inc-qual- 
+wlwre u,?" is ollr lower bound Where is a. similar definition for .i ' 
+ity i proveel by elelnenta. rv algebra, and requires that all qualtities are positive 
+(which tlex' are). We can oft, en tighten the bounds further using a procedure tirol 
+exploits the fact, that j tt:ij : l, but space does not perinit flirther discussion. 
+We will prtme if 
+tt,j and tt 'max _ 
+.i are close for all j. What should be the criterion for 
+cloueness? The first idea t. hat springs t.o mind is: Prune if Vj ('"' - 
+. wj < . 
+Bill such a simple criterion is not. suitable: some classes may be accumulating very 
+large sums of weights, whilst others may be accumulating very small sums. The 
+large-sum-weight clases can tolerat. e far looser bounds than the small-sum-xveight 
+classes. Here, then, is a. more satisfactory pruning criterion: Prune if Vj . (w? x - 
+w.y " < wtt'i ø) where w tøt is the total weight. awarded to class j over the entire 
+. 
+dataset, and r is some sma. ll constant. Sadly, w tø* is not. known in advance, but 
+happily we can find a lower bound on /,total of "sofar 
+a'j +ND.NUMPOINTS X U) mm where 
+w øl'' is the total weight awarded to class j so fa.r during the search over the kd-tree 
+The algorithm as described so far performs divide-and-conquer-xvith-cutoffs on the 
+set of datapoint. s. In addition, it is possible to achieve an extra accderation by 
+means of divide and ('onquer on the class centers. Suppose there were N = 100 
+classes. Instead of considering all 100 classes at all nodes, it is frequently possble 
+t.o determine at some node tha. t l.le maxthrum posible weight. t, x for some class j 
+is less than a miniscule fi'action of the minimum posible weight 
+,. for sme other 
+cla, k. ]'hu if xv over find t. hat in some nocl w)fi   AtfY  where A: 10 -4, 
+then class qi is removed fi'om consideration fi'om all descendents of the current node. 
+Frequently thi means that near the lree's leaves, only a tiny fi'action of the classes 
+compete for ownership of the dat. apoints, and thi leads to large time savings. 
+l/ery Fast EM-Based Mixture Model Clustering Using Multiresolution Kd-Trees 547 
+2 Results 
+We have subjected this approach t,o numerous Monte-C, arlo eml)irical tests. 
+we report Oll one set of such tests, created with tile following methodology. 
+Here 
+\Ve randolnly genera.re a, mixture of' Gaussians in M-dimensional space (by 
+defaldt .I : 2). The number of Gaussians, N is, by default, 20. Each 
+(;auian ha a mean lying within the unit hypercnbe, and a covariance 
+lnatrix ra. ndomly generated with diagonal elements between 0 up to 4 2 
+(1)y default,  = 0.05) and randoln non-diagonal elements that ensure sym- 
+met. tic positive definiteness. Thus the distance from a Gaussian center to 
+its 1-tandard-deviat, ion contour is of the order of magnitude of . 
+ß We ra.ndomly generate a dataset. fi'om the mixture model. The number of 
+points, R, i (by default,) 160,000. Fignre 2 shows a typical generated set 
+of Ganssians and datapoints. 
+ß We then build an mckd-tree for the dataset, and record the memory re- 
+qnirements and real time to build (on a Pentlure 200Mhz, in seconds). 
+ß We then run EM on the data. EM begins with an entirely different, set of 
+Gaussians, randomly generated using the same procedure. 
+ß XVe run 5 iterations of the conventional EM algorithm and the new mrkd- 
+tree-ha.seal algorithm. The new algorit. hn uses a default value of 0.1 for r. 
+XVe record the real t. ime (in seconds) for each iteration of each algorithm, 
+and we also record the mean log-likelihood score (1/)= logP(x [ ) 
+for the t[h model for both algorithms. 
+Fignre :I shows the nodes that are visited dnring Iteration 2 of the Fast, EM with 
+:V = (3 (:lasses. Table 1 shows the detailed results a the experimental parameters are 
+varied. Speedups vary froIn 8-fold to I000-fold. There are I00-fold speedups even 
+with very wide (non-local) Ganssians. In other experiments, similar results were also 
+obtained on real datasets that disobey the Gaussia.n assumption. There too, we find 
+one- and two-order-of-magnitude computational advantages with indistinguishable 
+statistical behavior (no bett. er and no worse) compared with conventional EM. 
+Real Data: Preliminary experiments in applying this to large datasets have been 
+encouraging. For three-dimensiolml galaxy clustering with 800,000 galaxies and 
+000 clusters, traditional EM needed 35 minutes per iteration, while the mrkd-trees 
+required only 13 seconds. With .6 million galaxies, t. raditional EM needed 70 
+minutes and mrkd-trees reqnired 14 seconds. 
+Conclusion 
+Tile use of varia.ble resolution structures for clustering has been suggested in many 
+places (e.g. [7, 8, 4, 9]). The BIRCH system, in particular, is popnlar in the database 
+community. BIRCH is, however, nnable to identify second-moment features of clus- 
+t, ers (such as non-axis-aligned spread). Our contributions have been the use of 
+multi-resolution approach, with associated computational benefits, and the intro- 
+dnction of an etcient algorithn that leaves the statistical aspects of mixtnre model 
+estimation unchanged. The growth of recent data mining algorihms that are 
+based on st. atistical foundations has freqently been justified by the following state- 
+merit: Using state-of-the-art statistical techniques is too expensive because such 
+techniqnes were not designed to handle large datasets and become int. ractabte with 
+millions of datapoints. In earlier work we provided evidence that this statement may 
+548 A. I. Moore 
+Effect of Number of Datapoints, R: 
+As R increases so does the computational advantage, 
+essentially linearly. The tree-build time (11 seconds 
+at worst) is a tiny cost compared with even just one 
+iteration of Regular EM (2385 seconds, on the big 
+dataset.) FinalSlowSecs: 238.5. FinalFastSecs: 3. 
+300 
+Effect of Number of Dim6nsions, 34: 
+2OO 
+As with many kd-tree algorithms, the benefits decline 
+as dimensionality increases, yet even in 6 dimensions, 
+there is an 8-fold advantage. FinalSlowSecs: 2742. 
+FinalFastSecs: 310.25. 
+Effect of Number of Classes, N: 
+Conventional EM slows down linearly with the num .... 
+her of classes. Fast EM is clearly sublinear, with a  oo 
+70-fold speedup even with 320 classes. Note how the ] oo 
+tree size grows. This is because more classes mean ,oo 
+a more uniform data distribution and fewer data 
+Num13er of centers 
+points "sharing tree leaves. FinalSlowSecs: 98. 
+FinalFastSecs: 143.3. 
+Effect of Tau, r: 
+The larger T, the more willing we are to prune during 
+the tree search, and thus the faster we search, but the 
+less accurately we mirror EM's statistical behavior. 
+Indeed xvhen r is large, the discrepancy in tile log 
+likelihood is relatively large. FinalSlowSecs: 584.5. 
+FinalFastSecs: 2. 
+300 
+oo  
+Effect of Standard Deviation, a: 
+Even with very wide Gaussians, with wide support, 
+we still get large savings. The nodes that are pruned 
+in these cases are rarely nodes with one class owning 
+all the probability, ])tit instead are node where all 
+classes have uon-zero, but little varying, probability. 
+FinalSlowSecs: 583. FinalFastSecs: 4.75. 
+500 
+200 
+Table 1: In all the above results all parameters were held at their default values except 
+for one, which varied as shown in the graphs. Each graph shows the factor by which 
+the new EM is faster than the conventional EM. Below each graph is the time to build 
+the mrkd-tree in seconds and the number of nodes in the tree. Note that although the 
+tree building cost is not included in the speedup calculation, it is negligible in all cases, 
+especially considering that only one tree build is needed for all EM iterations. Does the 
+approximate nature of this process result in inferior clusters? The answer is no: the 
+quality of clusters is indistinguishable between the slow and fast methods when measured 
+by log-likelihood and when viewed visually. 
+Very Fast EM-Based Mixture Model Clustering Using Multiresolution Kd-Trees 549 
+Figure 2: A typical set of Gaus- 
+sians generated by our random pro- 
+cedure. They in turn generate the 
+datasets upon which we compare 
+the performance of the old and new 
+implementatiois of EM. 
+Figure 3: The ellipses show the model 0 t at the start 
+of an EM iteration. The rectangles depict the mrkd- 
+tree nodes that were pruned. Observe larger rectan- 
+gles (and larger savings) in areas with less variation 
+in class probabilities. Note this is not merely able to 
+only prune where the data density is low. 
+not apply for locally weighted regression [5] or Bayesian network learning [6], and 
+we hope this paper provides some evidence that it. a.lso needn't apply to clustering. 
+References 
+[11 P Cheeseman and R. Oldford. 'electmg Modeh from Data: Artfical lntelhgerce arid $'tatzstcs 
+IV. ecture Notes m Statzstcs, vol. 89. Springer Verlag, 1994 
+Multiresolution Instance-based Learning In Proceedings of IJCAI-95. 
+[2] K Deng and A W Moore 
+Morgan I(aufmann, 1995. 
+[3] R O. I)uda al]d P E Hart Patterrz (Ylassficaton and Sce,e Analyszs John gViley & Sons, 1973. 
+[4] M Ester, H P. KriegM, and X. Xu A Database Ilkterrace for Clustering in Large Spatial Databases. 
+In Proceedng of the Frst International C'onfeencs on Ix'nowledge Dscovecy and Data M*znl. 
+AAAI Press, 1995. 
+[5] A. W Moore, J Schneider, and K Deng Efficmnt Locally Weighted Potynomml Regression Prechc- 
+tons In D Froher, echtor, Proceedzns of the 193t7 International :[achae Learrzzn C'onfe'ence. 
+Morgan I(aufmann, 1997 
+[6] Andrew W Moore and M. S. Lee Cached Suffi,nent Statistics for Effiment Maclame Learning wth 
+Large Datasets Journal oJ Art,ficmllatelhgece Research, 8, March 1998. 
+[7] S M. Omohundro. Efficient Algorithms wth Neural Network BMmvour. Journal of Complex 
+Sgstems, 1(2):273-347, 1987. 
+[8] S. M Omohundro Burnpwees for Efficient Fireetlon, Constrmnt, and Classification Learning. In R. P. 
+Lippmann, J E. Moody. and D S. Touretzky, editors, Advances m Neural Iformatzon Processzng 
+Systems 7 Morgan Kaufmann, 1991 
+[9] T. Zhang, R. Ranmkrmhnan, and M Lvny. BIRCH' An Efficient Data Clustering Method IBr Very 
+Large Databases In Proceedings of the Fifteenth AUSI $'IGAC'T-SIGMOD-S'IGART Symposium 
+on Prgncples of Database Sgstems : PODS I96. Assn for Computing Machinery, 1996. 

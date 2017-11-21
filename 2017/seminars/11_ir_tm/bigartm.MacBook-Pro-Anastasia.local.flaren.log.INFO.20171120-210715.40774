@@ -1,0 +1,30 @@
+Log file created at: 2017/11/20 21:07:15
+Running on machine: MacBook-Pro-Anastasia.local
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1120 21:07:15.288290 2806096704 c_interface.cc:127] Logging enabled to .
+I1120 21:07:15.291033 2806096704 instance.cc:401] MasterModelConfig.processors_count is automatically set to 4
+I1120 21:07:15.291993 155881472 processor.cc:701] Processor thread started
+I1120 21:07:15.292019 156954624 processor.cc:701] Processor thread started
+I1120 21:07:15.292055 2806096704 c_interface.cc:271] Creating MasterModel (id=1)...
+I1120 21:07:15.292058 174927872 processor.cc:701] Processor thread started
+I1120 21:07:15.292075 175464448 processor.cc:701] Processor thread started
+I1120 21:07:15.293166 175464448 processor.cc:709] Processor thread stopped
+I1120 21:07:15.293186 175464448 processor.cc:710] Total number of processed batches: 0
+I1120 21:07:15.294481 174927872 processor.cc:709] Processor thread stopped
+I1120 21:07:15.294524 174927872 processor.cc:710] Total number of processed batches: 0
+I1120 21:07:15.295737 156954624 processor.cc:709] Processor thread stopped
+I1120 21:07:15.295779 156954624 processor.cc:710] Total number of processed batches: 0
+I1120 21:07:15.296830 155881472 processor.cc:709] Processor thread stopped
+I1120 21:07:15.296859 155881472 processor.cc:710] Total number of processed batches: 0
+I1120 21:07:15.296967 2806096704 c_interface.cc:336] Disposing MasterComponent (id=1)...
+I1120 21:08:35.427276 2806096704 c_interface.cc:271] Creating MasterModel (id=2)...
+E1120 21:08:35.434363 2806096704 c_interface.cc:59] DiskReadException :  File vocab.kos.txt does not exist.
+I1120 21:10:34.363118 2806096704 c_interface.cc:271] Creating MasterModel (id=3)...
+I1120 21:10:35.357712 2806096704 c_interface.cc:372] Pass 46cc2641-84de-4f26-a819-98cf6230ef60 to MN4artm4core15MasterComponentEFvRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE
+I1120 21:10:35.359511 2806096704 c_interface.cc:386] Pass GatherDictionaryArgs: dictionary_target_name=46cc2641-84de-4f26-a819-98cf6230ef60, data_path=kos, symmetric_cooc_values=0 to MN4artm4core15MasterComponentEFvRKNS_20GatherDictionaryArgsEE
+I1120 21:10:35.361253 2806096704 dictionary_operations.cc:249] Found 4 batches in 'kos' folder
+I1120 21:10:35.434624 2806096704 dictionary_operations.cc:313] Find 6906 unique tokens in 3430 items
+I1120 21:15:24.437258 2806096704 c_interface.cc:271] Creating MasterModel (id=4)...
+I1120 21:15:24.439576 2806096704 c_interface.cc:372] Pass 737c17f7-de30-4c67-b987-b4a9ccbb7e25 to MN4artm4core15MasterComponentEFvRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE
+I1120 21:15:24.439798 2806096704 c_interface.cc:336] Disposing MasterComponent (id=2)...
+I1120 21:16:07.547408 2806096704 c_interface.cc:271] Creating MasterModel (id=5)...

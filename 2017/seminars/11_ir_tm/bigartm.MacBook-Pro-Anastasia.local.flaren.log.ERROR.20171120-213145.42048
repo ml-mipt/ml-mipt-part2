@@ -1,0 +1,5 @@
+Log file created at: 2017/11/20 21:31:45
+Running on machine: MacBook-Pro-Anastasia.local
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E1120 21:31:45.875831 265465856 processor.cc:749] Unable to open file kos_test/test_docs.batch, the batch will be skipped.
+E1120 21:31:45.876735 251772928 c_interface.cc:59] InvalidOperation :  Transform: no batches to process

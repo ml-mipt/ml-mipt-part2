@@ -1,0 +1,292 @@
+Barycentric Interpolators for Continuous 
+Space & Time Reinforcement Learning 
+Rmi Munos & Andrew Moore 
+Robotics Institute, Carnegie Mellon University 
+Pittsburgh, PA 15213, USA. 
+E-mail:{munos, awm)@cs.cmu.edu 
+Abstract 
+In order to find the optimal control of continuous state-space and 
+time reinforcement learning (RL) problems, we approximate the 
+value function (VF) with a particular class of functions called the 
+barycentric interpolators. We establish sufficient conditions under 
+which a RL algorithm converges to the optimal VF, even when we 
+use approximate models of the state dynamics and the reinforce- 
+ment functions. 
+I INTRODUCTION 
+In order to approximate the value function (VF) of a continuous state-space and 
+time reinforcement learning (RL) problem, we define a particular class of functions 
+called the barycentric interpolator, that use some interpolation process based on 
+finite sets of points. This class of functions, including continuous or discontinuous 
+piecewise linear and multi-linear functions, provides us with a general method for 
+designing RL algorithms that converge to the optimal value function. Indeed these 
+functions permit us to discretize the HJB equation of the continuous control problem 
+by a consistent (and thus convergent) approximation scheme, which is solved by 
+using some model of the state dynamics and the reinforcement functions. 
+Section 2 defines the barycentric interpolators. Section 3 describes the optimal con- 
+trol problem in the deterministic continuous case. Section 4 states the convergence 
+result for RL algorithms by giving sufficient conditions on the applied model. Sec- 
+tion 5 gives some computational issues for this method, and Section 6 describes the 
+approximation scheme used here and proves the convergence result. 
+Barycentric Interpolators for Continuous Reinforcement Learning 1025 
+2 DEFINITION OF BARYCENTRIC INTERPOLATORS 
+Let E  = {i}i be a set of points distributed at some resolution 5 (see (4) below) 
+on the state space of dimension d. 
+For any state x inside some simplex (1,.-., n), we say that x is the barycenter of 
+the {i)i:.., inside this simplex with positive coefficients p(x[i)of sum 1, called 
+the barycentric coordinates, if x = Y'4=i..n p(x[i).i. 
+Let VS(i) be the value of the function at the points i. V  is a barycentric 
+interpolator if for any state x which is the barycenter of the points {i}i=..n for 
+some simplex (1, ...,n), with the barycentric coordinates p(x]i), we have: 
+VS(x) = y.i=l..,p(xli).VS(i) 
+(1) 
+Moreover we assume that the simplex (1, ..., n) is of diameter 0(5). Let us describe 
+some simple barycentric interpolators: 
+Piecewise linear functions defined by some triangulation on the state 
+space (thus defining continuous functions), see figure 1.a, or defined at any 
+x by a linear combination of (d + 1) values at any points (, ...,+)  x 
+(such functions may be discontinuous at some boundaries), see figure 1.b. 
+Piecewise multi-linear functions defined by a multi-linear combination 
+of the 2  values at the vertices of d-dimensional rectangles, see figure 1.c. 
+In this case as well, we can build continuous interpolations or allow discon- 
+tinuities at the boundaries of the rectangles. 
+An important point is that the convergence result stated in Section 4 does not 
+require the continuity of the function. This permits us to build variable resolution 
+triangulations (see figure 1.b) or grid (figure 1.c) easily. 
+(a) 
+(c) 
+Figure 1: Some examples of barycentric approximators. These are piecewise con- 
+tinuous (a) or discontinuous (b) linear or multi-linear (c) interpolators. 
+Remark 1 In the general case, for a given x, the choice of a simplex (1, ..., n)  X 
+is not unique (see the two sets of grey and black points in figure 1.b and 1.c), and 
+once the simplex (1, ..., n)  x is defined, if n > d + 1 (for example in figure 1.c), 
+then the choice of the barycentric coordinates p(x]i) is also not unique. 
+Remark 2 Depending on the interpolation method we use, the time needed for com- 
+puting the values will vary. Following [Dav96], the continuous multi-linear interpo- 
+lation must process 2  values, whereas the linear continuous interpolation inside a 
+simplex processes (d + 1) values in O(dlogd) time. 
+1026 R. Munos and A. W. Moore 
+In comparison to [Gor95], the functions used here are averagers that satisfy the 
+barycentric interpolation property (1). This additional geometric constraint permits 
+us to prove the consistency (see (15) below) of the approximation scheme and thus 
+the convergence to the optimal value in the continuous time case. 
+3 THE OPTIMAL CONTROL PROBLEM 
+Let us describe the optimal control problem in the deterministic and discounted case 
+for continuous state-space and time variables and define the value function that we 
+intend to approximate. We consider a dynamical system whose state dynamics 
+depends on the current state x(t)  0 (the state-space, with O an open subset of 
+ra) and control u(t)  U (compact subset) by a differential equation: 
+dx 
+dt = re(t), u(t)) (2) 
+From equation (2), the choice of an initial state x and a control function u(t) leads 
+to a unique trajectories x(t) (see figure 2). Let r be the exit time from O (with 
+the convention that if x(t) always stays in O, then r = c). Then, we define the 
+functional J as the discounted cumulative reinforcement' 
+j0 T 
+J(x; u(.)) = 3`tr(x(t), .(t))dt + 3`T 
+where r(x, u) is the running reinforcement and R(x) the boundary reinforcement. 
+3' is the discount factor (0 _< 3` < 1). We assume that f, r and R are bounded and 
+Lipschitzian, and that the boundary 00 is C 2. 
+RL uses the method of Dynamic Programming (DP) that introduces the value 
+function (VF) ß the maximal value of J as a function of initial state x ß 
+V(x) =supJ(x;u(.)). 
+From the DP principle, we deduce that V satisfies a first-order differential equation, 
+called the Hamilton-Jacobi-Bellman (HJB) equation (see [FS93] for a survey) ß 
+Theorem 1 If V is differentiable at x  O, let DV(x) be the gradient of V at x, 
+then the following HJB equation holds at x. 
+H(V, DV, x) d=f V(x) ln3` + sup[DV(x).f(x, u)+ r(x, u)] = 0 
+uU 
+(3) 
+The challenge of RL is to get a good approximation of the VF, because from V 
+we can deduce the optimal control: for state x, the control u* (x) that realizes the 
+supremum in the HJB equation provides an optimal (feed-back) control law. 
+The following hypothesis is a sufficient condition for V to be continuous within O 
+(see [Bar94]) and is required for proving the convergence result of the next section. 
+Hyp 1: For x G 00, let n--+(x) be the outward normal of O at x, we assume that' 
+-If 3u G U, s.t. f(x, u). n--+(x) <_ 0 then 3v G U, s.t. f(x, v) n--+(x) <0. 
+-IfBu  v, > 0 then By  v, > o. 
+which means that at the states (if there exist any) where some trajectory is tangent 
+to the boundary, there exists, for some control, a trajectory strictly coming inside 
+and one strictly leaving the state space. 
+Barycentric Interpolators for Continuous Reinforcement Learning 1027 
+Figure 2: The state space and the set 
+of points E  (the black dots belong to 
+the interior and the white ones to the 
+boundary). The value at some point ( 
+is updated, at step n, by the discounted 
+value at point r/, E (, 2, a). The main 
+requirement for convergence is that the 
+points r/, approximate r/ in the sense : 
+p(rnli) - p(rli) + 0(5) (i.e. the On 
+belong to the grey area). 
+4 THE CONVERGENCE RESULT 
+Let us introduce the set of points E  = {i}, composed of the interior (E  N O) 
+and the boundary ((9E  = Eø\ O), such that its convex hull covers the state space 
+O, and performing a discretization at some resolution 5 ß 
+VxEO, inf IIx-,11<6 and vxEoo inf 11-:116 (4) 
+,EZnO EOZ 
+Moreover, we approximate the control spce U by some finite control spaces U 5 C U 
+such that for   5 , U 5' C U 5 and li0 U 5 = U. 
+We would like to update the value of any' 
+- interior point   E 5  O with the discounted values at state (, u) (figure 2)' 
+sup 
+uU  
+for some state qn(, u), some time dely vn(, u) and some reinforcement rn(, u). 
+- boundary point   OZ 6 with some terminal reinforcement Rn() ß 
+V2+l() * n(e) (6) 
+The following theorem states that the values V2 computed by a RL algorithm using 
+the model (because of some  priori partial uncertainty of the state dynamics and 
+the reinforcement functions) %(, u), vn(, u), rn(, u) and Rn() converge to the 
+optimal value function as the number of iterations n   nd the resolution 5  0. 
+Let us define the state ,(, u) (see figure 2) ß 
+= + u).f((, 
+for some time dely v(, u) (with kid  v(, u)  k25 for some constants k ) 0 nd 
+k2 > 0), and let p(,[i) (resp. p(%[i)) be the barycentric coordinate of  inside a 
+simplex containing it (resp. qn inside the same simplex). We will write q, q, v, r, 
+..., instead of ,(½, u), q (, u), v(½, u), r(, u), ... when no confusion is possible. 
+Theorem 2 Assume that the hypotheses of the previous sections hold, and that for 
+any resolution 5, we use barycentric interpolators V  defined on state spaces E  
+(satisfying (4)) such that all points of E  ffl 0 are regularly updated with rule (5) 
+and all points of (9E  are updated with rule (6) at least once. Suppose that rl, , r,, 
+rn and -Rn approximate r h r, r and _R in the sense ß 
+1028 R. Munos and A. W. Moore 
+then we have lim- Vn s = V uniformly on any compact fl C 0 (i.e. Ve > 0,Vfl 
+5-- 0 
+compact C O, 3A, BN , such that ¾5 _ A,¾n _ N, supzrm ]Vd- V] _ e). 
+Remark 3 For a given value orS, the rule (5) is not a DP updating rule for some 
+Markov Decision Problem (MDP) since the values rn, rn, rn depend on n. This 
+point is important in the RL framework since this allows on-line improvement of 
+the model of the state dynamics and the reinforcement functions. 
+Remark 4 This result extends the previous results of convergence obtained by 
+Finite-Element or Finite-Difference methods (see [Mun97]). 
+This theoretical result can be applied by starting from a rough E 5 (high 5) and by 
+combining to the iteration process (n - oo) some learning process of the model 
+(r/n - r/) and a increasing process of the number of points (5 - 0). 
+5 COMPUTATIONAL ISSUES 
+From (8) we deduce that the method will also converge if we use an approximate 
+barycentric interpolator, defined at any state x  ((1,...,(n) by the value of the 
+barycentric interpolator at some state x'  ((1, ..., ,) such that p(xli) = p(xl(i ) + 
+0(5) (see figure 3). The fact that we need not be completely accurate can be 
+Aqprox-linear ----___. 
+5 x x 
+Figure 3: The linear function and 
+the approximation error around it 
+(the grey area). The value of the 
+approximate linear function plotted 
+here at some state x is equal to the 
+value of the linear one at x . Any 
+such approximate barycenter inter- 
+polator can be used in (5). 
+used to our advantage. First, the computation of barycentric coordinates can use 
+very fast approximate matrix methods. Second, the model we use to integrate the 
+dynamics need not be perfect. We can make an 0(52 ) error, which is useful if we 
+are learning a model from data: we need simply arrange to not gather more data 
+than is necessary for the current 5. For example, if we use nearest neighbor for 
+our dynamics learning, we need to ensure enough data so that every observation 
+is 0(52) from its nearest neighbor. If we use local regression, then a mere 0(5) 
+density is all that is required [Omo87, AMS97]. 
+6 PROOF OF THE CONVERGENCE RESULT 
+6.1 Description of the approximation scheme 
+We use a convergent scheme derived from Kushner (see [Kus90]) in order to ap- 
+proximate the continuous control problem by a finite MDP. The HJB equation is 
+discretized, at some resolution 5, into the following DP equation ß for (  E  N O, 
+VS() = F s [VS(.)] () dej supe { Ee.p(,l,).VS(,) + .) (12) 
+and for   0Z , V  () = R(). This is a fixed-point equation and we can prove that, 
+thanks to the discount factor , it satisfies the "strong" contraction property' 
+supg I 6 _ v6 - V6[ for A < 1 (13) 
+V+ 1 [ A. supg some 
+Barycentric Interpolators for Continuous Reinforcement Learning 1029 
+from which we deduce that there exists exactly one solution V 5 to the DP equation, 
+which can be computed by some value iteration process : for any initial V0 , we 
+iterate Vd+ +- F 5 [Vd]. Thus for any resolution 5, the values Vd --> V 5 as n --> oo. 
+Moreover, as V 5 is a barycentric interpolator and from the definition (7) of r/, 
+F 5 [VS(.)] ()= supe U, {7TVS( +r.f(,u))+ r.r} (14) 
+from which we deduce that the scheme F 5 is consistent: in a formal sense, 
+lim sups-}0 IFS[W](x)- W(x)l 0 H(W, DW, x) (15) 
+and obtain, from the general convergence theorem of [BS91] (and a result of strong 
+unicity obtained from hyp.1), the convergence of the scheme: V 5 --> V as 5 --> 0. 
+6.2 Use of the "weak contraction" result of convergence 
+Since in the RL approach used here, we only have an approximation r/,, r, ... of 
+the true values r/, r, ..., the strong contraction property (13) does not hold any 
+more. However, in previous work ([Mun98]), we have proven the convergence for 
+some weakened conditions, recalled here ß 
+If the values V updated by some algorithm satisfy the "weak" contraction prop- 
+erty with respect to a solution V 5 of a convergent approximation scheme (such as 
+the previous one (12))' 
+sups,no IV+l - v*l _< (1 - k.5).supr., v - vSI + o(5) (16) 
+sup0 s , IV+- Vs[ = 0(5) (17) 
+for some positive constant k, (with the notation f(5) _< 0(5) iff 3g(5): 0(5) with 
+f(5) _< g(5)) then we have lim- V - V uniformly on any compact [2 C O 
+5-}0 
+(i.e. Vs > 0, V2 compact C O, 3A and N such that V5 < A, Vn >_ N, 
+sup,o v2 - vl-< *). 
+6.3 Proof of theorem 2 
+Now we need to prove (16). Let us estimate the error 
+between the value V 5 of the DP equation (12) and the values 
+(5) after one iteration ß 
+We are going to use the approximations (8), (9), (10) and (11) to deduce that the 
+weak contraction property holds, and then use the result of the previous section to 
+prove theorem 2. 
+The proof of (17) is immediate since, from (6) and (11) we have: V 6 0E , 
+[v+()- vS()l: 1()- ()1 = o(5) 
+: vS()- 
+computed by rule 
+E,+()- supeu, ((. [7Tp(rll(i).VS((i)- 7p(rl,l(i).V((i)] + r.r- r,r, 
+E+(): sup {7  E. (1i) - p(l)] Va() + [7  -7"]Ee, p(l&).va(&) 
++  E. p(, I). [v(,)- vd(,)] +  [- ] + [- ]} 
+By using (9) (from which we deduce ß , = , + 0(52)) and (10), we deduce ß 
+I+()1 5 supers,{, . e.Ml&)-p(nl&)]v*(&) (18) 
+1030 R. Munos and A. W. Moore 
+From the basic properties of the coefficients p(rlli ) and p(rtl&) we have' 
+Ee, - Va(&) - - Ira(&) - (19) 
+Moreover, IVa(i)- Va()l  IVa(i) - V(,)I + IV(i)- V()I + [V() - Va()l. 
+From the convergence of the scheme V , we have supn V 6 - V a 0 for any 
+compact  C O and from the continuity of V and the fact that the support of the 
+simplex {(} 3 q is O(), we have supsn ]V((i)- W()[  0 and deduce that ß 
+supz, n W*((i) - W6(()[  0. Thus, from (19) and (8), we obtain' 
+The "weak" contraction propery (16) holds : from he propery of he 
+i for small values of r, from (9) and [ha[ 
+exponential function 
+r > k we deduce [ha " < 1- k*ln!+O(2) and from (18) and (20) we 
+deduce ha6' 
+,  and he proper6y (16) holds. Thus 6he "weak con6racion" resuk 
+wkhk= ln, 
+of convergence (described in section 6.2) applies and convergence occurs. 
+FUTURE WORK 
+This work proves the convergence to the optimal value as the resolution tends to the 
+limit, but does not provide us with the rate of convergence. Our future work will 
+focus on defining upper bounds of the approximation error, especially for variable 
+resolution discretizations, and we will also consider the stochastic case. 
+ACKNOWLEDGMENTS 
+This research was sponsored by DASSAULT-AVIATION and CMU. 
+References 
+JAMS97] 
+[Bar94] 
+[BS91] 
+[Dav96] 
+[FS93] 
+[Oor95] 
+[Kus90] 
+[Mun97] 
+[Mun98] 
+[0mo87] 
+C. G. Atkeson, A. W. Moore, and S. A. Schaal. Locally Weighted Learning. AI 
+Review, 11:11-73, April 1997. 
+Guy Barles. Solutions de viscositd des dquations de Hamilton-Jacobi, volume 17 
+of Mathmatiques et Applications. Springer-Verlag, 1994. 
+Guy Bades and P.E. Souganidis. Convergence of approximation schemes for 
+fully nonlinear second order equations. Asymptotic Analysis, 4:271-283, 1991. 
+Scott Davies. Multidimensional triangulation and interpolation for reinforcement 
+learning. Advances in Neural Information Processing Systems, 8, 1996. 
+Wendell H. Fleming and H. Mete Soner. Controlled Markov Processes and Vis- 
+cosity Solutions. Applications of Mathematics. Springer-Verlag, 1993. 
+G. Gordon. Stable function approximation in dynamic programming. Interna- 
+tional Conference on Machine Learning, 1995. 
+Harold J. Kushner. Numerical methods for stochastic control problems in con- 
+tinuous time. SIAM J. Control and Optimization, 28:999-1048, 1990. 
+Rdmi Munos. A convergent reinforcement learning algorithm in the continuous 
+case based on a finite difference method. International Joint Conference on 
+Artificial Intelligence, 1997. 
+Rmi Munos. A general convergence theorem for reinforcement learning in the 
+continuous case. European Conference on Machine Learning, 1998. 
+S. M. Omohundro. Efficient Algorithms with Neural Network Behaviour. Journal 
+of Complex Systems, 1(2):273-347, 1987. 

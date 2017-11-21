@@ -1,0 +1,308 @@
+A Theory of Mean Field Approximation 
+T. Tanaka 
+Department of Electronics and Information Engineering 
+Tokyo Metropolitan University 
+1-1, Minami-Osawa, Hachioji, Tokyo 192-0397 Japan 
+Abstract 
+I present a theory of mean field approximation based on information ge- 
+ometry. This theory includes in a consistent way the naive mean field 
+approximation, as well as the TAP approach and the linear response the- 
+orem in statistical physics, giving clear information-theoretic interpreta- 
+tions to them. 
+1 INTRODUCTION 
+Many problems of neural networks, such as learning and pattern recognition, can be cast 
+into a framework of statistical estimation problem. How difficult it is to solve a particular 
+problem depends on a statistical model one employs in solving the problem. For Boltzmann 
+machines[l ] for example, it is computationally very hard to evaluate expectations of state 
+variables from the model parameters. 
+Mean field approximation[2], which is originated in statistical physics, has been frequently 
+used in practical situations in order to circumvent this difficulty. In the context of statistical 
+physics several advanced theories have been known, such as the TAP approach[3], linear 
+response theorem[4], and so on. For neural networks, application of mean field approxi- 
+mation has been mostly confined to that of the so-called naive mean field approximation, 
+but there are also attempts to utilize those advanced theories[5, 6, 7, 8]. 
+In this paper I present an information-theoretic formulation of mean field approximation. It 
+is based on information geometry[9], which has been successfully applied to several prob- 
+lems in neural networks[10]. This formulation includes the naive mean field approximation 
+as well as the advanced theories in a consistent way. I give the formulation for Boltzmann 
+machines, but its extension to wider classes of statistical models is possible, as described 
+elsewhere[ 11 ]. 
+2 BOLTZMANN MACHINES 
+A Boltzmann machine is a statistical model with N binary random variables s/E {-1, 1}, 
+i = 1, ..., N. The vector s = (s, ..., sN) is called the state of the Boltzmann machine. 
+352 T. Tanaka 
+The state s is also a random variable, and its probability law is given by the Boltzmann- 
+Gibbs distribution 
+p($) = e -E(s)-p(p), (1) 
+where E(s) is the "energy" defined by 
+Z(s) -- - E hi si - E wijsisj (2) 
+i (i j) 
+with h i and w ij the parameters, and -b(p) is determined by the normalization condition 
+and is called the Helmholtz free energy of p. The notation (i j) means that the summation 
+should be taken over all distinct pairs. 
+Let l]i(p ) __---- (Si) p and l]ij(P) ---- (SiSj)p, where (')p means the expectation with respect to 
+p. The following problem is essential for Boltzmann machines: 
+Problem 1 Evaluate the expectations rh(p) and rhj (p) from the parameters h i and w 0 of 
+the Boltzmann machine p. 
+3 INFORMATION GEOMETRY 
+3.1 ORTHOGONAL DUAL FOLIATIONS 
+A whole set .M of the Boltzmann-Gibbs distribution (1) realizable by a Boltzmann machine 
+is regarded as an exponential family. Let us use shorthand notations I, J, ..., to represent 
+distinct pairs of indices, such as ij. The parameters h i and w I constitute a coordinate 
+system of.M, called the canonical parameters of.M. The expectations  and r/i constitute 
+another coordinate system of .M, called the expectation parameters of.M. 
+Let .To be a subset of .M on which w  are all equal to zero. I call .To the factorizable 
+submodel of.M since p(s) E .To can be factorized with respect to si. On .To the problem 
+is easy: Since w  are all zero, si are statistically independent of others, and therefore 
+r/i = tanh - h i and Iii j : l]iI]j hold. 
+Mean field approximation systematically reduces the problem onto the factorizable sub- 
+model .To. For this reduction, I introduce dual foliations .T and .A onto .M. The foliation 
+.T = {.T(w)}, .M = [.J, .T(w), is parametrized by w = (w ) and each leaf.T(w) is 
+defined as 
+.T(w) : {p(s) l (p): wI}. (3) 
+The leaf .T(0) is the same as .To, the factorizable submodel. Each leaf .T(w) is again an 
+exponential family with h i and r/i the canonical and the expectation parameters, respec- 
+tively. A pair of dual potentials is defined on each leaf, one is the Helmholtz free energy 
+½(p) = b(p) and another is its Legendre transform, or the Gibbs free energy, 
+½(P) --= E hi(p)rli(P) - ½(p)' (4) 
+i 
+and the parameters ofp E .T(w) are given by 
+rli(p) : Oi½(p), hi(p): oi½(p), (5) 
+where Oi -- (O/Oh i) and 0 i  (O/Orli). Another foliation A = {A(m)}, .M : 
+[J. A(m), is paramctrizcd by m -_- (mi) and each leaf A(m) is defined as 
+A(m) = {p(s) [ Ii(p) : mi}. (6) 
+A Theory of Mean Field Approximation 353 
+Each leaf.A(m) is not an exponential family, but again a pair of dual potentials½ and ½ is 
+defined on each leaf, the former is given by 
+½(p): O(p) - hi(p),i(p) ( = 
+i 
+(7) 
+and the latter by its Legendre transform as 
+½(p) = w'(p)v,(p) - 
+I 
+(8) 
+and the parameters of p E .A(m) are given by 
+(9) 
+where 0, = (O/Ow') and 0' -- (O/Or/,). These two foliations form the orthogonal dual 
+foliations, since the leaves .T'(w) and .A(m) are orthogonal at their intersecting point. I 
+introduce still another coordinate system on .M, called the mixed coordinate system, on 
+the basis of the orthogonal dual foliations. It uses a pair (m, w) of the expectation and 
+the canonical parameters to specify a single element p E .M. The m part specifies the leaf 
+.A(m) on which p resides, and the w part specifies the leaf.T'(w). 
+3.2 REFORMULATION OF PROBLEM 
+Assume that a target Boltzmann machine q is given by specifying its parameters h i (q) and 
+w'(q). Problem I is restated as follows: evaluate its expectations rli(q) and r/,(q) from 
+those parameters. To evaluate r/i mean field approximation translates the problem into the 
+following one: 
+Problem 2 Let f'(w) be a leaf on which q resides. Find p  f'(w) which is the closest 
+to q. 
+At first sight this problem is trivial, since one immediately finds the solution p: q. How- 
+ever, solving this problem with respect to r//(p) is nontrivial, and it is the key to understand- 
+ing of mean field approximation including advanced theories. 
+Let us measure the proximity ofp to q by the Kullback divergence 
+D(pllq) : y p(s) log -- 
+q(s)' (10) 
+then solving Problem 2 reduces to finding a minimizer p ½ .T'(w) of D(pllq) for a given q. 
+For p, q  .(w), D(pllq) is expressed in terms of the dual potentials ½ and ½ of.T'(w) as 
+D(pllq) = ½(q) + (p) - E hi(q)rli(P)' 
+i 
+(11) 
+The minimization problem is thus equivalent to minimizing 
+(P) --= ½(P) -- E hi(q)zIi(P)' (12) 
+i 
+since ½(q) in eq. (11) does not depend on p. Solving the stationary condition cCG(p) = 0 
+with respect to rh(p) will give the correct expectations rli(q), since the true minimizer is 
+p = q. However, the scenario is in general intractable since ½(p) cannot be given explicitly 
+as a function of/]i (P)- 
+354 T. Tanaka 
+3.3 PLEFKA EXPANSION 
+The problem is easy if w I = 0. In this case ((p) is given explicitly as a function of 
+mi ------ i(P) as 
+1 [ l+mi 1 - ß 
+½(P) "--  E (1 -]- ?Tti)log 9. -]- (1 -- ?Tti)log - ]. (13) 
+i 
+Minimization of G(p) with respect to mi gives the solution mi : tanh h i as expected. 
+When w I -/= 0 the expression (13) is no longer exact, but to compensate the error one may 
+use, leaving convergence problem aside, the Taylor expansion of((w) _: ((p) with respect 
+tow: 0, 
+1 
+½(o) + + 
+I IJ 
+1 
++ (o, +.... 
+IJK 
+(14) 
+This expansion has been called the Plefka expansion[12] in the literature of spin glasses. 
+Note that in considering the expansion one should temporarily assume that m is fixed: One 
+can rely on the solution m evaluated from the stationary condition G(p) - 0 only if the 
+expansion does not change the value of m. 
+The coefficients in the expansion can be efficiently computed by fully utilizing the orthog- 
+onal dual structure of the foliations. First, we have the following theorem: 
+Theorem 1 The coefficients of the expansion (14) are given by the cumulant tensors of the 
+corresponding orders, defined on ,A(m). 
+Because ( = -½ holds, one can consider derivatives ore instead of those of(. The first- 
+order derivatives oq½ are immediately given by the property of the potential of the leaf 
+,A(m) (eq. (9)), yielding 
+= w(p0), (15) 
+where P0 denotes the distribution on ,A(m) corresponding to w - 0. The coefficients of 
+the lowest-orders, including the first-order one, are given by the following theorem. 
+Theorem 2 The first-, second-, and third-order coefficients of the expansion (14) are given 
+by: 
+: .i(p0) 
+OlOj½(o) - 
+OiOJOK½(O) -- 
+(16) 
+where œ -- logpo. 
+The proofs will be found in [1 1]. It should be noted that, although these results happen to 
+be the same as the ones which would be obtained by regarding ,A(m) as an exponential 
+family, they are not the same in general since actually ,A(m) is not an exponential family; 
+for example, they are different for the fourth-order coefficients. 
+The explicit formulas for these coefficients for Boltzmann machines are given as follows: 
+ß For the first-order, 
+0I½(0) ---- IlgiIlgi' (I: ii'). (17) 
+A Theory of Mean Field Approximation 355 
+ß For the second-order, 
+2 
+- - mi,) 
+and 
+(I = ii'), 
+00a½(0): 0 (I  J). 
+For the third-order, 
+2 
+(0I)a(O): 4mimi,(1 -- m,2.)(1 -- mi, ) (I = ii'), 
+and for I - i j, J = jk, K = ik for three distinct indices i, j, and k, 
+o, ojoK½(o) : - - - 
+For other combinations of I, J, and K, 
+00j0:½(0) = 0. 
+(18) 
+(19) 
+(20) 
+(21) 
+(22) 
+4 MEAN FIELD APPROXIMATION 
+4.1 MEAN FIELD EQUATION 
+Truncating the Plefka expansion (14) up to n-th order term gives n-th order approximations, 
+½n(P) and Gn(p) -- ½n(P)--Y]i hi(q)rlgi ß The Weiss free energy, which is used in the naive 
+mean field approximation, is given by ½1 (P). The TAP approach picks up all relevant terms 
+of the Plefka expansion[l 2], and for the SK model it gives the second-order approximation 
+The stationary condition OiGn(p) - 0 gives the so-called mean field equation, from which 
+a solution of the approximate minimization problem is to be determined. For n - 1 it takes 
+the following familiar form, 
+tanh - mi -- h i - E wiJmj -- 0 (23) 
+jgi 
+and for n: 2 it includes the so-called Onsager reaction term. 
+tanh-mi-h i - EwiJmj + E(wij)2(1-m)mi :0 (24) 
+ji ji 
+Note that all of these are expressed as functions of m/. 
+Geometrically, the mean field equation approximately represents the "surface" hi(p) : 
+hi(q) in terms of the mixed coordinate system of .A4, since for the exact Gibbs free energy 
+(7, the stationary condition OiG(p) = 0 gives hi(p) - hi(q) = 0. Accordingly, the ap- 
+proximate relation h i(p) = OiCn(p), for fixed m, represents the n-th order approximate 
+expression of the leaf .A(m) in the canonical coordinate system. The fit of this expression 
+to the true leaf.A(m) around the point w = 0 becomes better as the order of approximation 
+gets higher, as seen in Fig. 1. Such a behavior is well expected, since the Plefka expansion 
+is essentially a Taylor expansion. 
+4.2 LINEAR RESPONSE 
+For estimating r/(p) one can utilize the linear response theorem. In information geomet- 
+rical framework it is represented as a trivial identity relation for the Fisher information on 
+the leaf.T'(w). The Fisher information matrix (gij), or the Riemannian metric tensor, on 
+the leaf.T'(w), and its inverse (gij) are given by 
+gij : OiOj½(p) : rlij(p) - rli(p)rlj(p ) (25) 
+356 T. Tanaka 
+0.75 
+7712 
+0.5 
+0.25 
+0 
+0 
+0.5 1 
+771 '-772 
+0. 
+0.499 
+i/ 
+A(m).. / ",. 
+0.5 0.501 
+771 =772 
+....... Oth order 
+..... 1st order 
+--- 2nd order 
+--- 3rd order 
+.... 4th order 
+Figure 1' Approximate expressions of,A(m) by mean field approximations of several or- 
+ders for 2-unit Boltzmann machine, with (m, m2) = (0.5, 0.5) (left), and their magnified 
+view (right). 
+Figure 2: Relation between "naive" approximation and present theory. 
+and 
+gij = oioj(p), (26) 
+respectively. In the framework here, the linear response theorem states the trivial fact that 
+those are the inverse of the other. In mean field approximation, one substitutes an approxi- 
+mation ½n(P) in place of ½(p) in eq. (26)to get an approximate inverse of the metric 
+The derivatives in eq. (26) can be analytically calculated, and therefore (9) can be numer- 
+ically evaluated by substituting to it a solution mi of the mean field equation. Equating its 
+inverse to (gij) gives an estimate of r/i(p) by using eq. (25). So far, Problem I has been 
+solved within the framework of mean field approximation, with m/and r/ij obtained by the 
+mean field equation and the linear response theorem, respectively. 
+5 DISCUSSION 
+Following the framework presented so far, one can in principle construct algorithms of 
+mean field approximation of desired orders. The first-order algorithm with linear response 
+has been first proposed and examined by Kappen and Rodrfguez[7, 8]. Tanaka[13] has 
+formulated second- and third-order algorithms and explored them by computer simulations. 
+It is also possible to extend the present formulation so that it can be applicable to higher- 
+order Boltzmann machines. Tanaka[14] discusses an extension of the present formulation 
+to third-order Boltzmann machines: It is possible to extend linear response theorem to 
+higher-orders, and it allows us to treat higher-order correlations within the framework of 
+mean field approximation. 
+A Theory of Mean Field Approximation 357 
+The common understanding about the "naive" mean field approximation is that it minimizes 
+Kullback divergence D(p0llq) with respect to P0 E '0 for a given q. It can be shown that 
+this view is consistent with the theory presented in this paper. Assume that q E '(w) 
+and p0  ,A(m), and let p be a distribution corresponding the intersecting point of the 
+leaves '(w) and ,A(m). Because of the orthogonality of the two foliations ' and ,A the 
+following "Pythagorean law[9]" holds (Fig. 2). 
+D(Pollq) = D(PollP) + D(pllq) (27) 
+Intuitively, D(p0 liP) measures the squared distance between '(w) and 0, and is a second- 
+order quantity in w. It should be ignored in the first-order approximation, and thus 
+D(pollq) D(pl{q) holds. Under this approximation minimization of the former with 
+respect to P0 is equivalent to that of the latter with respect to p, which establishes the re- 
+lation between the "naive" approximation and the present theory. It can also be checked 
+directly that the first-order approximation of D(pllq) exactly gives D(llq), the Weiss free 
+energy. 
+The present theory provides an alternative view about the validity of mean field approx- 
+imation: As opposed to a common "belief" that mean field approximation is a good one 
+when N is sufficiently large, one can state from the present formulation that it is so when- 
+ever higher-order contribution of the Plefka expansion vanishes, regardless of whether N 
+is large or not. This provides a theoretical basis for the observation that mean field approx- 
+imation often works well for small networks. 
+The author would like to thank the Telecommunications Advancement Foundation for fi- 
+nancial support. 
+References 
+[1] Ackley, D. H., Hinton, G. E., and Sejnowski, T. J. (1985) A learning algorithm for Boltzmann 
+machines. Cognitive Science 9:147-169. 
+[2] Peterson, C., and Anderson, J. R. (1987) A mean field theory learning algorithm for neural 
+networks. Complex Systems 1: 995-1019. 
+[3] Thouless, D. J., Anderson, P. W., and Palmer, R. G. (1977) Solution of 'Solvable model of a 
+spin glass'. Phil. Mag. 35 (3): 593-601. 
+[4] Parisi, G. (1988) Statistical Field TheoN'. Addison-Wesley. 
+[5] Galland, C. C. (1993) The limitations of deterministic Boltzmann machine learning. Network 4 
+(3): 355-379. 
+[6] Hofmann, T. and Buhmann, J. M. (1997) Pairwise data clustering by deterministic annealing. 
+IEEE Trans. Patt. Anal. & Machine btell. 19 (1): 1-14; Errata, ibid. 19 (2): 197 (1997). 
+[7] Kappen, H. J. and Rodrfguez, F. B. (1998) Efficient learning in Boltzmann machines using 
+linear response theory. Neural Computation. 10 (5): 1137-1156. 
+[8] Kappen, H. J. and Rodrfguez, F. B. (1998) Boltzmann machine learning using mean field theory 
+and linear response correction. In M. 1. Jordan, M. J. Kearns, and S. A. Solla (Eds.), Advances 
+in Neural biformation Processing Systems 10, pp. 280-286. The MIT Press. 
+[9] Amari, S.-I. (1985) Differential-Geometrical Method in Statistics. Lecture Notes in Statistics 
+28, Springer-Verlag. 
+[10] Amari, S.-I., Kurata, K., and Nagaoka, H. (1992) Information geometry of Boltzmann ma- 
+chines. IEEE Trans. Neural Networks 3 (2): 260-271. 
+[ 11] Tanaka, T Information geometry of mean field approximation. preprint. 
+[12] Plefka, P. (1982) Convergence condition of the TAP equation for the infinite-ranged Ising spin 
+glass model. J. Phys. A: Math. Gen. 15 (6): 197f-1978. 
+[13] Tanaka, T. (1998) Mean field theory of Boltzmann machine learning. Phys. Rev. E. 58 (2): 
+2302-2310. 
+[ 14] Tanaka, T 11998) Estimation of third-order correlations within mean field approximation. In S. 
+Usui and T Omori (Eds.), Proc. Fifth International Conference on Neural bformation Process- 
+ing, vol. 1, pp. 554-557. 
+PART IV 
+ALGORITHMS AND ARCHITECTURE 

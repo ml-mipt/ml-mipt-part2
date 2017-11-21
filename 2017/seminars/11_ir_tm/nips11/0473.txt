@@ -1,0 +1,280 @@
+Sparse Code Shrinkage: Denoising by 
+Nonlinear Maximum Likelihood Estimation 
+Aapo HyvSrinen, Patrik Hoyer and Erkki Oja 
+Helsinki University of Technology 
+Laboratory of Computer and Information Science 
+P.O. Box 5400, FIN-02015 HUT, Finland 
+aapo. hyvar inenhut. f i, patrik. hoyerhut. f i, erkki. oj ahut. f i 
+http://www. cis. hut. f i/proj ects/ica/ 
+Abstract 
+Sparse coding is a method for finding a representation of data in 
+which each of the components of the representation is only rarely 
+significantly active. Such a representation is closely related to re- 
+dundancy reduction and independent component analysis, and has 
+some neurophysiological plausibility. In this paper, we show how 
+sparse coding can be used for denoising. Using maximum likelihood 
+estimation of nongaussian variables corrupted by gaussian noise, we 
+show how to apply a shrinkage nonlinearity on the components of 
+sparse coding so as to reduce noise. Furthermore, we show how to 
+choose the optimal sparse coding basis for denoising. Our method 
+is closely related to the method of wavelet shrinkage, but has the 
+important benefit over wavelet methods that both the features and 
+the shrinkage parameters are estimated directly from the data. 
+1 Introduction 
+A fundamental problem in neural network research is to find a suitable representa- 
+tion for the data. One of the simplest methods is to use linear transformations of the 
+observed data. Denote by x = (Xl, x2, ..., xn) T the observed n-dimensional random 
+vector that is the input data (e.g., an image window), and by s = (s, s2, ...,sn) T 
+the vector of the linearly transformed component variables. Denoting further the 
+n x n transformation matrix by W, the linear representation is given by 
+s- Wx. (1) 
+474 A. Hyviirinen, P Hoyer and E. Oja 
+We assume here that the number of transformed components equals the number of 
+observed variables, but this need not be the case in general. 
+An important representation method is given by (linear) sparse coding [1, 10], in 
+which the representation of the form (1) has the property that only a small number 
+of the components si of the representation are significantly non-zero at the same 
+time. Equivalently, this means that a given component has a 'sparse' distribution. 
+A random variable si is called sparse when si has a distribution with a peak at zero, 
+and heavy tails, as is the case, for example, with the double exponential (or Laplace) 
+distribution [6]; for all practical purposes, sparsity is equivalent to supergaussianity 
+or leptokurtosis [8]. Sparse coding is an adaptive method, meaning that the matrix 
+W is estimated for a given class of data so that the components si are as sparse as 
+possible; such an estimation procedure is closely related to independent component 
+analysis [2]. 
+Sparse coding of sensory data has been shown to have advantages from both phys- 
+iological and information processing viewpoints [1]. However, thorough analyses of 
+the utility of such a coding scheme have been few. In this paper, we introduce and 
+analyze a statistical method based on sparse coding. Given a signal corrupted by 
+additive gaussian noise, we attempt to reduce gaussian noise by soft thresholding 
+('shrinkage') of the sparse components. Intuitively, because only a few of the com- 
+ponents are significantly active in the sparse code of a given data point, one may 
+assume that the activities of components with small absolute values are purely noise 
+and set them to zero, retaining just a few components with large activities. This 
+method is closely connected to the wavelet shrinkage method [3]. In fact, sparse 
+coding may be viewed as a principled way for determining a wavelet-like basis and 
+the corresponding shrinkage nonlinearities, based on data alone. 
+2 Maximum likelihood estimation of sparse components 
+The starting point of a rigorous derivation of our denoising method is the fact that 
+the distributions of the sparse components are nongaussian. Therefore, we shall 
+begin by developing a general theory that shows how to remove gaussian noise from 
+nongaussian variables, making minimal assumptions on the data. 
+Denote by s the original nongaussian random variable (corresponding here to a 
+noise-free version of one of the sparse components si), and by  gaussian noise of 
+zero mean and variance a2. Assume that we only observe the random variable y: 
+(2) 
+and we want to estimate the original s. Denoting by p the probability density of s, 
+and by f - -logp its negative log-density, the maximum likelihood (ML) method 
+gives the following estimator for s: 
+1 
+ = argmin -(y - u) 2 + f(u). 
+u 
+(3) 
+Assuming f to be strictly convex and differentiable, this can be solved [6] to yield 
+ = g(y), where the function g can be obtained from the relation 
+(4) 
+This nonlinear estimator forms the basis of our method. 
+Sparse Code Shrinkage: Denoising by Nonlinear Maximum Likelihood Estimation 475 
+o 
+Figure 1: Shrinkage nonlinearities and associated probability densities. Left: Plots 
+of the different shrinkage functions. Solid line: shrinkage corresponding to Laplace 
+density. Dashed line: typical shrinkage function obtained from (6). Dash-dotted 
+line: typical shrinkage function obtained from (8). For comparison, the line x = y is 
+given by dotted line. All the densities were normalized to unit variance, and noise 
+variance was fixed to .3. Right: Plots of corresponding model densities of the sparse 
+components. Solid line: Laplace density. Dashed line: a typical moderately super- 
+gaussian density given by (5). Dash-dotted line: a typical strongly supergaussian 
+density given by (7). For comparison, gaussian density is given by dotted line. 
+3 Parameterizations of sparse densities 
+To use the estimator defined by (3) in practice, the densities of the si need to 
+be modelled with a parameterization that is rich enough. We have developed two 
+parameterizations that seem to describe very well most of the densities encountered 
+in image denoising. Moreover, the parameters are easy to estimate, and the inversion 
+in (4) can be performed analytically. Both models use two parameters and are thus 
+able to model different degrees of supergaussianity, in addition to different scales, 
+i.e. variances. The densities are here assumed to be symmetric and of zero mean. 
+The first model is suitable for supergaussian densities that are not sparser than the 
+Laplace distribution [6], and is given by the family of densities 
+p(s) - C exp(-as 2/2 - b[s[), (5) 
+where a, b  0 are parameters to be estimated, and C is an irrelevant scaling 
+constant. The classical Laplace density is obtained when a - 0, and gaussian 
+densities correspond to b - 0. A simple method for estimating a and b was given 
+in [6]. For this density, the nonlinearity g takes the form: 
+1 
+g(u) = 1 + 2a sign(u) max(O, [u[ - b ) (6) 
+where  is the noise variance. The effect of the shrinkage function in (6) is to 
+reduce the absolute value of its argument by a certain amount, which depends on 
+the parameters, and then rescale. Small arguments are thus set to zero. Examples 
+of the obtained shrinkage functions are given in Fig. 1. 
+The second model describes densities that are sparser than the Laplace density: 
+i (a+2)[a(a+ 1)/2] (a/+) 
+p(s)- - [V/a ( + 1)/2--[s/d[](+3) (7) 
+476 A. Hyvirinen, P. Hoyer and E. Oja 
+When c - x, the Laplace density is obtained as the limit. A simple consistent 
+method for estimating the parameters d,c > 0 in (7) can be obtained from the 
+relations d =  and c = (2 - k + V/k(k + 4))/(2k - 1) with k = d2ps(O) 2, 
+see [6]. The resulting shrinkage function can be obtained as [6[ 
+sign(u) max(O, lul - ad 
+2 
++ v/(lul + ad) 2 - 4a2(a + 3)) 
+(8) 
+where a - V/a(a + 1)/2, and g(u) is set to zero in case the square root in (8) is 
+imaginary. This is a shrinkage function that has a certain hard-thresholding flavor, 
+as depicted in Fig. 1. 
+Examples of the shapes of the densities given by (5) and (7) are given in Fig. 1, 
+together with a Laplace density and a gaussian density. For illustration purposes, 
+the densities in the plot are normalized to unit variance, but these parameterizations 
+allow the variance to be choosen freely. 
+Choosing whether model (5) or (7) should be used can be based on moments of 
+the distributions; see [6]. Methods for estimating the noise variance a 2 are given in 
+]a, 6[. 
+4 Sparse code shrinkage 
+The above results imply the following sparse code shrinkage method for denoising. 
+Assume that we observe a noisy version  = x+v of the data x, where v is gaussian 
+white noise vector. To denoise , we transform the data to a sparse code, apply the 
+above ML estimation procedure component-wise, and then transform back to the 
+original variables. Here, we constrain the transformation to be orthogonal; this is 
+motivated in Section 5. To summarize: 
+First, using a noise-free training set of x, use some sparse coding method 
+for determining the orthogonal matrix W so that the components si in 
+s = Wx have as sparse distributions as possible. Estimate a density model 
+pi(si) for each sparse component, using the models in (5) and (7). 
+Compute for each noisy observation (t) of x the corresponding noisy sparse 
+components y(t) = W(t). Apply the shrinkage non-linearity gi(.) as de- 
+fined in (6), or in (8), on each component Yi (t), for every observation index 
+t. Denote the obtained components by i(t) - gi(Yi(t)). 
+Invert the relation (1) to obtain estimates of the noise-free x, given by 
+= wry(t). 
+To estimate the sparsifying transform W, we assume that we have access to a noise- 
+free realization of the underlying random vector. This assumption is not unrealistic 
+on many applications: for example, in image denoising it simply means that we 
+can observe noise-free images that are somewhat similar to the noisy image to be 
+treated, i.e., they belong to the same environment or context. This assumption can 
+be, however, relaxed in many cases, see [7]. The problem of finding an optimal 
+sparse code in step 1 is treated in the next section. 
+Sparse Code Shrinkage: Denoising by Nonlinear Maximum Likelihood Estimation 477 
+In fact, it turns out that the shrinkage operation given above is quite similar to 
+the one used in the wavelet shrinkage method derived earlier by Donoho et al [3] 
+from a very different approach. Their estimator consisted of applying the shrinkage 
+operator in (6), with different values for the parameters, on the coefficients of the 
+wavelet transform. There are two main differences between the two methods. The 
+first is the choice of the transformation. We choose the transformation using the 
+statistical properties of the data at hand, whereas Donoho et al use a predetermined 
+wavelet transform. The second important difference is that we estimate the shrink- 
+age nonlinearities by the ML principle, again adapting to the data at hand, whereas 
+Donoho et al use fixed thresholding operators derived by the minimax principle. 
+5 Choosing the optimal sparse code 
+Different measures of sparseness (or nongaussianity) have been proposed in the lit- 
+erature [1, 4, 8, 10]. In this section, we show which measures are optimal for our 
+method. We shall here restrict ourselves to the class of linear, orthogonal transfor- 
+mations. This restriction is justified by the fact that orthogonal transformations 
+leave the gaussian noise structure intact, which makes the problem more simply 
+tractable. This restriction can be relaxed, however, see [7]. 
+A simple, yet very attractive principle for choosing the basis for sparse coding is 
+to consider the data to be generated by a noisy independent component analysis 
+(ICA) model [10, 6, 9]: 
+x = As + ,, (9) 
+where the si are now the independent components, and v is multivariate gaussian 
+noise. We could then estimate A using ordinary maximum likelihood estimation 
+of the ICA model. Under the restriction that A is constrained to be orthogonal, 
+estimation of the noise-free components si then amounts to the above method of 
+shrinking the values of ATx, see [6]. In this ML sense, the optimal transformation 
+matrix is thus given by W = A T. In particular, using this principle means that 
+ordinary ICA algorithms can be used to estimate the sparse coding basis. This 
+is very fortunate since the computationally efficient methods for ICA estimation 
+enable the basis estimation even in spaces of rather high dimensions [8, 5]. 
+An alternative principle for determining the optimal sparsifying transformation is 
+to minimize the mean-square error (MSE). In [6], a theorem is given that shows that 
+the optimal basis in minimum MSE sense is obtained by maximizing --i"=  IF(W/Tx) 
+where IF(S) = E{[p(s)/p(s)] 2) is the Fisher information of the density of s, and 
+the w/T are the rows of W. Fisher information of a density [4] can be considered as 
+a measure of its nongaussianity. It is well-known [4] that in the set of probability 
+densities of unit variance, Fisher information is minimized by the gaussian density, 
+and the minimum equals 1. Thus the theorem shows that the more nongaussian 
+(sparse) s is, the better we can reduce noise. Note, however, that Fisher information 
+is not scale-invariant. 
+The former (ML) method of determining the basis matrix gives usually sparser 
+components than the latter method based on minimizing MSE. In the case of image 
+denoising, however, these two methods give essentially equivalent bases if a percep- 
+tually weighted MSE is used [6]. Thus we luckily avoid the classical dilemma of 
+choosing between these two optimality criteria. 
+478 A. Hyvirnen, P. Hoyer and E. Oja 
+6 Experiments 
+Image data seems to fulfill the assumptions inherent in sparse code shrinkage: It is 
+possible to find linear representations whose components have sparse distributions, 
+using wavelet-like filters [10]. Thus we performed a set of experiments to explore the 
+utility of sparse code shrinkage in image alenoising. The experiments are reported 
+in more detail in [7]. 
+Data. The data consisted of real-life images, mainly natural scenes. The images 
+were randomly divided into two sets. The first set was used in estimating the 
+matrix W that gives the sparse coding transformation, as well as in estimating the 
+shrinkage nonlinearities. The second set was used as a test set. It was artificially 
+corrupted by Gaussian noise, and sparse code shrinkage was used to reduce the 
+noise. The images were used in the method in the form of subwindows of 8 x 8 
+pixels. 
+Methods. The sparse coding matrix W was determined by first estimating the 
+ICA model for the image windows (with DC component removed) using the FastICA 
+algorithm [8, 5], and projecting the obtained estimate on the space of orthogonal 
+matrices. The training images were also used to estimate the parametric density 
+models of the sparse components. In the first series of experiments, the local vari- 
+ance was equalized as a preprocessing step [7]. This implied that the density in 
+(5) was a more suitable model for the densities of the sparse components; thus the 
+shrinkage function in (6) was used. In the second series, no such equalization was 
+made, and the density model (7) and the shrinkage function (8) were used [7]. 
+Results. Fig. 2 shows, on the left, a test image which was artificially corrupted 
+with Gaussian noise with standard deviation 0.5 (the standard deviations of the 
+original images were normalized to 1). The result of applying our denoising method 
+(without local variance equalization) on that image is shown on the right. Visual 
+comparison of the images in Fig. 2 shows that our sparse code shrinkage method 
+cancels noise quite effectively. One sees that contours and other sharp details are 
+conserved quite well, while the overall reduction of noise is quite strong, which in 
+is contrast to methods based on low-pass filtering. This result is in line with those 
+obtained by wavelet shrinkage [3]. More experimental results are given in [7]. 
+7 Conclusion 
+Sparse coding and ICA can be applied for image feature extraction, resulting in a 
+wavelet-like basis for image windows [10]. As a practical application of such a basis, 
+we introduced the method of sparse code shrinkage. It is based on the fact that in 
+sparse coding the energy of the signal is concentrated on only a few components, 
+which are different for each observed vector. By shrinking the absolute values of the 
+sparse components towards zero, noise can be reduced. The method is also closely 
+connected to modeling image data with noisy independent component analysis [9]. 
+We showed how to find the optimal sparse coding basis for denoising, and we de- 
+veloped families of probability densities that allow the shrinkage nonlinearities to 
+adapt accurately to the data at hand. Experiments on image data showed that the 
+performance of the method is very appealing. The method reduces noise without 
+blurring edges or other sharp features as much as linear low-pass or median filtering. 
+This is made possible by the strongly non-linear nature of the shrinkage operator 
+that takes advantage of the inherent statistical structure of natural images. 
+Sparse Code Shrinkage: Denoising by Nonlinear Maximum Likelihood Estimation 479 
+Figure 2: An experiment in image denoising. A noisy image, depicted on the left, was 
+denoised by sparse code shrinkage to obtain the image on the right. 
+References 
+Ill 
+H.B. Barlow. What is the computational goal of the neocortex ? In C. Koch and 
+J.L. Davis, editors, Large-scale neuronal theories of the brain. MIT Press, Cambridge, 
+MA, 1994. 
+[2] P. Comon. Independent component analysis - a new concept? Signal Processing, 
+36:287-314, 1994. 
+[3] D. L. Donoho, I. M. Johnstone, G. Kerkyacharian, and D. Picard. Wavelet shrinkage: 
+asymptopia? Journal of the Royal Statistical Society set. B, 57:301-337, 1995. 
+[61 
+[81 
+[91 
+[10] 
+P.J. Huber. Projection pursuit. The Annals of Statistics, 13(2):435-475, 1985. 
+A. Hyv'rinen. A family of fixed-point algorithms for independent component analysis. 
+In Proc. IEEE Int. Conf. on Acoustics, Speech and Signal Processing (ICASSP'97), 
+pages 3917-3920, Munich, Germany, 1997. 
+A. Hyv'rinen. Sparse code shrinkage: Denoising of nongaussian data by maximum 
+likelihood estimation. Technical Report A51, Helsinki University of Technology, Lab- 
+oratory of Computer and Information Science, 1998. 
+A. Hyv'rinen, P. Hoyer, and E. Oja. Applications of sparse code shrinkage to im- 
+age denoising. Technical report, Helsinki University of Technology, Laboratory of 
+Computer and Information Science, 1998. To appear. 
+A. Hyv'rinen and E. Oja. A fast fixed-point algorithm for independent component 
+analysis. Neural Computation, 9(7):1483-1492, 1997. 
+M. Lewicki and B. Olshausen. Inferring sparse, overcomplete image codes using 
+an efficient coding framework. In Advances in Neural Information Processing 10 
+(Proc. NIPS*97), pages 815-821. MIT Press, 1998. 
+B. A. Olshausen and D. J. Field. Emergence of simple-cell receptive field properties 
+by learning a sparse code for natural images. Nature, 381:607-609, 1996. 

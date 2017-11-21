@@ -1,0 +1,353 @@
+Computational Differences between 
+Asymmetrical and Symmetrical Networks 
+Zhaoping Li Peter Dayan 
+Gatsby Computational Neuroscience Unit 
+17 Queen Square, London, England, WC1N 3AR. 
+zhaopinat sby. ucl. ac. uk dayanat sby. ucl. ac. uk 
+Abstract 
+Symmetrically connected recurrent networks have recently been 
+used as models of a host of neural computations. However, be- 
+cause of the separation between excitation and inhibition, biolog- 
+ical neural networks are asymmetrical. We study characteristic 
+differences between asymmetrical networks and their symmetri- 
+cal counterparts, showing that they have dramatically different 
+dynamical behavior and also how the differences can be exploited 
+for computational ends. We illustrate our results in the case of a 
+network that is a selective amplifier. 
+1 Introduction 
+A large class of non-linear recurrent networks, including those studied by 
+Grossberg, 9 the Hopfield net, ø, and many more recent proposals for the 
+head direction system, 27 orientation tuning in primary visual cortex, 25, , 3, 8 eye 
+position, 2ø and spatial location in the hippocampus t9 make a key simplifying 
+assumption that the connections between the neurons are symmetric. Analysis 
+is relatively straightforward in this case, since there is a Lyapunov (or energy) 
+function 4'  that often guarantees the convergence of the motion trajectory to an 
+equilibrium point. However, the assumption of symmetry is broadly false. Net- 
+works in the brain are almost never symmetrical, if for no other reason than the 
+separation between excitation and inhibition. In fact, the question of whether ig- 
+noring the polarity of the cells is simplification or over-simplication has yet to be 
+fully answered. 
+Networks with excitatory and inhibitory cells (El systems, for short) have 
+long been studied, 6 for instance from the perspective of pattern generation in 
+invertebrates, 23 and oscillations in the thalamus 7, 24 and the olfactory system. 7, 3 
+Further, since the discovery of 40 Hz oscillations or synchronization amongst cells 
+in primary visual cortex of anesthetised cat, 8, 5 oscillatory models of V1 involving 
+separate excitatory and inhibitory cells have also been popular, mainly from the 
+perspective of how the oscillations can be created and sustained and how they can 
+Computational Differences between Asymmetrical and Symmetrical Networks 275 
+be used for feature linking or binding?' 22, 12 However the scope for computing 
+with dynamically stable behaviors such as limit cycles is not yet clear. 
+In this paper, we study the computational differences between a family of EI sys- 
+tems and their symmetric counterparts (which we call S systems). One inspira- 
+tion for this work is Li's nonlinear EI system modeling how the primary visual 
+cortex performs contour enhancement and pre-attentive region segmentation. x4, x 5 
+Studies by Braun 2 had suggested that an S system model of the cortex can not 
+perform contour enhancement unless additional (and biologically questionable) 
+mechanisms are used. This posed a question about the true differences between 
+El and S systems that we answer. We show that EI systems can take advantage of 
+dynamically stable modes that are not available to S systems. The computational 
+significance of this result is discussed and demonstrated in the context of models 
+of orientation selectivity. More details of this work, especially its significance for 
+models of the primary visual cortical system, can be found in Li & Dayan (1999)? 
+2 Theory and Experiment 
+Consider a simple, but biologically significant, EI system in which excitatory and 
+inhibitory cells come in pairs and there are no 'long-range' connections from the 
+inhibitory cells 4, 5 (to which the Lyapunov theory la' 2x does not yet apply): 
+2i -- --Xi q- Ej Jijg(xj) - h(yi) + Ii Tyi -- --Yi q- -j Wijg(xj) , (1) 
+where xi are the principal excitatory cells, which receive external or sensory in- 
+put Ii, and generate the network outputs g(xi); Yi are the inhibitory interneurons 
+(which are taken here as having no external input); function g(x) = [x - T]+ is 
+the threshold non-linear activation function for the excitatory cells; h(y) is the ac- 
+tivation function for the inhibitory cells (for analytical convenience, we use the 
+linear form h(y) = (y - Ty) although the results are similar with the non-linear 
+h(y) = [y - Ty]+); 'ry is a time-constant for the inhibitory cells; and Jij and Wij are 
+the output connections of the excitatory cells. Excitatory and inhibitory cells can 
+also be perturbed by Gaussian noise. 
+In the limit that the inhibitory cells are made infinitely fast (% - 0), we have 
+yi: -j Wijg(xj), leaving the excitatory cells to interact directly with each other: 
+i -- --Xi q- Ej Zijg(xj) - h(-j Wijg(xj)) q- Ii (2) 
+= --xi + -j(Jij - Wij)g(xj) + Ii q- ti (3) 
+where i are constants. In this network, the neural connections Zij - Wij between 
+any two cells x can be either excitatory or inhibitory, as in many abstract neural 
+network models. When Jij = Jji and Wij = Wji, the network has symmetric 
+connections. This paper compares EI systems with such connections and the cor- 
+responding S systems. Since there are many ways of setting Zij and Wij in the EI 
+system whilst keeping constant Jij - Wij, which is the effective weight in the S 
+system, one may intuitively expect the EI system to have a broader computational 
+range. 
+The response of either system to given inputs is governed by the location and lin- 
+ear stability of their fixed points. The S network is so defined as to have fixed 
+points  (where/c = 0 in equation 3) that are the same as those (, ) of the EI 
+network. In particular,  depends on inputs I (the input-output sensitivity) via 
+a = (lI - JD 9 + WDg) -1 dI, where lI is the identity matrix, J and W are the 
+connection matrices, and D is a diagonal matrix with elements [Dg]ii -- 
+However, although the locations of the fixed points are the same for the EI and S 
+276 Z. Li and P. Dayan 
+systems, the dynamical behavior of the systems about those fixed points are quite 
+different, and this is what leads to their differing computational power. 
+To analyse the stability of the fixed points, consider, for simplicity the case that % = 
+I in the EI system, and that the matrices JD 9 and WD9 commute with eigenvalues 
+,k and ,k TM respectively for k = 1,... , N where N is the dimension of x. The local 
+deviations near the fixed points along each of the N modes will grow in time if the 
+real parts of the following values are positive 
+,),ffr = -1 + (1/2,k 4- (¬ (,k) 2 - ,w)/2 for the EI system 
+%s = -1 - ,w + ,k for the S system 
+In the case that ,k; and ,k TM are real, then if the S system is unstable, then the E1 
+system is also unstable. For if -1 + ,kf - ,k TM > 0 then (,kf) 2 -4,k TM > (,kf - 2) 2, and 
+so 27' = -2 + ,kf + ((,k/) 2 - 4,k TM) 1/2 > 0. However, if the EI system is oscillatory, 
+4,kw > (,¾)2, then the S system is stable since -1 + ,¾ - ,k TM < -1 + ,¾ - (,¾)2/4 = 
+-(1 - ,¾/2) 2 _< 0. Hence the E1 system can be unstable and oscillatory while the S 
+system is stable. 
+We are interested in the capacity of both systems to be selective amplifiers. This 
+means that there is a class of inputs I that should be comparatively boosted by 
+the system; whereas others should be comparatively suppressed. For instance, if 
+the cells represent the orientation of a bar at a point, then the mode containing a 
+unimodal, well-tuned, 'bump' in orientation space should be enhanced compared 
+with poorly tuned inputs. 2s,, 8 However, if the cells represent oriented small 
+bars at multiple points in visual space, then isolated smooth and straight contours 
+should be enhanced compared with extended homogeneous textures j4,  s 
+The quality of the systems will be judged according to how much selective ampli- 
+fication they can stably deliver. The critical trade-off is that the more the selected 
+mode is amplified, the more likely it is that, when the input is non-specific, the 
+system will be unstable to fluctuations in the direction of the selected mode, and 
+therefore will hallucinate spurious answers. 
+3 The Two Point System 
+A particularly simple case to consider has just two neurons (for the S system; two 
+pairs of neurons for the E1 system) and weights 
+/ / 
+j j0 w w0 
+The idea is that each node coarsely models a group of neurons, and the interac- 
+tions between neurons within a group (jo and Wo) are qualitatively different from 
+interactions between neurons between groups (j and w). The form of selective am- 
+plification here is that symmetric or ambiguous inputs I a = 1(1, 1) should be sup- 
+pressed compared with asynmetric inputs I b = 1(1, 0) (and, equivalently, I(0, 1)). 
+In particular, given, I a, the system should not spontaneously generate a response 
+with x significantly different from x2. Define the fixed points to be .e = .e > T 
+under I" and .e > T ) .e2 under I b, where T is the threshold of the excitatory 
+neurons. These relationships will be true across a wide range of input levels I. The 
+ratio 
+- (w-j) 
+d.e/dI l + ((Wo + W) (jo + j)) =1+ (4) 
+R = d.e/dI = 1 + (Wo - jo) 1 + (Wo - jo) 
+of the average relative responses as the input level I changes is a measure of how 
+the system selectively amplifies the preferred or consistent inputs against ambigu- 
+ous ones. This measure is appropriate only when the fluctuations of the system 
+Computational Differences between Asymmetn'cal and Symmetrical Networks 277 
+The symmetry preserving network The symmetry breaking network 
+A I ' B I  C I ' D I  
+28 i 8 . 8 8 ß 
+6 : 6 : 6 : 6 
+4 ' 4 4 
+2 , 2 , 2 
+0 ............ 0 .......  -- 0 ............ 
+- -2 -2 -2 
+-4 -4 -4 
+4 2 0 2 4 6 8 4 2 0 2 4 6 8 4 2 0 2 4 6 8 4 2 0 2 4 6 8 
+Figure 1: Phase portraits for the S system in the 2 point case. A;B) Evolution in response to I a oc (1, !) 
+and I b oc (1, 0) for parameters for which the response to I a is stably symmetric. C;D) Evolution in 
+response to I a and I b for parameters for which the symmetric response to I a is unstable, inducing two 
+extra equih'brium points. The dotted lines show the thresholds 7' for 9(a:). 
+from the fixed points .a and .e b are well behaved. We will show that this require- 
+ment permits larger values of/t in the E1 system than the S system, suggesting that 
+the EI system can be a more powerful selective amplifier. 
+In the S system, the stabilities are governed by ?$ -- -(1 + Wo - jo) for the single 
+mode of deviation z - . around fixed point b and ?s = -(1 + (Wo +w) - (jo + J)) 
+for the two modes of deviation z+ -- (z - .) + (z2 - .) around fixed point 
+a. Since we only consider cases when the input-output relationship ct/dI of the 
+fixed points is well defined, this means 7 s < 0 and ,+s < 0. However, for some 
+interaction parameters, there are two extra (uneven) fixed points . y6 . for (the 
+even) input I a. Dynamic systems theory dictates these two uneven fixed points 
+will be stable and that they will appear when the '-' mode of the perturbation 
+around the even fixed point . = . is unstable. The system breaks symmetry 
+in inputs, ie the motion trajectory diverges from the (unstable) even fixed point to 
+one of the (stable) uneven ones. To avoid such cases, it is necessary that 7 s < 0. 
+Combining this condition with equation 4 and 7 s < 0 leads to a upper bound on 
+the amplification ratio R s < 2. Figure 1 shows phase portraits and the equilibrium 
+points of the S system under input I a and I b for the two different system parameter 
+regions. 
+As we have described, the EI system has exactly the same fixed points as the S sys- 
+tem, but they are more unstable. The stability around the symmetric fixed point 
+under I a is governed by 7 I = - 1 +(jo+j)/2+ v/(Jo + j)2/4 - (Wo q- w), while that 
+of the asymmetric fixed point under I b or I  by 7 EI = -l+jo/2+ v/jo2/4 - Wo. Con- 
+sequently, when there are three fixed points under 1% all of them can be unstable 
+in the EI system, and the motion trajectory cannot converge to any of them. In this 
+case, when both the '+' and '-' modes around the symmetric fixed point . = 
+are unstable, the global dynamics constrains the motion trajectory to a limit cycle 
+around the fixed points. If z  z on this limit cycle, then the EI system will 
+not break symmetry, even though the selective amplification ratio R > 2. Figure 2 
+demonstrates the performance of the EI system in this regime. Figure 2A;B show 
+various aspects of the response to input I  which should be comparatively sup- 
+pressed. The system oscillates in such a way that z and z2 tend to be extremely 
+similar (including being synchronised). Figure 2C;D show the same aspects of 
+the response to I , which should be amplified. Again the network oscillates, and, 
+although 9(z2) is not driven completely to 0 (it peaks at 15), it is very strongly 
+dominated by g(z), and further, the overall response is much stronger than in 
+figure 2A;B. 
+The pertinent difference between the EI and S systems is that while the S system 
+(when h(t) is linear) can only roll down the energy landscape to a stable fixed 
+278 Z. Li and P. Dayan 
+A 
+2C 
+Response to I  = I(1, 1) 
+B 
+C 
+8O 
+-; 
+10 20 time 30 40 
+IOO0 
+Response to I  = I(1, O) 
+D 
+-20 0 x 20 40 50 0 1000 x 2000 3000 
+IO0( 
+100 rne 0 
+Figure 2: Projections of the response of the EI system. A3B) Evolution of response to I a. A) x vs y 
+and B) 9(a:) -9(a:2) (solid); 9(a:)+9(tr2) (dotted) across time show that the a: = a:2 mode dominates 
+and the growth of  - 2 is strongly suppressed. C;D) Evolution of the response to Ib. Here, the 
+response of a: always dominates that of a:2 over oscillations. The difference between 9(a: )q-9(a:2 ) and 
+9(a:l) --9(:r2) is tOO small to be evident on the figure. Note the difference in scales between A;B and 
+C;D. Here j0 = 2.1;j = 0.4;wo = 1.11;w = 0.9. 
+point and break the input symmetry, the EI system can resort to global limit cycles 
+z (t)  z2 (t) between unstable fixed points and maintain input symmetry. This is 
+often (robustly over a large range of parameters) the case even when the '-' mode 
+is locally more unstable (at the symmetric fixed point) than the '+' mode, because 
+the '-' mode is much strongly suppressed when the motion trajectory enters the 
+subthreshold region z < 7' and z2 < 7'. As we can see in figure 2A;B, this acts 
+to suppress any overall growth in the '-' mode. Since the asymmetric fixed point 
+under I b is just as unstable as that under I a, the E1 system responds to asynmetric 
+input I b also by a stable limit cycle around the asymmetric fixed point. 
+Since the response of the system in response to either pattern is oscillatory, there are 
+various reasonable ways of evaluating the relative response ratio. Using the mean 
+responses of the system during a cycle to define , the selective amplification ratio 
+in figure 2 is/t EI = 97, which is significantly higher than the/t s = 2 available from 
+the S system. This is a simple existence proof of the superiority of the E1 system for 
+amplification, albeit at the expense of oscillations. In fact, in this two point case, it 
+can be shown that any meaningful behavior of the S system (including symmetry 
+breaking) can be qualitatively replicated in the EI system, but not vice-versa. 
+4 The Orientation System 
+Symmetric recurrent networks have recently been investigated in great depth for 
+representing and calculating a wide variety of quantities, including orientation 
+tuning. The idea behind the recurrent networks is that they should take noisy (and 
+perhaps weakly tuned) input and selectively amplify the component that repre- 
+sents an orientation 0 in the input, leaving a tuned pattern of excitation across the 
+population that faithfully represents the underlying input. Based on the analysis 
+above, we can expect that if an S network amplifies a tuned input enough, then it 
+will break input syrmetry given an untuned input and thus hallucinate a tuned 
+response. However, an EI system, in the same oscillatory regime as for the two 
+point system, can maintain untuned and suppressed response to untuned inputs. 
+We designed a particular EI system with a high selective amplification factor 
+for tuned inputs I(0). In this case, units zi, yi have preferred orientations Oi = 
+(i - N/2)r/N for i = 1... n. the connection matrices J is T6plitz with Gaussian 
+tuning, and, for simplicity, [W]q does not depend on i,j. Figure 3B (and inset) 
+shows the output of two units in the network in response to a tuned input, show- 
+ing the nature of the oscillations and the way that selectivity builds up over the 
+course of each period. Figure 3C shows the activities of all the units at three partic- 
+ular phases of the oscillation. Figure 3A shows how the mean activity of the most 
+Computational Differences between Asymmetrical and Symmetrical Networks 279 
+A) Cell outputs vs a or b 
+I 0 s 
+10 4 
+10 = 
+10 ø 
+10 -2 
+fiat 
+,5 10 1,5 
+aorb 
+2O 
+B) Cell outputs vs time 
+10  x,e 
+46 47 48 49 50 
+time 
+C) Cell outputs vs Oi 
+1 O s 
+-45 0 45 90 
+Oi 
+Figure 3: The Gaussian orientation network. A) Mean response of the Oi = 0 ø trait in the network as 
+a function of a (untuned) or b (tuned) with a log scale. B) Activity of the Oi = 0 ø (solid) and Oi = 30 ø 
+(dashed) units in the network over the course of the positive part of an oscillation. Inset - activity of 
+these units over all time. C) Activity of all the units at the three times shown as (i), (ii) and ('rii) in (B) 
+(i) (dashed) is in the rising phase of the oscillation; (ii) (solid) is at the peak; and ('rio (dotted) is during 
+the falling phase. Here, the input is Ii = a + be-øi 2/22, with tr = 13 ø, and the T6plitz weights are 
+Jij = (3 + 21e-(øi-øs?/2e'2)/N, witha/= 20 ø andWij = 23.5/N. 
+activated unit scales with the levels of tuned and untuned input. The network 
+amplifies the tuned inputs dramatically more - note the logarithmic scale. The S 
+system breaks syrmetry to the untuned input (b = 0) for these weights. If the 
+weights are scaled tmiformly by a factor of 0.22, then the S system is appropriately 
+stable. However, the magnification ratio is 4.2 rather than something greater than 
+1000 in the EI system. 
+The orientation system can be understood to a large qualitative degree by looking 
+at its two-point cousins. Many of the essential constraints on the system are de- 
+termined by the behavior of the system when the mode with zi = z 5 dominates, 
+in which case the complex non-linearities induced by orientation tuning or cut off 
+and its equivalents are irrelevant. Let J(f) and 1,7V(f) for (angular) frequency f 
+be the Fourier transforms of J(i - j) =- [J]ij and W(i - j) -- [W]q and define 
+,(f) = Re{-1 + J(f)/2 + iv/(ITV(f ) - 2(f)/4)}. Then, let f* >0 be the frequency 
+such that ,(f*) > ,(f) for all f > 0. This is the non-translation-invariant mode 
+that is most likely to cause instabilities for translation invariant behavior. A two 
+point system that closely corresponds to the full system can be found by solving 
+the simultaneous equations: 
+jo + j = ff(O) Wo + W = ITV(O) jo - J = (f*) Wo - W = ITV(f*) 
+This design equates the xx = x2 mode in the two point system with the f = 0 mode 
+in the orientation system and the xl = -x2 mode with the f = f* mode. For smooth 
+J and W, f* is often the smallest or one of the smallest non-zero spatial frequen- 
+cies. It is easy to see that the two systems are exactly equivalent in the translation 
+invariant mode xi = x under translation invariant input Ii - Ij in both the lin- 
+ear and nonlinear regimes. The close correspondence between the two systems in 
+other dynamic regimes is supported by simulation results. 16 Quantitatively, how- 
+ever, the amplification ratio differs between the two systems. 
+5 Conclusions 
+We have studied the dynamical behavior of networks with syrmetrical and asym- 
+metrical connections and have shown that the extra degrees of dynamical freedom 
+280 Z. Li and P. Dayan 
+of the latter can be put to good computational use, eg global dynamic stability via 
+local instability. Many applications of recurrent networks involve selective am- 
+plification - and the selective amplification factors for asyrmnetrical networks can 
+greatly exceed those of symmetrical networks. We showed this in the case of orien- 
+tation selectivity. However, it was originally inspired by a similar result in contour 
+enhancement and texture segregation for which the activity of isolated oriented 
+line elements should be enhanced if they form part of a smooth contour in the 
+input and suppressed if they form part of an extended homogeneous texture. Fur- 
+ther, the output should be homogeneous if the input is homogeneous (in the same 
+way that the orientation network should not hallucinate orientations from untuned 
+input). In this case, similar analysis 6 shows that stable contour enhancement is 
+limited to just a factor of 3.0 for the S system (but not for the EI system), suggest- 
+ing an explanation for the poor performance of a slew of S systems in the literature 
+designed for this purpose. We used a very simple system with just two pairs of 
+neurons to develop analytical intuitions which are powerful enough to guide our 
+design of the more complex systems. We expect that the details of our model, with 
+the exact pairing of excitatory and inhibitory cells and the threshold non-linearity, 
+are not crucial for the results. 
+Inhibition in the cortex is, of course, substantially more complicated than we have 
+suggested. In particular, inhibitory cells do have somewhat faster (though finite) 
+time constants than excitatory cells, and are also not so subject to short term plas- 
+ticity effects such as spike rate adaptation. Nevertheless, oscillations of various 
+sorts can certainly occur, suggesting the relevance of the computational regime 
+that we have studied. 
+References 
+[1] Ben-Yishai, R, Bar-Or, RL & Sompolinsky, H (1995) PNAS 92:3844-3848. 
+[2] Braun, J, Neibur, E, Schuster, HG & Koch, C (1994) Society for Neuroscience Abstracts 20:1665. 
+[3] Carandini, M & Ringach, DL (1997) Vision Research 37:3061-3071. 
+[4] Cohen, MA & Grossberg, S (1983) IEEE Transactions on Systems, Man and Cybernetics 13:815-826. 
+[5] Eckhorn, R, et al (1988) Biological Cybernetics 60:121-130. 
+[6] Ermentrout, GB & Cowan, JD (1979). Journal of Mathematical Biology 7:265-280. 
+[7] Golomb, D, Wang, XJ & Rinzel, J (1996). Journal of Neurophysiology 75:750-769. 
+[8] Gray, CM, Konig, P, Engel, AK & Singer, W (1989) Nature 338:334-337. 
+[9] Grossberg, S (1988) Neural Networks 1:17-61. 
+[10] Hopfield, JJ (1982) PNAS 79:2554-2558. 
+[11] Hop field, JJ (1984) PNAS 81:3088-3092. 
+[12] Konig, P, Janosch, B & Schillen, TB (1992) Neural Computation 4:666-681. 
+[13] Li, Z (1995) In JL van Hemmen et al, eds, Modds of Neural Networks. Vol. 2. NY: Springer. 
+[14] Li, Z (1997) In KYM Wong, I King & DY Yeung, editors, Theoretical Aspects of Neural Computation. 
+Hong Kong: Springer-Verlag. 
+[15] Li, Z (1998) Neural Computation 10:903-940. 
+[16] Li, Z. and Dayan, P. (1999) to be published in Network: Computations in Neural Systems. 
+[17] Li, Z & Hop field, JJ (1989). Biological Cybernetics 61:379-392. 
+[18] Pouget, A, Zhang, KC, Deneve, S & Latham, PE (1998) Neural Computation, 10373-401. 
+[19] Samsonovich A & McNaughton, BL (1997) Journal of Neuroscience 17:5900-5920. 
+[20] Seung, HS (1996) PNAS 93:13339-13344. 
+[21] Seung, I-Lq et al (1998). NIPS 10. 
+[22] Sompolinsky, H, Golomb, D & Kleinfeld, D (1990) PNAS 87:7200-7204. 
+[23] Stein, PSG, et al (1997) Neurons, Networks, and Motor Behavior. Cambridge, MA: MIT Press. 
+[24] Steriade, M, McCormick, DA & Sejnowski, TJ (1993). Science 262:679-685. 
+[25] Suarez, H, Koch, C & Douglas, R (1995) Journal of Neuroscience 15:6700-6719. 
+[26] von der Malsburg, C (1988) Neural Networks 1:141-148. 
+[27] Zhang, K (1996) Journal of Neuroscience 16:2112-2126. 

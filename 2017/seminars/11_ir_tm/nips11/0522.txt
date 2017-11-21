@@ -1,0 +1,304 @@
+Neural Networks for Density Estimation 
+Malik Magdon-Ismail* 
+magdoncco. caltech. edu 
+Caltech Learning Systems Group 
+Department of Electrical Engineering 
+California Institute of Technology 
+136-93 Pasadena, CA, 91125 
+Amir Atiya 
+amirSdeep. caltech. edu 
+Caltech Learning Systems Group 
+Department of Electrical Engineering 
+California Institute of Technology 
+136-93 Pasadena, CA, 91125 
+Abstract 
+We introduce two new techniques for density estimation. Our ap- 
+proach poses the problem as a supervised learning task which can 
+be performed using Neural Networks. We introduce a stochas- 
+tic method for learning the cumulative distribution and an analo- 
+gous deterministic technique. We demonstrate convergence of our 
+methods both theoretically and experimentally, and provide com- 
+parisons with the Parzen estimate. Our theoretical results demon- 
+strate better convergence properties than the Parzen estimate. 
+1 Introduction and Background 
+A majority of problems in science and engineering have to be modeled in a prob- 
+abilistic manner. Even if the underlying phenomena are inherently deterministic, 
+the complexity of these phenomena often makes a probabilistic formulation the only 
+feasible approach from the computational point of view. Although quantities such 
+as the mean, the variance, and possibly higher order moments of a random variable 
+have often been sufficient to characterize a particular problem, the quest for higher 
+modeling accuracy, and for more realistic assumptions drives us towards modeling 
+the available random variables using their probability density. This of course leads 
+us to the problem of density estimation (see [6]). 
+The most common approach for density estimation is the nonparametric approach, 
+where the density is determined according to a formula involving the data points 
+available. The most common non parametric methods are the kernel density esti- 
+mator, also known as the Parzen window estimator [4] and the k-nearest neighbor 
+technique [1]. Non parametric density estimation belongs to the class of ill-posed 
+problems in the sense that small changes in the data can lead to large changes in 
+*To whom correspondence should be addressed. 
+Neural Networks for Density Estimation 523 
+the estimated density. Therefore it is important to have methods that are robust to 
+slight changes in the data. For this reason some amount of regularization is needed 
+[7]. This regularization is embedded in the choice of the smoothing parameter (ker- 
+nel width or k). The problem with these non-parametric techniques is their extreme 
+sensitivity to the choice of the smoothing parameter. A wrong choice can lead to 
+either undersmoothing or oversmoothing. 
+In spite of the importance of the density estimation problem, proposed methods 
+using neural networks have been very sporadic. We propose two new methods 
+for density estimation which can be implemented using multilayer networks. In 
+addition to being able to approximate any function to any given precision, multilayer 
+networks give us the flexibility to choose an error function to suit our application. 
+The methods developed here are based on approximating the distribution function, 
+in contrast to most previous works which focus on approximating the density itself. 
+Straightforward differentiation gives us the estimate of the density function. The 
+distribution function is often useful in its own right - one can directly evaluate 
+quantiles or the probability that the random variable occurs in a particular interval. 
+One of the techniques is a stochastic algorithm (SLC), and the second is a determin- 
+istic technique based on learning the cumulative (SIC). The stochastic technique 
+will generally be smoother on smaller numbers of data points, however, the de- 
+terministic technique is faster and applies to more that one dimension. We will 
+present a result on the consistency and the convergence rate of the estimation error 
+for our methods in the univariate case. When the unknown density is bounded 
+and has bounded derivatives up to order K, we find that the estimation error is 
+O((log log(N)/N) -(--)), where N is the number of data points. As a comparison, 
+for the kernel density estimator (with non-negative kernels), the estimation error is 
+O (N-4/5), under the assumptions that the unknown density has a square integrable 
+second derivative (see [63, and that the optimal kernel width is used, which is not 
+possible in practice because computing the optimal kernel width requires knowledge 
+of the true density. One can see that for smooth density functions with bounded 
+derivatives, our methods achieve an error rate that approaches O(N -). 
+2 New Density Estimation Techniques 
+To illustrate our methods, we will use neural networks, but stress that any suf- 
+ficiently general learning model will do just as well. The network's output will 
+represent an estimate of the distribution function, and its derivative will be an 
+estimate of the density. We will now proceed to a description of the two methods. 
+2.1 SLC (Stochastic Learning of the Cumulative) 
+Let Xn E R, n = 1, ..., N be the data points. Let the underlying density be g(x) 
+and its distribution function G(x) = f_og(t)dt. Let the neural network output be 
+H(x, w), where w represents the set of weights of the network. Ideally, after training 
+the neural network, we would like to have H(x, w) = G(x). It can easily be shown 
+that the density of the random variable G(x) (x being generated according to g(x)) 
+is uniform in [0, 1]. Thus, if H(x,w) is to be as close as possible to G(x), then 
+the network output should have a density that is close to uniform in [0, 1]. This is 
+what our goal will be. We will attempt to train the network such that its output 
+density is uniform, then the network mapping should represent the distribution 
+function G(x). The basic idea behind the proposed algorithm is to use the N data 
+points as inputs to the network. For every training cycle, we generate a different 
+set of N network targets randomly from a uniform distribution in [0, 1], and adjust 
+524 M. Magdon-Ismail and A. A tiya 
+the weights to map the data points (sorted in ascending order) to these generated 
+targets (also sorted in ascending order). Thus we are training the network to map 
+the data to a uniform distribution. 
+Before describing the steps of the algorithm, we note that the resulting network has 
+to represent a monotonically nondecreasing mapping, otherwise it will not represent 
+a legitimate distribution function. In our simulations, we used a hint penalty to 
+enforce monotonicity [5]. The algorithm is as follows. 
+1. Let x _< x2 <_ ... _< xN be the data points. Set t = 1, where t is the 
+training cycle number. Initialize the weights (usually randomly) to w(1). 
+2. Generate randomly from a uniform distribution in [0, 1] N points (and sort 
+them): u _< u2 <_ ... _< UN. The point u is the target output for x. 
+3. Adjust the network weights according to the backpropagation scheme: 
+w(t + : w(t) - vt) Ow 
+where œ is the objective function that includes the error term and the 
+monotonicity hint penalty term [5]: 
+N 2 Nh 2 
+n=l k=l 
+(2) 
+where we have suppressed the w dependence. The second term is the mono- 
+tonicity penalty term, X is a positive weighting constant, A is a small pos- 
+itive number, ©(x) is the familiar unit step function, and the yk's are any 
+set of points where we wish to enforce the monotonicity. 
+4. Set t - t + 1, and go to step 2. Repeat until the error is small enough. 
+Upon convergence, the density estimate is the derivative of H. 
+Note that as presented, the randomly generated targets are different for every cycle, 
+which will have a smoothing effect that will allow convergence to a truly uniform 
+distribution. One other version, that we have implemented in our simulation stud- 
+ies, is to generate new targets after every fixed number L of cycles, rather than 
+every cycle. This will generally improve the speed of convergence as there is more 
+"continuity" in the learning process. Also note that it is preferable to choose the 
+activation function for the output node to be in the range of 0 to 1, to ensure that 
+the estimate of the distribution function is in this range. 
+SLC is only applicable to estimating univariate densities, because, for the multivari- 
+ate case, the nonlinear mapping y = G(x) will not necessarily result in a uniformly 
+distributed output y. Fortunately, many, if not the majority of problems encoun- 
+tered in practice are univariate. This is because multivariate problems, with even 
+a modest number of dimensions, need a huge amount of data to obtain statistically 
+accurate results. The next method, is applicable to the multivariate case as well. 
+2.2 SIC (Smooth Interpolation of the Cumulative) 
+Again, we have a multilayer network, to which we input the point x, and the 
+network outputs the estimate of the distribution function. Let g(x) be the true 
+density function, and let G(x) be the corresponding distribution function. Let 
+x - (x , ..., xd) ". The distribution function is given by 
+Neural Networks for Density Estimation 525 
+a straightforward estimate of G(x) could be the fraction of data points falling in 
+the area of integration: 
+I k©(x_ x), (4) 
+8(x) = y 
+n=l 
+where 0 is defined as 
+1 if x i _> 0 for all i - 1,...,d, 
+©(x): 0 otherwise. 
+The method we propose uses such an estimate for the target outputs of the neural 
+network. The estimate given by (4) is discontinuous. The neural network method 
+developed here provides a smooth, and hence more realistic estimate of the distri- 
+bution function. The density can be obtained by differentiating the output of the 
+network with respect to its inputs. 
+For the low-dimensional case, we can uniformly sample (4) using a grid, to obtain 
+the examples for the network. Beyond two or three dimensions, this becomes com- 
+putationally intensive. Alternatively, one could sample the input space randomly 
+(using say a uniform distribution over the approximate range of Xn'S), and for every 
+point determine the network target according to (4). Another option is to use the 
+data points themselves as examples. The target for a point x would then be 
+N 
+1 
+8(x)= v-  0(x-x). (5) 
+n=l, n-m 
+We also use monotonicity as a hint to guide the training. Once training is performed, 
+and H(x, w) approximates G(x), the density estimate can be obtained as 
+O'H(x' w) (6) 
+.a(x) = . . . ' 
+3 Simulation Results 
+t 
+t 
+-40 
+True DensAy 
+SIC 
+Opllrrtal Parzen Wm cow 
+(a) (b) 
+Figure 1: Comparison of optimal Parzen windows, with neural network estimators. 
+Plotted are the true density and the estimates (SLC, SIC, Parzen window with 
+optimal kernel width [6, pg 40]). Notice that even the optimal Parzen window is 
+bumpy as compared to the neural network. 
+We tested our techniques for density estimation on data drawn from a mixture of 
+two Gaussians: 
+3 1 (-1-30) 2 7 1 ( -9) 2 
+g(x) = 10 e s + 1 v/- e 62 (7) 
+526 M. Magdon-Ismail and A. Atiya 
+Data points were randomly generated and the density estimates using SLC or SIC 
+(for 100 and 200 data points) were compared to the Parzen technique. Learning 
+was performed with a standard I hidden layer neural network with 3 hidden units. 
+The hidden unit activation function used was tanh and the output unit was an err 
+function . A set of typical density estimates are shown in figure 1. 
+4 Convergence of the Density Estimation Techniques 
+lO' lO = 
+N 
+Figure 2: Convergence of the density estimation error for SIC. A five hidden unit 
+two layer neural network was used to perform the mapping xi --> i/(N + 1), trained 
+according to SIC. For various N, the resulting density estimation error was com- 
+puted for over 100 runs. Plotted are the results on a Log-Log scale. For comparison, 
+also shown is the best 1IN fit. 
+Using techniques from stochastic approximation theory, it can be shown that $LC 
+converges to a similar solution to SIC [3], so, we focus our attention on the conver- 
+gence of SIC. Figure 2 shows an empirical study of the convergence behavior. The 
+optimal linear fit between log(E) and log(N) has a slope of -0.97. This indicates 
+that the convergence rate is about 1IN. The theoretically derived convergence rate 
+is log log(N)/N as we will shortly discuss. 
+To analyze SIC, we introduce so called approximate generalized distribution func- 
+tions. We will assume that the true distribution function has bounded derivatives. 
+Therefore the cumulative will be "approximately" implementable by generalized 
+distributions with bounded derivatives (in the asymptotic limit, with probability 
+1). We will then obtain the convergence to the true density. 
+Let 6 be the space of distribution functions on the real line that possess continuous 
+densities, i.e., X E 6 if X ß R -> [0, 1]; X'(t) exists everywhere, is continuous and 
+X'(t) > 0; X(-c) = 0 and X(c) =' 1. This is the class of functions that we will 
+be interested in. We define a metric with respect to 6 as follows 
+It f I1 -- f(t)2X'(t) dt (8) 
+II f II is the expectation of the squared value of f with respect to the distribution 
+X E 6. Let us name this the L2 X-norm of f. Let the data set (D) be {x _< x2 _< 
+... _< XN}, and corresponding to each xi, let the target be Yi: i/N + 1. We will 
+assume that the true distribution function has bounded derivatives up to order K. 
+We define the set of approximate sample distribution functions 7-/) as follows 
+2 
+, 
+½ 2 
+Neural Networks for Density Estimation 52 7 
+Definition 4.1 Fix u > O. A v-approximate sample distribution function, H, sat- 
+isfies the following two conditions 
+/log log(N) 
+ß IH(xi)- Yil <_ u v 2N , ¾i 
+We will denote the set of all v-approximate sample distribution functions for a data 
+set, D, and a given u by 
+Let Ai - sup x IG(i)l, i -- 1...K where we use the notation 
+derivative. Define B(D) by 
+B(D)= inf sup 
+f(i) to denote the i tn 
+(9) 
+such that 
+for fixed u > 0. Note that by definition, for all 
+supx IH(i)(x)[ <_ B + . B(D) is the lowest possible bound on the i tn derivative 
+for the v-approximate sample distribution functions given a particular data set. In 
+a sense, the "smoothest" approximating sample distribution function with respect 
+to the i tn derivative has an i tn derivative bounded by B(D). One expects that 
+Bi _< Ai, at least in the limit N - c. 
+In the next theorem, we present the main theoretical result of the paper, namely 
+a bound on the estimation error for the density estimator obtained by using the 
+approximate sample distribution functions. It is embedded in a large amount of 
+technical machinery, but its essential content is that if the true distribution function 
+has bounded derivatives to order K, then, picking the approximate distribution 
+function obeying certain bounds, we obtain a convergence rate for the estimation 
+error of O((loglog(N)/N)l-1/K). 
+Theorem 4.2 (L2 convergence to the true density) Let N data points, xi be 
+drawn i.i.d. from the distribution G  6. Let supx G(i) l = Ai for i = 0... K, where 
+K _> 2. Fixu > 2 and > O. LetB(D) = infQet>sup Q(K) . Let H 
+be a v-approximate distribution function with BK = sup s H K <_ B +  (by the 
+definition of B, such a v-approximate sample distribution function must exist). 
+Then, for any F  6, as N -- o<>, the inequality 
+where 
+Y(N) (1 + u) 2log (N)  2 
+= 
+holds with probability 1, as N -- c. 
+(10) 
+(11) 
+We present the proof elsewhere [3]. 
+Note 1: The theorem applies uniformly to any interpolator H  7-/). In particular, 
+a large enough neural network will be one such monotonic interpolator, 
+provided that the network can be trained to small enough error. This is 
+possible by the universal approximation results for multilayer networks [2]. 
+Note 2: This theorem holds for any e > 0 and u > 1. For smooth density func- 
+tions, with bounded higher derivatives, the convergence rate approaches 
+O(loglog(N)/N) which is faster convergence than the kernel density esti- 
+mator (for which the optimal rate is O(N-4/s)). 
+528 M. Magdon-Ismail and A. Atiya 
+Note 3: No smoothing parameter needs to be determined. 
+Note 4: One should try to find an approximate distribution function with the 
+smallest possible derivatives. Specifically, of all the sample distribution 
+functions, pick the one that "minimizes" B:, the bound on the K En deriva- 
+tive. This could be done by introducing penalty terms, penalizing the mag- 
+nitudes of the derivatives (for example Tikhonov type regularizers [7]). 
+5 Comments 
+We developed two techniques for density estimation based on the idea of learning the 
+cumulative by mapping the data points to a uniform density. Two techniques were 
+presented, a stochastic technique (SLC), which is expected to inherit the character- 
+istics of most stochastic iterative algorithms, and a deterministic technique (SIC). 
+SLC tends to be slow in practice, however, because each set of targets is drawn 
+from the uniform distribution, this is anticipated to have a smoothing/regularizing 
+effect - this can be seen by comparing SLC and SIC in figure I (a). We presented 
+experimental comparison of our techniques with the Parzen technique. 
+We presented a theoretical result that demonstrated the consistency of our tech- 
+niques as well as giving a convergence rate of O(loglog(N)/N), which is better 
+than the optimal Parzen technique. No smoothing parameter needs to be chosen - 
+smoothing occurs naturally by picking the interpolator with the lowest bound for 
+a certain derivative. For our methods, the majority of time is spent in the learning 
+phase, but once learning is done, evaluating the density is fast. 
+6 Acknowledgments 
+We would like to acknowledge Yaser Abu-Mostafa and the Caltech Learning Systems 
+Group for their useful input. 
+References 
+[1] K. Fukunaga and L. D. Hostetler. Optimization of k-nearest neighbor density 
+estimates. IEEE Transactions on Information Theory, 19(3):320-326, 1973. 
+[2] K. Hornik, M. Stinchcombe, and H. White. Universal approximation of an 
+unknown mapping and its derivatives using multilayer feedforward networks. 
+Neural Networks, 3:551-560, 1990. 
+[3] M. Magdon-Ismail and A. Atiya. Consistent density estimati})n from the sample 
+distribution function. manuscript in preparation for submission, 1998. 
+[4] E. Parzen. On the estimation of a probability density function and mode. Annals 
+of Mathematical Statistics, 33:1065-1076, 1962. 
+[5] J. Sill and Y. S. Abu-Mostafa. Monotonicity hints. In M. C. Mozer, M. I. 
+Jordan, and T. Petsche, editors, Advances in Neural Information Processing 
+Systems (NIPS), volume 9, pages 634-640. Morgan Kaufmann, 1997. 
+[6] B. Silverman. Density Estimation for Statistics and Data Analysis. Chapman 
+and Hall, London, UK, 1993. 
+[7] A. N. Tikhonov and V. I. Arsenin. Solutions of Ill-Posed Problems. Scripta Series 
+in Mathematics. Distributed solely by Halsted Press, Winston; New York, 1977. 
+Translation Editor: Fritz, John. 

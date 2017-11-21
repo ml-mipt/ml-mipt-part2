@@ -1,0 +1,304 @@
+Dynamics of Supervised Learning with 
+Restricted Training Sets 
+A.C.C. Coolen 
+Dept of Mathematics 
+King's College London 
+Strand, London WC2R 2LS, UK 
+tcoolen @mth.kcl.ac.uk 
+D. Saad 
+Neural Computing Research Group 
+Aston University 
+Birmingham B4 7ET, UK 
+saadd@aston.ac.uk 
+Abstract 
+We study the dynamics of supervised learning in layered neural net- 
+works, in the regime where the size p of the training set is proportional 
+to the number N of inputs. Here the local fields are no longer described 
+by Gaussian distributions. We use dynamical replica theory to predict 
+the evolution of macroscopic observables, including the relevant error 
+measures, incorporating the old formalism in the limit pin  oz. 
+1 INTRODUCTION 
+Much progress has been made in solving the dynamics of supervised learning in layered 
+neural networks, using the strategy of statistical mechanics: by deriving closed laws for the 
+evolution of suitably chosen macroscopic observables (order parameters) in the limit of an 
+infinite system size [1, 2, 3, 4]. For a recent review and guide to references see e.g. [5]. 
+The main successful procedure developed so far is built on the following cornerstones: 
+ß The task to be learned is defined by a 'teacher', which is itselfa neural network. This in- 
+duces a natural set of order parameters (mutual weight vector overlaps between the teacher 
+and the trained, 'student', network). 
+ß The number of network inputs is infinitely large. This ensures that fluctuations in the 
+order parameters will vanish, and enables usage of the central limit theorem. 
+ß The number of 'hidden' neurons is finite, in both teacher and student, ensuring a finite 
+number of order parameters and an insignificant cumulative impact of the fluctuations. 
+ß The size of the training set is much larger than the number of updates. Each example 
+presented is now different from the previous ones, so that the local fields will have Gaussian 
+distributions, leading to closure of the dynamic equations. 
+In this paper we study the dynamics of learning in layered networks with restricted training 
+sets, where the number p of examples scales linearly with the number N of inputs. Indi- 
+vidual examples will now re-appear during the learning process as soon as the number of 
+weight updates made is of the order of p. Correlations will develop between the weights 
+198 A. C. C. Coolen and D. Saad 
+40 I 
+o 
+Y oo- 
+a0.5 
+t=50 
+a=0.5 
+t=50 
+40 
+20 
+Y 00 
+-4000 -t000 -2 0 -IflO0 00 IflO0 2000 IflO0 4O0 -10 - 0 -10 
+00 10 20 10 40 
+Figure 1' Student and teacher fields (z, y) (see text) observed during numerical simulations 
+of on-line learning (learning rate r/= 1) in a perceptron of size N = 10,000 at t = 50, using 
+1 
+examples from a training set of size p = N. Left: Hebbian learning. Right: AdaTron 
+learning [5]. Both distributions are clearly non-Gaussian. 
+and the training set examples and the student's local fields (activations) will be described by 
+non-Gaussian distributions (see e.g. Figure 1). This leads to a breakdown of the standard 
+formalism: the field distributions are no longer characterized by a few moments, and the 
+macroscopic laws must now be averaged over realizations of the training set. The first rig- 
+orous study of the dynamics of learning with restricted training sets in non-linear networks, 
+via generating functionals [6], was carried out for networks with binary weights. Here we 
+use dynamical replica theory (see e.g. [7]) to predict the evolution of macroscopic observ- 
+ables for finite c, incorporating the old formalism as a special case (c = pin - oc). For 
+simplicity we restrict ourselves to single-layer systems and noise-free teachers. 
+2 FROM MICROSCOPIC TO MACROSCOPIC LAWS 
+A 'student' perceptron operates a rule which is parametrised by the weight vector J  Rv: 
+S() = sgn[J-] = sgn[x] (1) 
+It tries to emulate a teacherNPerceptron which operates a similar rule, characterized by a 
+(fixed) weight vector B  R . The student modifies its weight vector J iteratively, using 
+examples of input vectors  which are drawn at random from a fixed (randomly composed) 
+training set/) = {1 P} C D = {-1, 1} N, of size p aN with a > 0, and the 
+corresponding values of the teacher outputs T() = sgn[B- ] = sgn[y]. Averages 
+over the training set/5 and over the full set D will be denoted as (())b and (())D, 
+respectively. We will analyze the following two classes of learning rules: 
+on-line- J(m+l) = J(m) + 3 (rn) 6[J(rn).(rn),B.(rn)] 
+(2) 
+batch' J(m+ 1)= J(m) + 3 (  [d(m).,B.])5 
+In on-line learning one draws at each step m a question (rn) at random from the training 
+set, the dynamics is a stochastic process; in batch learning one iterates a deterministic map. 
+Our key dynamical observables are the training- and generalization errors, defined as 
+Et(a) = 
+Eg(J) = (O[--(J.)(B.)])D (3) 
+Only if the training set/5 is sufficiently large, and if there are no correlations between J and 
+the training set examples, will these two errors be identical. We now turn to macroscopic 
+observables fl[J] = (ft[J],...,ftt[J]). For N  oc (with finite times t = m/N 
+Dynamics of Supervised Learning with Restricted Training Sets 199 
+and with finite k), and if our observables are of a so-called mean-field type, their associated 
+macroscopic distribution Pt (f) is found to obey a Fokker-Planck type equation, with flow- 
+and diffusion terms that depend on whether on-line or batch learning is used. We now 
+choose a specific set of observables F[J], taylored to the present problem: 
+Q[j] = j2, R[J] = J.B, P[x,y;J] = (5[x-J.] 5[y-B.])b (4) 
+This choice is motivated as follows: (i) in order to incorporate the old formalism we need 
+Q [J] and R[J], (ii) the training error involves field statistics calculated over the training set, 
+as given by P[x, y; J], and (iii) for a < oc one cannot expect closed equations for a finite 
+number of order parameters, the present choice effectively represents an infinite number. 
+We will assume the number of arguments (x, y) for which P[x, y; J] is evaluated to go to 
+infinity after the limit N  oc has been taken. This eliminates technical subtleties and 
+allows us to show that in the Fokker-Planck equation all diffusion terms vanish as N --> c. 
+The latter thereby reduces to a Liouville equation, describing deterministic evolution of our 
+macroscopic observables. For on-line learning one arrives at 
+d-Q=2rl dxdyP[x,y]x6[x;y]+rl 2 dxdyP[x,y]62[x;y] (5) 
+=. faay yl y y] (6) 
+dt 
+0 l [/dx'P[x' y]5[x-x'-.[x',y]]-P[x,y]] 
+ r[, y] =  , 
+-0 dx'dy' 6[x',y'] A[x,y;x',y'] 
+1 2 f , 2 , 02 
+Expansion of these equations in powers of . and retaining only the tes linear in , gives 
+the cogesponding equations describing batch learning. The complexity of the problem is 
+fully concentrated in a Green's function Mix, y; x', y'], which is defined as 
+[x, y; x', y'] =  (( ([ 1-5 , ]5[x-a.] 5[y-.] (.() 5['-X(lS[y '-.(])  ) 
+It involves a sub-shell average, in which Pt (J) is the weight probability density at time t: 
+f dJ K[J] pt(J)5[2-2[J]]5[R-R[J]] 1-Ixy 5[?[x,y]-?[x,y: J]] 
+(K[J])c:t : fdJ pt(J)5[Q-Q[J]]5[R-R[J]]i-[x 5[P[x,y]-P[x,y;J]] 
+where the sub-shells are defined with respect to the order parameters. The solution of 
+(5,6,7) can be used to generate the errors of (3): 
+E t : laxly [x, ylo[-]  = I arccos[R/V/-] (8) 
+3 CLOSURE VIA DYNAMICAL REPLICA THEORY 
+So far our analysis is still exact. We now close the macroscopic laws (5,6,7) by making, for 
+N  oc, the two key assumptions underlying dynamical replica theory [7]: 
+(i) Our macroscopic observables {Q, R, P} obey closed dynamic equations. 
+(ii) These equations are self-averaging with respect to the realisation of/). 
+(i) implies that probability variations within the {Q, R, P} subshells are either absent or 
+irrelevant to the evolution of {Q, R, P}. We may thus make the simplest choice for Pt (J): 
+Pt(J)  p(J),,5[Q-Q[J]]5[R-R[J]] HS[P[x, yl-P[x,y;J]] (9) 
+xy 
+200 A. C. C. Coolen and D. Saad 
+p(J) depends on time implicitly, via the order parameters {Q, R, P}. The procedure (9) 
+leads to exact laws if our observables {Q, R, P} indeed obey closed equations for N  oc. 
+It gives an approximation if they don't. (ii) allows us to average the macroscopic laws over 
+all training sets; it is observed in numerical simulations, and can probably be proven using 
+the formalism of [6]. Our assumptions result in the closure of (5,6,7), since now .A[...] is 
+expressed fully in terms of {Q, R, P}. The final ingredient of dynamical replica theory is 
+the realization that averaging fractions is simplified with the replica identity [8] 
+fdJ W[J, zlO[J,z ] = lira d J1 '"dJn (O[j1 zl H w[Ja,zl>z 
+What remains is to perform integrations. One finds that P[w, y]  P[wly]P[y] with P[y] = 
+  y2   y2 
+(2) 2 e 2 . Upon introducing the short-hands Dy = (2) 2e dy and {f(, y)) = 
+fDydx P[y]f(, y) we can write the resulting macroscopic laws as follows: 
+d 
+ = 2u + vz  = vm 
+dt 
+ I fdx'P[x'y] {Stx-x'-Grx',y]]-Stx-x']} 
+P[xly] =  
+o 
+-. { V[xly] [v(- y)+ my + IV- m-(Q- )v][x, y]] } 
+with 
+(10) 
+0 2 
++ ,2 z  r[xly] 
+(ll) 
+U = ([x,y]G[x,y]), V: (xG[x,y]), W- (yG[x,y]), Z = (62[x,y]) 
+As before the batch equations follow upon expanding in r/and retaining only the linear 
+terms. Finding the function [x, y] (in replica symmetric ansatz) requires solving a saddle- 
+point problem for a scalar observable q and a function M[xly]. Upon introducing 
+B - V/qQ - R2 
+Q(1-q) (f[x,y,z]). = fdx M[xlY]eBXZf[x,y,z] 
+fdx 3[xly], 
+(with fdx M[xly ] = 1 for all y) the saddle-point equations acquire the form 
+for all X,y' ?[Xly]: fOz 
+1 
+((x-Ry) 2) + (qQ-R2)[1-5] = [Q(1 +q)-2R2](xff2[x,y]) 
+The solution M[xly ] of the functional saddle-point equation, given a value for q in the 
+physical range q ß [R 2/Q, 1], is unique [9]. The function [x, y] is then given by 
+ß [X,y]: (v/qQ-j2p[XIy]} -1 /Dz z([X-x]). (12) 
+4 THE LIMIT 
+For consistency we show that our theory reduces to the simple (Q, R) formalism of infinite 
+training sets in the limit ct  oc. Upon making the ansatz 
+P[xly] [27r(Q- R2)]  « 
+one finds that the saddle-point equations are simultaneously and uniquely solved by 
+M[xly] = P[xly], q = R 2/Q 
+and [x, y] reduces to 
+(I,[x, y] = (x-Ry)/(Q-R 2) 
+Insertion of our ansatz into equation ( 11 ), followed by rearranging of terms and usage of the 
+above expression for [x, y], shows that this equation is satisfied. Thus from our general 
+theory we indeed recover for c  oc the standard theory for infinite training sets. 
+Dynamics of Supervised Learning with Restricted Training Sets 201 
+ø.5 t 
+0.4 ct=0.25 
+ct=0.5 
+0.3 ct=l 
+at=2 
+0.2 
+0.0 0 10 20 30 40 50 
+t 
+Figure 2: Simulation results for on-line Hebbian learning (system size N = 10. 000) ver- 
+sus an approximate solution of the equations generated by dynamical replica theory (see 
+main text), for a  {0.28, 0.8, 1.0, 2.0, 4.0}. Upper five curves: Eg as functions of time. 
+Lower five curves: Et as functions of time. Circles: simulation results for Eg; diamonds: 
+simulation results for Et. Solid lines: the corresponding theoretical predictions. 
+5 BENCHMARK TESTS: HEBBIAN LEARNING 
+Batch Hebbian Learning 
+For the Hebbian rule, where [x, y] = sgn(y), one can calculate our order parameters 
+exactly at any time, even for a < oc [10], which provides an excellent benchmark for 
+general theories such as ours. For batch execution all integrations in our present theory can 
+be done and all equations solved explicitly, and our theory is found to predict the following: 
+R = Ro+rt O = Oo+2rltRo +r/2t2 + q = aO (13) 
+--[x-Ry-(ot/a) sgn(y)]2/(Q -R2) 
+2 
+v/2.(Q ) 
+Eg: - arccos t--'  --  V/2'j 
+(14) 
+(15) 
+R= Ro +r/t 
+dx 
+t 2 
+(t  ) (18) 
+(17) 
+On-Line Hebbian Learning 
+For on-line execution we cannot (yet) solve the functional saddle-point equation analyti- 
+cally. However, some explicit analytical predictions can still be extracted [9]: 
+Comparison with the exact solution, calculated along the lines of [ 10] (where this was done 
+for on-line Hebbian learning) shows that the above expressions are all rigorously exact. 
+202 A. C. C. Coolen and D. Saad 
+o r' o= 1.0 
+Y ooL 
+Figure 3: Simulation results for on-line Hebbian learning (N = 10,000) versus dynamical 
+replica theory, for a  {2.0, 1.0, 0.5}. Dots: local fields (z, y) = (J., B.) (calculated for 
+examples in the training set), at time t - 50. Dashed lines: conditional average of student 
+field x as a function of y, as predicted by the theory, (y) = Ry + (rlt/a) sgn(y). 
+0m 
+P(x) o 
+ool 
+0025 
+002O 
+015 
+0010 
+OOO5 
+000 
+: ,, ,l= IO 
+PO 
+-50 -40 - -20 -10 0 I0 JO } 40 0 -100 -50 0 50 Z0 
+0015 
+IgO -2.0 -I$0 -$0  IO 
+Figure 4: Simulations of Hebbian on-line learning with N = 10,000. Histograms: student 
+field distributions measured at t - 10 and t - 20. Lines: theoretical predictions for student 
+field distributions (using the approximate solution of the diffusion equation, see main text), 
+for a = 4 (left), ct = 1 (middle), a = 0.25 (right). 
+Comparison with the exact result of [ 10] shows that the above expressions (16,17,18), and 
+therefore also that of Es at any time, are all rigorously exact. 
+At intermediate times it turns out that a good approximation of the solution of our dynamic 
+equations for on-line Hebbian learning (exact for t << c and for t -- cx) is given by 
+P[xly] = e- «[::-nv-(.tl,) 
+V/2rr( Q _ R2 + rl2t/a ) (19) 
+= - arccos E, = - (20) 
+In Figure 2 we compare the approximate predictions (20) with the results obtained from 
+numerical simulations (N = 10,000, Q0 = 1, R0 = 0, r/= 1). All curves show excellent 
+agreement between theory and experiment. We also compare the theoretical predictions for 
+the distribution P[xly] with the results of numerical simulations. This is done in Figure 3 
+where we show the fields as observed at t - 50 in simulations (same parameters as in 
+Figure 2) of on-line Hebbian learning, for three different values of a. In the same figure 
+we draw (dashed lines) the theoretical prediction for the y-dependent average (17) of the 
+conditional x-distribution P[x]y]. Finally we compare the student field distribution P[x] = 
+Dynamics of Supervised Learning with Restricted Training Sets 203 
+fD/P[:tY] according to (19) with that observed in numerical simulations, see Figure 4. 
+The agreement is again excellent (note: here the learning process has almost equilibrated). 
+6 DISCUSSION 
+In this paper we have shown how the formalism of dynamical replica theory [7] can be used 
+successfully to build a general theory with which to predict the evolution of the relevant 
+macroscopic performance measures, including the training- and generalisation errors, for 
+supervised (on-line and batch) learning in layered neural networks with randomly com- 
+posed but restricted training sets (i.e. for finite a - p/N). Here the student fields are 
+no longer described by Gaussian distributions, and the more familiar statistical mechanical 
+formalism breaks down. For simplicity and transparency we have restricted ourselves to 
+single-layer systems and realizable tasks. In our approach the joint distribution P[z, y] for 
+student and teacher fields is itself taken to be a dynamical order parameter, in addition to 
+the conventional observables Q and/. From the order parameter set {Q,/, P}, in turn, 
+we derive both the generalization error Eg and the training error Et. Following the pre- 
+scriptions of dynamical replica theory one finds a diffusion equation for P[z, ], which we 
+have evaluated by making the replica-symmetric ansatz in the saddle-point equations. This 
+equation has Gaussian solutions only for a  cc; in the latter case we indeed recover 
+correctly from our theory the more familiar formalism of infinite training sets, with closed 
+equations for Q and/ only. For finite a our theory is by construction exact if for N 
+the dynamical order parameters {Q,/, P} obey closed, deterministic equations, which are 
+self-averaging (i.e. independent of the microscopic realization of the training set). If this is 
+not the case, our theory is an approximation. 
+We have worked out our general equations explicitly for the special case of Hebbian learn- 
+ing, where the existence of an exact solution [ 10], derived from the microscopic equations 
+(for finite a), allows us to perform a critical test of our theory. Our theory is found to be 
+fully exact for batch Hebbian learning. For on-line Hebbian learning full exactness is diffi- 
+cult to determine, but exactness can be establised at least for (i) t  oc, (ii) the predictions 
+for Q,/, Eg and 7(g) = fdic :P[:I] at any time. A simple approximate solution of our 
+equations already shows excellent agreement between theory and experiment. The present 
+study clearly represents only a first step, and many extensions, applications and generaliza- 
+tions are currently under way. More specifically, we study alternative learning rules as well 
+as the extension of this work to the case of noisy data and of soft committee machines. 
+References 
+[9] 
+[10] 
+[ 1 ] Kinzel W. and Rujan P. (1990), Europhys. Lett. 13, 473 
+[2] Kinouchi O. and Caticha N. (1992), J. Phys. A: Math. Gen. 25, 6243 
+[3] Biehl M. and Schwarze H. (1992), Europhys. Lett. 20, 733 
+Biehl M. and Schwarze H. (1995), J. Phys. A: Math. Gen. 28, 643 
+[4] Saad D. and Solla S. (1995), Phys. Rev. Lett. 74, 4337 
+[5] Mace C.W.H. and Coolen A.C.C (1998), Statistics and Computing 8, 55 
+[6] Horner H. (1992a), Z. Phys. B 86, 291 
+Horner H. (1992b), Z. Phys. B 87, 371 
+[7] Coolen A.C.C., Laughton S.N. and Sherrington D. (1996), Phys. Rev. B 53, 8184 
+[8] M6zard M., Parisi G. and Virasoro M.A. (1987), Spin-Glass Theory and Beyond (Sin- 
+gapore: World Scientific) 
+Coolen A.C.C. and Saad D. (1998), in preparation. 
+Rae H.C., Sollich P. and Coolen A.C.C. (1998), these proceedings 

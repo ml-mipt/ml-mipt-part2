@@ -1,0 +1,324 @@
+Spike-Based Compared to Rate-Based 
+Hebbian Learning 
+Richard Kempter* 
+Institut ffir Theoretische Physik 
+Technische Universitiit Mfinchen 
+D-85747 Garching, Germany 
+Wulfram Gerstner 
+Swiss Federal Institute of Technology 
+Center of Neuromimetic Systems, EPFL-DI 
+CH-1015 Lausanne, Switzerland 
+J. Leo van Hemmen 
+Institut fiir Theoretische Physik 
+Technische Universitiit Mfinchen 
+D-85747 Garching, Germany 
+Abstract 
+A correlation-based learning rule at the spike level is formulated, 
+mathematically analyzed, and compared to learning in a firing-rate 
+description. A differential equation for the learning dynamics is 
+derived under the assumption that the time scales of learning and 
+spiking can be separated. For a linear Poissonian neuron model 
+which receives time-dependent stochastic input we show that spike 
+correlations on a millisecond time scale play indeed a role. Corre- 
+lations between input and output spikes tend to stabilize structure 
+formation, provided that the form of the learning window is in 
+accordance with Hebb's principle. Conditions for an intrinsic nor- 
+malization of the average synaptic weight are discussed. 
+1 Introduction 
+Most learning rules are formulated in terms of mean firing rates, viz., a continuous 
+variable reflecting the mean activity of a neuron. For example, a 'Hebbian' (Hebb 
+1949) learning rule which is driven by the correlations between presynaptic and 
+postsynaptic rates may be used to generate neuronal receptive fields (e.g., Linsker 
+1986, MacKay and Miller 1990, Wimbauer et al. 1997) with properties similar to 
+those of real neurons. A rate-based description, however, neglects effects which are 
+due to the pulse structure of neuronal signals. During recent years experimental and 
+*emaih kempter@physik.tu-muenchen.de (corresponding author) 
+126 R. Kempter, W. Gerstner and J. L. van Hemmen 
+theoretical evidence has accumulated which suggests that temporal coincidences 
+between spikes on a millisecond or even sub-millisecond scale play an important 
+role in neuronal information processing (e.g., Bialek et al. 1991, Cart 1993, Abeles 
+1994, Gerstner et al. 1996). Moreover, changes of synaptic efficacy depend on 
+the precise timing of postsynaptic action potentials and presynaptic input spikes 
+(Markram et al. 1997, Zhang et al. 1998). A synaptic weight is found to increase, if 
+presynaptic firing precedes a postsynaptic spike and decreased otherwise. In contrast 
+to the standard rate models of Hebbian learning, the spike-based learning rule 
+discussed in this paper takes these effects into account. For mathematical details 
+and numerical simulations the reader is referred to Kempter et al. (1999). 
+2 Derivation of the Learning Equation 
+2.1 Specification of the Hebb Rule 
+We consider a neuron that receives input from N >> I synapses with efficacies Ji, 
+I _< i _< N. We assume that changes of Ji are induced by pre- and postsynaptic 
+spikes. The learning rule consists of three parts. (i) Let tp be the time of the mth 
+input spike arriving at synapse i. The arrival of the spike induces the weight Ji to 
+change by an amount w in which can be positive or negative. (ii) Let t ' be the n th 
+output spike of the neuron under consideration. This event triggers the change of all 
+N efficacies by an amount w øut which can also be positive or negative. (iii) Finally, 
+time differences between input spikes influence the change of the efficacies. Given 
+a time difference s = t? - t n between input and output spikes, Ji is changed by an 
+amount W(s) where the learning window W is a real valued function (Fig. 1). The 
+learning window can be motivated by local chemical processes at the level of the 
+synapse (Gerstner et al. 1998, Senn et al. 1999). Here we simply assume that such 
+a learning window exist and take some (arbitrary) functional dependence W(s). 
+0 
+W[a.U.s 
+Figure 1: An example of a learning win- 
+dow W as a function of the delay s = 
+t - t n between a postsynaptic firing time 
+t n and presynaptic spike arrival t? at 
+synapse i. Note that for s < 0 the presy- 
+naptic spike precedes postsynaptic firing. 
+Starting at time t with an efficacy Ji(t), the total change AJi(t) = Ji(t + T) - Ji(t) 
+in a time interval 7- is calculated by summing the contributions of all input and 
+output spikes in the time interval [t, t + 7']. Describing the input spike train at 
+synapse i by a series of 5 functions, $}n(t) =Em 5(t - t?), and, similarly, output 
+spikes by $øut(t): Yn 5(t - tn), we can formulate the rules (i)(iii)' 
+Xa(t)=fdt' W in sn(t t) 
+t 
++ w øut $øut(t') +/dt 't W(t" t') in ,t Sour 
+- & (t) (t') 
+t 
+(1) 
+2.2 Separation of Time Scales 
+The total change AJi(t) is subject to noise due to stochastic spike arrival and, 
+possibly, stochastic generation of output spikes. We therefore study the expected 
+development of the weights Ji, denoted by angular brackets. We make the substi- 
+tution s = t" - t' on the right-hand side of (1), divide both sides by 7-, and take 
+Spike-Based Compared to Rate-Based Hebbian Learning 12 7 
+the expectation value: 
+(AJi)(t) 1 ft+T [ win w øut (søut) 
+= -- dt' (s}n)(t ') q- (tt)] 
+T T Jr 
+l ft+7- 
++0 dt' ds W(s) (oq}n(t ' + s) søut(tt)) 
+(2) 
+We may interpret (s}n)(t) for I <_ i _< N and (qøut)(t) as instantaneous firing 
+rates.  They may vary on very short time scales - shorter, e.g., than average 
+interspike intervals. Such a model is consistent with the idea of temporal coding, 
+since it does not rely on temporally averaged mean firing rates. 
+We note, however, that due to the integral over time on the right-hand side of (2) 
+temporal averaging is indeed important. If T is much larger than typical interspike 
+in in 
+intervals, we may define mean firing rates v i (t) = and 
+(S i )(t) /]øut (t) ---- (Søut)(t) 
+where we have used the notation f(t) = T - ft+v-dr' f(t'). The mean firing rates 
+t 
+must be distinguished from the previously defined instantaneous rates (S} n) and 
+(S øut) which are defined as an expectation value and have a high temporal resolu- 
+in and v øut vary slowly (time scale of the 
+tion. In contrast, the mean firing rates v i 
+order of T) as a function of time. 
+If the learning time T is much larger than the width of the learning window, the 
+integration over s in (2) can be extended to run from -o to o without introducing 
+a noticeable error. With the definition of a temporally averaged correlation, 
+Ci(s;t) = (S}n(t + s)Søut(t)) , (3) 
+the last term on the right of (2) reduces to f_ ds W(s) Ci(s; t). Thus, correlations 
+between pre- and postsynaptic spikes enter spike-based Hebbian learning through 
+Ci convolved with the learning window W. We remark that the correlation Ci(s; t) 
+may change as a function of s on a fast time scale. Note that, by definition, s < 0 
+implies that a presynaptic spike precedes the output spike - and this is when we 
+expect (for excitatory synapses) a positive correlation between input and output. 
+As usual in the theory of Hebbian learning, we require learning to be a slow process. 
+The correlation Ci can then be evaluated for a constant Ji and the left-hand side 
+of (2) can be rewritten as a differential on the slow time scale of learning 
+J(t) _= J, win in wout 
+-- v i (t) + vøut(t) + dsW(s) Ci(s;t) (4) 
+2.3 Relation to Rate-Based Hebbian Learning 
+In neural network theory, the hypothesis of Hebb (Hebb 1949) is usually formulated 
+as a learning rule where the change of a synaptic efficacy Ji depends on the corre- 
+lation between the mean firing rate v}n of the i th presynaptic and the mean firing 
+rate your of a postsynaptic neuron, viz., 
+in /]out in tout in)2 (/]out)2 
+i: ao q- al /2 i q- a2 q- a3/]i q- a4 (/2 i q- a 5 , (5) 
+where a0, a, a2, as, a4, and as are proportionality constants. Apart from the decay 
+in yout proportional to the product of input and 
+term a0 and the 'Hebbian' term Yi 
+XAn example of rapidly changing instantaneous rates can be found in the auditory 
+system. The auditory nerve carries noisy spike trains with a stochastic intensity modulated 
+at the frequency of the applied acoustic tone. In the barn owl, a significant modulation of 
+the rates is seen up to a frequency of 8 kHz (e.g., Cart 1993). 
+128 R. Kempter,  Gerstner and Y. L. van Hemmen 
+output rates, there are also synaptic changes which are driven separately by the pre- 
+and postsynaptic rates. The parameters a0,..., as may depend on Ji. Equation (5) 
+is a general formulation up to second order in the rates; see, e.g., (Linsker 1986). 
+To get (5) from (4) two approximations are necessary. First, if there are no correla- 
+tions between input and output spikes apart from the correlations contained in the 
+rates, we can approximate {sn(t + s)qøut(t))  {sn)(t + s)/qøut).(t). Second, if 
+these rates change slowly as compared to 7-, then we have Ci (s; t) m ul n (t-]-$)/yout (t). 
+Since we have assumed that the learning time 7- is long compared to the width of 
+in 
+the learning window, we may simplify further and set v}n(t + s) m vi (t), hence 
+f-%o dsW(s)Ci(s;t)  l?V'(0)u}n(t)uøut(t), where IV(O) = dsW(s). We may 
+now identify ITV(0) with a3. By further comparison of (5) with (4) we identify 
+w in with a and w øut with a2, and we are able to reduce (4) to (5) by setting 
+a0 = a4: a5 = 0. 
+The above set of of assumption which is necessary to derive (5) from (4) does, 
+however, not hold in general. According to the results of Markram et al. (1997) the 
+width of the learning window in cortical pyramidal cells is in .the range of  100 ms. 
+A mean rate formulation thus requires that all changes of the activity are slow on 
+a time scale of 100 ms. This is not necessarily the case. The existence of oscillatory 
+activity in the cortex in the range of 50 Hz implies activity changes every 20ms. 
+Much faster activity changes on a time scale of I ms and below are found in the 
+auditory system (e.g., Cart 1993). Furthermore, beyond the correlations between 
+mean activities additional correlations between spikes may exist; see below. Because 
+of all these reasons, the learning rule (5) in the simple rate formulation is insufficient. 
+In the following we will study the full spike-based learning equation (4). 
+3 Stochastically Spiking Neurons 
+3.1 Poisson Input and Stochastic Neuron Model 
+To proceed with the analysis of (4) we need to determine the correlations C between 
+input spikes at synapse i and output spikes. The correlations depend strongly on 
+the neuron model under consideration. To highlight the main points of learning 
+we study a linear inhomogeneous Poisson neuron as a toy model. Input spike 
+trains arriving at the N synapses are statistically independent and g. enerated by an 
+inhomogeneous Poisson process with time-dependent intensities (,}n) (t) = /iin (t), 
+with I _< i < N. A spike arriving at t? at synapse i, evokes a postsynaptic potential 
+(PSP) with time course e(t - t?) which we assume to be excitatory (EPSP). The 
+amplitude is given by the synaptic efficacy Ji(t) > O. The membrane potential u of 
+the neuron is the linear superposition of all contributions 
+N 
+u(t) = uo + y Z Ji(t)e(t- t n) (6) 
+i-1 m 
+where u0 is the resting potential. Output spikes are assumed to be generated 
+stochastically with a time dependent rate Aøut(t) which depends linearly upon the 
+membrane potential 
+N 
+/køut(t):  [u(t)]+ -- "0 +  Z Ji(t)e(t- tn). (7) 
+i:l m 
+with a linear function fi[u]+ - fi0 + 1 U for u > 0 and zero otherwise. After the 
+second equality sign, we have formally set p0 = u0 + fi0 and 1 --- 1. Y0 > can 
+Spike-Based Compared to Rate-Based Hebbian Learning 129 
+be interpreted as the spontaneous firing rate. For excitatory synapses a negative 
+u is impossible and that's what we have used after the second equality sign. The 
+sums run over all spike arrival times at all synapses. Note that the spike generation 
+process is independent of previous output spikes. In particular, the Poisson model 
+does not include refractoriness. 
+In the context of (4), we are interested in the expectation values for input and 
+output. The expected input is ($}n)(t) = Aiin(t). The expected output is 
+<Søut)(t) = '0 + Z Ji(t) dse(s) iin(t- $) , (8) 
+i 
+The expected output rate in (8) depends on the convolution of e with the input rates. 
+In the following we will denote the convolved rates by Aiin (t) = fo dse(s)Aiin(t - s). 
+Next we consider the expected correlations between input and output, (S}n(t + 
+s) Søut(t)), which we need in (3): 
+(s}n( t -1- $)søut(t)) : 'iin( t -1- $)[P0 - Ji(t) (-$) " Z Jj(t)Ai?(t)] (9) 
+J 
+The first term inside the square brackets is the spontaneous output rate. The second 
+term is the specific contribution of an input spike at time t + s to the output rate 
+at t. It vanishes for s > 0 (Fig. 2). The sum in (9) contains the mean contributions 
+of all synapses to an output spike at time t. Inserting (9) in (3) and assuming the 
+weights Jj to be constant in the time interval [t, t + 7-1 we obtain 
+Ci($;t) --' E Jj(t) in $) in in( t - $) [P0 - Ji(t)(-$)] (10) 
+&i (t+ A s(t)+& 
+J 
+For excitatory synapses, the second term gives for s < 0 a positive contribution 
+to the correlation function - as it should be. (Recall that s < 0 means that a 
+presynaptic spike precedes postsynaptic firing.) 
+t+s t 
+Figure 2: Interpretation of the term in square 
+brackets in (9). The dotted line is the contri- 
+bution of an input spike at time t + s to the 
+output rate as a function of t', viz., Ji(t) e(t' - 
+t - s). Adding this to the mean rate contribu- 
+tion, po + -j Jj(f) Aijn(f) (dashed line), we 
+obtain the rate inside the square brackets of 
+(9) (full line). At time t' = t the contribution 
+of an input spike at time t + s is Ji(t) e(-s). 
+3.2 Learning Equation 
+The assumption of identical and constant mean input rates, &iin(t) = piin(t) = /in 
+for all i, reduces the number of free parameters in (4) and eliminates all effects of 
+rate coding. We introduce in [12V(0)] - f-o ds W(s)liin(t + S) and define 
+(t):= 
+Qij(t) = l/7V(0)[Fiin(t) - pin] [A}n(t) _ pin] . (11) 
+Using (8), (10), (11) in (4) we find for the evolution on the slow time scale of learning 
+Ji(t) = k + Z Jj(t)[Qij(t) + k2 + k3 &j] , where (12) 
+J 
+130 R. Kempter, W. Gerstner and J. L. van Hemmen 
+: [$ou + W(o) + 
+k2 -- [w øut + (0) t2 in] t2 in 
+k3 = /,,in / ds e(-s) W(s) . 
+(13) 
+(14) 
+(15) 
+4 Discussion 
+Equation (12), which is the central result of our analysis, describes the expected 
+dynamics of synaptic weights for a spike-based Hebbian learning rule (1) under the 
+assumption of a linear inhomogeneous Poisson neuron. Linsker (1986) has derived a 
+mathematically equivalent equation starting from (5) and a linear graded response 
+neuron, a rate-based model. An equation of this type has been analyzed by MacKay 
+and Miller (1990). The difference between Linsker's equation and (12) is, apart from 
+a slightly different notation, the term ka 50 and the interpretation of Qij. 
+4.1 Interpretation of 
+In (12) correlations between spikes on time scales down to milliseconds or below 
+can enter the driving term {ij for structure formation; cf. (11). In contrast to that, 
+Linsker's ansatz is based on a firing rate description, where the term 2ij contains 
+correlations between mean firing rates only. In his Qij term, mean firing rates take 
+the place of Fii n and Aii n. If we use a standard interpretation of rate coding, a mean 
+firing rate corresponds to a temporally averaged quantity with an averaging window 
+or a hundred milliseconds or more. 
+Formally, we could define mean rates by temporal averaging with either e(s) or 
+W(s) as the averaging window. In this sense, Linsker's 'rates' have been made 
+more precise by (11). Note, however, that (11) is asymmetric: one of the rates 
+should be convolved with e, the other one with W. 
+4.2 Relevance of the ka term 
+The most important difference between Linsker's rate-based learning rule and our 
+Eq. (12) is the existence of a term/ca  0. We now argue that for a causal chain of 
+events ka oc f dx e(x) W(-x) must be positive. [We have set x = -s in (15).] First, 
+without loss of generality, the integral can be restricted to x > 0 since e(x) is a 
+response kernel and vanishes for x < 0. For excitatory synapses, e(x) is positive for 
+x > 0. Second, experiments on excitatory synapses show that W(s) is positive for 
+s < 0 (Markram et al. 1997, Zhang et al. 1998). Thus the integral f dx e(x) W(-x) 
+is positive - and so is/ca. 
+There is also a more general argument for/ca > 0 based on a literal interpretation of 
+Hebb's statement (Hebb 1949). Let us recall that s < 0 in (15) means that a presy- 
+naptic spike precedes postsynaptic spiking. For excitatory synapses, a presynaptic 
+spike which precedes postsynaptic firing nay be the cause of the postsynaptic ac- 
+tivity. [As Hebb puts it, it has 'contributed in firing the postsynaptic cell'.] Thus, 
+the Hebb rule 'predicts' that for excitatory synapses W(s) is positive for s < 0. 
+Hence, ka = i, f ds e(-s) W(s) > 0 as claimed above. 
+A positive ka term in (12) gives rise to an exponential growth of weights. Thus any 
+existing structure in the distribution of weights is enhanced. This contributes to the 
+stability of weight distributions, especially when there are few and strong synapses 
+(Gerstner et al. 1996). 
+Spike-Based Compared to Rate-Based Hebbian Learning 131 
+4.3 Intrinsic Normalization 
+Let us suppose that no input synapse is special and impose the (weak) condition 
+that N - i Qij = Qo > 0 independent of the synapse index j. We find then from 
+(12) that the average weight J0 := N - i Ji has a fixed point Jo = -k/[Qo + 
+k2 + N-lk3]. The fixed point is stable if Qo + k2 + N-k3 < O. We have shown 
+above that k3 > 0. Furthermore, Q0 > 0 according to our assumption. The only 
+way to enforce stability is therefore a term k2 which is sufficiently negative. Let 
+us now turn to the definition of k2 in (14). To achieve k2 < 0, either 12V(0) (the 
+integral over W) must be sufficiently negative; this corresponds to a learning rule 
+which is, on the average, anti-Hebbian. Or, for 12V(0) > 0, the linear term w øut in 
+(1) must be sufficiently negative. In addition, for excitatory synapses a reasonable 
+fixed point J0 has to be positive. For a stable fixed point this is only possible for 
+k > 0, which, in turn, implies w in to be sufficiently positive; cf. (13). 
+Intrinsic normalization of synaptic weights is an interesting property, since it allows 
+neurons to stay at an optimal operating point even while synapses are changing. 
+Auditory neurons may use such a mechanism to stay during learning in the regime 
+where coincidence detection is possible (Gerstner et al. 1996, Kempter et al. 1998). 
+Cortical neurons might use the same principles to operate in the regime of high 
+variability (Abbott, invited NIPS talk, this volume). 
+4.4 Conclusions 
+Spike-based learning is different from simple rate-based learning rules. A spike- 
+based learning rule can pick up correlations in the input on a millisecond time 
+scale. Mathematically, the main difference to rate-based Hebbian learning is the 
+existence of a k3 term which accounts for the causal relation between input and 
+output spikes. Correlations between input and output spikes on a millisecond time 
+scale play a role and tend to stabilize existing strong synapses. 
+References 
+Abeles M., 1994, In Domany E. et al., editors, Models of Neural Networks II, pp. 
+121-140, New York. Springer. 
+Bialek W. et al., 1991, Science, 252:1855-1857. 
+Cart C. E., 1993, Annu. Rev. Neurosci., 16:223-243. 
+Gerstner W. et al., 1996, Nature, 383:76-78. 
+Gerstner W. et al., 1998, In W. Maass and C. M. Bishop., editors, Pulsed Neural 
+Networks, pp. 353-377, Cambridge. MIT-Press. 
+Hebb D. O., 1949, The Organization of Behavior. Wiley, New York. 
+Kempter R. et al., 1998, Neural Comput., 10:1987-2017. 
+Kempter R. et al., 1999, Phys. Rev. E, In Press. 
+Linsker R., 1986, Proc. Natl. Acad. Sci. USA, 83:7508-7512. 
+MacKay D. J. C., Miller K. D., 1990, Network, 1:257-297. 
+Markram H. et al., 1997, Science, 275:213-215. 
+Senn W. et al., 1999, preprint, Univ. Bern. 
+Wimbauer S. et al., 1997, Biol. Cybern., 77:453-461. 
+Zhang L.I. et al., 1998, Nature, 395:37-44 

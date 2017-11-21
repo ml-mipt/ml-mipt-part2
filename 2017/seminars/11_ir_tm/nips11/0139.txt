@@ -1,0 +1,348 @@
+The Role of Lateral Cortical Competition 
+in Ocular Dominance Development 
+Christian Piepenbrock and Klaus Obermayer 
+Dept. of Computer Science, Technical University of Berlin 
+FR 2-1; Franklinstr. 28-29; 10587 Berlin, Germany' 
+{piep,oby} @cs.tu-berlin.de; http://www. ni.cs.tu-berlin.de 
+Abstract 
+Lateral competition within a layer of neurons sharpens and localizes the 
+response to an input stimulus. Here, we investigate a model for the ac- 
+tivity dependent development of ocular dominance maps which allows 
+to vary the degree of lateral competition. For weak competition, it re- 
+sembles a correlation-based learning model and for strong competition, 
+it becomes a self-organizing map. Thus, in the regime of weak compe- 
+tition the receptive fields are shaped by the second order statistics of the 
+input patterns, whereas in the regime of strong competition, the higher 
+moments and "features" of the individual patterns become important. 
+When correlated localized stimuli from two eyes drive the cortical de- 
+velopment we find (i) that a topographic map and binocular, localized 
+receptive fields emerge when the degree of competition exceeds a critical 
+value and (ii) that receptive fields exhibit eye dominance beyond a sec- 
+ond critical value. For anti-correlated activity between the eyes, the sec- 
+ond order statistics drive the system to develop ocular dominance even 
+for weak competition, but no topography emerges. Topography is estab- 
+lished only beyond a critical degree of competition. 
+1 Introduction 
+Several models have been proposed in the past to explain the activity depending develop- 
+ment of ocular dominance (OD) in the visual cortex. Some models make the ansatz of 
+linear interactions between cortical model neurons [2, 7], other approaches assume com- 
+petitive winner-take-all dynamics with intracortical interactions [3, 5]. The mechanisms 
+that lead to ocular dominance critically depend on this choice. In linear activity models, 
+second order correlations of the input patterns determine the receptive fields. Nonlinear 
+competitive models like the self-organizing map, however, use higher order statistics of the 
+input stimuli and map their features. In this contribution, we introduce a general nonlinear 
+140 C. Piepenbrock and K. Obermayer 
+x Figure 1' Model for OD development: the in- 
+O I:'""'ø'O' ' '¾'"':-'-'-:';'O"tCørtex put patterns P' and pS in the LGN drive 
+the Hebbian modification of the cortical affer- 
+LGN ent synaptic weights S:/ and S:/. Cortical neu- 
+left-eye rons are in competition and interact with effec- 
+right-eye tive strengths I:v. Locations in the LGN are in- 
+dexed i or j, cortical locations are labeled z or y. 
+Hebbian development rule which interpolates the degree of lateral competition and allows 
+us to systematically study the role of non-linearity in the lateral interactions on pattern for- 
+mation and the transition between two classes of models. 
+2 Ocular Dominance Map Development by Hebbian Learning 
+Figure 1 shows our basic model framework for ocular dominance development. We con- 
+sider two input layers in the lateral geniculate nucleus (LGN). The input patterns p -- 
+1,..., U on these layers originate from the two eyes and completely characterize the in- 
+put statistics (the mean activity P is identical for all input neurons). The afferent synaptic 
+connection strengths of cortical cells develop according to a generalized Hebbian learning 
+rule with learning rate r/. 
+subject to Z(S:z)' + (S/)': const. 
+() 
+An analogous rule is used for the connections from the right eyes S:. We use v - 2 in the 
+following and rescale the length of each neurons receptive field weight vector to a constant 
+length after a learning step. The model includes effective cortical interactions I for the 
+development of smooth cortical maps that spread the output activities O] in the neighbor- 
+hood of neuron z (with a mean f = N Y' I:v for N output neurons). The cortical output 
+signals are connectionist neurons with a nonlinear activation function g(.), 
+_ exp(,SHff) 
+- g(H) : exp(/3H) 
+L L/ R 
+with H' = Z(SujPj + SudP), (2) 
+which models the effect of cortical response sharpening and competition for an input stim- 
+ulus. The degree of competition is determined by the parameter/3. Such dynamics may re- 
+sult as an effect of local excitation and long range inhibition within the cortical layer [6, 1 ], 
+and in the limits of weak and strong competition, we recover two known types of develop- 
+mental models--the correlation based learning model and the self-organizing map. 
+2.1 From Linear Neurons to Winner-take-all Networks 
+In the limit/ -+ 0 of weak cortical competition, the output O becomes a linear function 
+of the input. A Taylor series expansion around 3: 0 yields a correlation-based-learning 
+(CBL) rule in the average over all patterns 
+ 1 ' C ;) + oxst.. 
+: + 
+where C'fi/ - '7 ', is the correlation function of the input patterns. Ocular 
+dominance development under this rule requires correlated activity between inputs from 
+Role of Lateral Cortical Competition in Ocular Dominance Development 141 
+CBL limit /3 = 2.5 /3 = 32 SOM limit 
+Figure 2: The network response for different degrees of cortical competition: the plots 
+show the activity rates y Iy O' for a network of cortical output neurons (the plots are 
+scaled to have equal maxima). Each gridpoint represents the activity of one neuron on a 
+16 x 16 grid. The interactions I are Gaussian (variance 2.25 grid points) and all neu- 
+rons are stimulated with the same Gaussian stimulus (variance 2.25). The neurons have 
+Gaussian receptive fields (variance 0.2 = 4.5) in a topographic map with additive noise 
+(uniformly distributed with amplitude 10 times the maximum weight value). 
+within one eye and anti-correlated activity (or uncorrelated activity with synaptic competi- 
+tion) between the two eyes [2, 4]. It is important to note, however, that CBL models cannot 
+explain the emergence of a topographic projection. The topography has to be hard-wired 
+from the outset of the development process which is usually implemented by an "arbor 
+function" that forces all non-topographic synaptic weights to zero. 
+Strong competition with/3  oo, on the other hand, leads to a self-organizing map [3, 5], 
+lSf = riI:q()Pi  with q(p)= argmax E(SjP  + S.P,') . 
+J 
+Models of this type use the higher order statistics of the input patterns and map the impor- 
+tant features of the input. In the SOM limit, the output activity pattern is identical in shape 
+for all input stimuli. The input influences only the location of the activity on the output 
+layer but does not affect its shape. 
+For intermediate values of/, the shape of the output activity patterns depends on the input. 
+The activity of neurons with receptive fields that match the input stimulus better than oth- 
+ers is amplified, whereas the activity of poorly responding neurons is further suppressed as 
+shown in figure 2. On the one hand, the resulting output activity profiles for intermediate/3 
+may be biologically more realistic than the winner-take-all limit case. On the other hand, 
+the difference between the linear response case (low/) and the nonlinear competition (in- 
+termediate/3) is important in the Hebbian development process--it yields qualitatively dif- 
+ferent results as we show in the next section. 
+2.2 Simulations of Ocular Dominance Development 
+In the following, we study the transition from linear CBL models to winner-take-all SOM 
+networks for intermediate values of/3. We consider input patterns that are localized and 
+show ocular dominance 
+Pi  0'5+eYeœ(P) exp(-(i-!øc(P))2 
+: 2r0.2 20.2) with eye œ(p) = -eye s(p) (3) 
+Each stimulus p is of Gaussian shape centered on a random position !oc(p) within the input 
+layer and the neuron index i is interpreted as a two-dimensional location vector in the input 
+layer. The parameter eye(p) sets the eye dominance for each stimulus. eye = 0 produces 
+binocular stimuli and eye = +  results in uncorrelated left and right eye activities. 
+We have simulated the development of receptive fields and cortical maps according to 
+equations 1 and 2 (see figure 3) for square grids of model neurons with periodic bound- 
+ary conditions, Gaussian cortical interactions, and OD stimuli (equation 3). The learning 
+142 C. Piepenbrock and K. Obermayer 
+4 
+3 
+2 , 
+0 1 2 
+CBL<-- 
+,/3* = 1.783 analytic prediction 
+/3+ 
+c 
+topogr. map with OD 
+local minimum: no OD 
+3 4 5 6 7 
+log2 3 --> SaM 
+0.5 
+0.4 
+g0.3 
+¸ 
+==0.2 
+0.1 
+0.0 
+A 
+0 
+CBL. 
+/3* = 1.783 analytic prediction 
+/+ 
+ftopogr. map with OD 
+B C 
+,/I local minimum: no OD 
+2 3 4 5 6 7 
+-- log2 3 -->SAM 
+Figure 3: Simulation of ocular dominance development for a varying degree of cortical 
+competition/3 in a network of 16 x 16 neurons in each layer. The figure shows receptive 
+fields sizes (left) and mean OD value (right) as a function of cortical competition/3. Each 
+point in the figure represents one simulation with 30000 pattern presentations. The cortical 
+interactions are Gaussian with a variance of 72 : 2.25 grid points. The Gaussian input 
+stimuli are 5.66 times stronger in one eye than in the other (equation 3 with cr  - 2.2,5, 
+ede(/,t) -- +0.35). The synaptic weights are intialized with a noisy topographic map 
+(curves labeled "no OD") and additionally with ocular dominance stripes (curves labeled 
+"with OD"). To determine the receptive field size we have applied a Gaussian fit to all re- 
+ceptive field profiles S/ and S/ and averaged the standard deviation (in grid points) over 
+1 L R ,L 
+all neurons x The mean OD value is given by 
+rate is set at the first stimulus presentation to change the weights of the best responding 
+neuron by half a percent. After each learning step the weights are rescaled to enforce the 
+constraint from equation 1. 
+The simulations yield the results expected in the CBL and SaM limit cases (small and 
+large/3) for initially constant synaptic weight values with 5 percent additional noise. In the 
+CBL limit, our particular choice of input patterns does not lead to the development of oc- 
+ular dominance, because the necessary conditions for the input pattern correlations are not 
+satisfied--the pattern correlations and interactions are all positive. Instead, the learning 
+rule has only one fixpoint with uniform synaptic weights--unstructured receptive fields 
+that cover the whole input layer. In the SaM limit, our set of stimuli leads to the emer- 
+gence of a topographic projection with localized receptive fields and ocular dominance 
+stripes. The topographic maps often develop defects which can be avoided by an annealing 
+scheme. Instead of annealing/3 or the cortical interaction range, however, we initialize the 
+weights with a topographic projection and some additive noise. This is a common assump- 
+tion in cortical development models [2], because the fibers from the LGN first innervate 
+the visual cortex already in a coarsely topographic order. 
+For intermediate degrees of cortical competition, we find sharp transitions between the 
+CBL and SaM states and distinguish three parameter regimes (see figure 3). For weak 
+competition (A) all receptive fields are unstructured and cover the whole input layer. At 
+some critical/3', the receptive fields begin to form a topographic projection from the genic- 
+ulate to the cortical layer. This projection (B) has no stable ocular dominance stripes, but 
+a small degree of ocular dominance that fluctuates continuously. For yet stronger competi- 
+tion (C), a cortical map with stable ocular dominance stripes emerges. 
+The simulations, however, show that a topographic map without ocular dominance remains 
+a stable attractor of the learning dynamics (C). For increasing competition its basin of at- 
+traction becomes smaller, and smaller learning rates are necessary in order to remain within 
+the binocular state. On the one hand, simulations with slowly increasing beta lead to a to- 
+Role of Lateral Cortical Competition in Ocular Dominance Development 143 
+0.6 
+0.0 
+A 
+o 
+CBL. 
+/* = 2.002 analytic prediction 
+B 
+/opogr. map with OD 
+--C 
+local minimum: no OD 
+-1.0 
+-2.0 
+2 3 4 5 6 7 0 
+1%2/ --> SOM CBL 
+2.002 analytic prediction 
+',., local minimum: noOD 
+topogr. map with OD 
+3 4 5 6 7 
+1%2  -->SOM 
+Figure 4: Simulations for the learning equation 5. The figure shows the mean ocular dom- 
+inance (left) and the cost (right) as a function of/Y. The parameters are identical to figure 3 
+and eye(p) = +0.425. 
+pographic map and ocular dominance stripes suddenly pop up somewhere in regime C- 
+for small learning rates later than for large ones. On the other hand, in simulations with 
+decreasing/Y and an initially topographic map with ocular dominance, we find a second 
+critical/Y+ at which the OD map becomes unstable. 
+To understand the system's properties better, we analytically predict the value *--the 
+point where structured receptive fields emerge--and discuss the relation to cost functions 
+to get some intuition about the value fi+ in the following paragraph. 
+2.3 Analysis of the Emergence of Structured Receptive Fields 
+For fi < fl* the system shows basically CBL properties--in our case constant weights and 
+unstructured receptive fields. It is possible to study the stability of this state analytically. 
+We consider the learning equation 1 under a hard renormalization constraint that enforces 
+Y-].i= (5'}Li + (5'xi - 2M 2 by rescaling the weights after each learning step. A linear 
+perturbation analysis of the learning rule around constant weights yields a critical degree 
+of competition fi* - K I - 1 
+: (Smxmx) where  is the strength of the constant synaptic 
+weights. 
+Amx is the largest eigenvalue of the input covariance matrix 
+which has to be diagonalized with respect to L and R, as well as with respect to i and j. 
+The input cogelation functions for the patterns from equation 3 are given by C L : 
+: i bG(i 2 2) and C  
++ 2eye2) _ j, = : i _ 2evc2)3G(i_ 
+where G([, 2) is a two-dimensional Gaussian with variance 2. The eigenvalues with re- 
+spect to L and R in this symmetric case are the sum and difference terms of the correlation 
+' -sum 1 LL LR - 2 1 (L LR -sum 
+funct,ons - + -.)and ZC51 
+=- -Cji ).ThetermEij 
+is larger for positive input cogelations and in the next step we have to find the eigenval- 
+ues of this matrix. For periodic boundary conditions and in the limit of large networks, we 
+can approximate the eigenvalue by the fourier transform of the Gaussian and finally obtain 
+- - = Amx is the 
+- ( (fo a gid of 
+largest eigenvalue of (  
+I,z  ) and Gaussian cortical interactions I with variance 
+I 
+on N: n x n output neurons yield Am x: exp ( - (72w/n)U). Stronger competition 
+beyond the point * leads to the formation of structured receptive fields. It is interesting to 
+note, that the critical * does not depend on eye(p), the strength of ocularity in the input 
+patterns. The predicted value for * is plotted in figure 3 and matches the transition found 
+in the simulations. 
+144 C. Picpenbrock and K. Obermayer 
+2.4 Hebbian Development With a Global Objective Function 
+The learning equation 1 does not optimize a global cost function [5]. To understand the 
+dynamics of the OD development better and to interpret the transition at/3., we derive a 
+learning rule very similar to equation 1 that minimizes the global cost function E, 
+1 
+E: U Z Ocost with cost: - Z Iy(,qL pL 
+-- ,-yi'5 + SPf". (4) 
+,u,x y ,j 
+We minimize this cost function in a stochastic network of binary output neurons ¸ that 
+compete for the input stimuli, i.e. one output neuron is active at any given time. The prob- 
+ability for a neuron y to become active in response to pattern/ depends on its advantage 
+in cost over the currently active neuron x: 
+exp[- (cost  - cost )] 
+e(o: --+ : 
+' exp[-/3(cost - cost)] 
+This type of output dynamics leads to a Boltzmann probability distribution for the state of 
+the system. We marginalize over all possible network outputs and derive a leaning rule by 
+gradient descent on the log likelihood of a particular set of synaptic connections (subject 
+1 exp(-/3E) 
+--og y ß 
+{Ox  ) 
+,L 
+Abe: i : r I  lxvO 'Pi L with O: 
+y Ez exp(/3 Ey, 5 -h(SySPf + 
+Finally, we obtain a learning rule that contains the expectation values O] (or mean fields) 
+of the binary outputs, 
+QR pRt 
+exp(/3Evj Iv(SvSP)  +uJ' J )) (5) 
+This learning rule is almost identical to equation 1, it only contains an additional cortical 
+interaction inside the output term 0, but it has the advantage of an underlying cost func- 
+tion. 
+Figure 4 shows the development of ocular dominance according to equation 5 and the as- 
+sociated cost is plotted for each state of the system. The value/3* of the first transition is 
+calculated analogously to the previous section and ,k x becomes the maximum eigenvalue 
+ofthe matrix ( 'y I/w - [) which is ,k x = exp (-(727r/m)). Around/3 + a to- 
+pographic map without ocular dominance is a stable state and it remains stable for larger/3. 
+In addition, a different minimum of the cost function equation 4 emerges at/3+: an ocular 
+dominance map with a lower associated cost. This shows that an ocular dominance map 
+becomes the preferred state of the system beyond/3+ although the binocular topographic 
+map is still stable. In the SOM limit/ ----> oo the binocular topographic map becomes 
+unstable and ocular dominance stripes develop. 
+The value/3+ marks the first emergence of an ocular dominance map. For the simulations 
+in the figures 3 and 4 we have used positive correlations between the two eyes--a real- 
+istic assumption for OD map development. For weaker correlations (eye() approaches 
+ /3+ 
++), decreases. For anti-correlated stimuli, an ocular dominance map develops even 
+in the CBL limit [4] (this, however, requires additional model assumptions like inhibi- 
+tion between the layers within the LGN). Such a map has no topographic structure (if 
+not imposed by an arbor function) but mostly monocular receptive fields. The value/3* 
+is not affected directly by those changes and the monocular receptive fields localize, if/3* 
+is exceeded. Consequently, the "feature" OD emerges, if it is dominant in the relevant 
+pattern statistics--for anti-correlated eyes around/3 = 0, and for positive between-eye- 
+correlations only in the regime of higher order moments at/3 + . 
+Role of Lateral Cortical Competition in Ocular Dominance Development 145 
+3 Conclusions 
+We have introduced a model for cortical development with a variable degree of cortical 
+competition. For weak competition it has CBL models, for strong competition the SOM 
+as limit cases. Localized stimuli with ocular dominance require a minimum degree of cor- 
+tical competition to develop a topographic map, and a stronger degree of competition for 
+the emergence of ocular dominance stripes. Anti-correlated activity between the two eyes 
+lets OD emerge for weak competition and localized fields only beyond a critical degree of 
+competition. 
+A Taylor series expansion of the learning equation I yields a CBL model that uses only 
+second order input statistics. For increasing/3 the higher order terms become significant 
+which consist of the higher moments of the input patterns. In this contribution, we have 
+used only simple activity blobs in two eyes, but it is well known that in the winner-take-all 
+limit features like orientation selectivity can emerge as well [3]. 
+The soft cortical competition in our model implements a mechanism of response sharpen- 
+ing in which the input patterns do still influence the output pattern shape. This should relax 
+the biologically unplausible assumption of winner-take-all dynamics of SOM models and 
+yields similar ocular dominance maps. Cortical microcircuits--local cortical amplifiers-- 
+have been proposed as a cortical module of computation [6]. Our model suggests that such 
+circuits may be important to sharpen the responses during the development and to permit 
+the emergence of feature mapping simple cell receptive fields. 
+Our model shows that small changes in the degree of cortical competition may result in 
+qualitative changes of the emerging receptive fields and cortical maps. Such changes in 
+competition could be a result of the maturation of the intra-cortical connectivity. A slowly 
+increasing degree of cortical competition could make the cortical neurons sensitive to more 
+and more complex features of the input stimuli. 
+Acknowledgements 
+This work was supported by the Boehringer Ingelheim Fonds (C. Piepenbrock) and by 
+DFG grant Ob 102/2-1. 
+References 
+[1] S. Amari. Dynamics of pattern formation in lateral-inhibition type neural fields. Biol. 
+Cyb., 27:77-87, 1977. 
+[2] K. D. Miller, J. B. Keller, and M.P. Stryker. Ocular dominance column development: 
+Analysis and simulation. Science, 245:605-615, 1989. 
+[3] K. Obermayer, H. Ritter, and K. Schulten. A principle for the formation of the spatial 
+structure of cortical feature maps. Proc. Nat. Acad. Sci. USA, 87:8345-49, 1990. 
+[4] C. Piepenbrock, H. Ritter, and K. Obermayer. The joint development of orientation 
+and ocular dominance: Role of constraints. Neur. Comp., 9:959-970, 1997. 
+[5] M. Riesenhuber, H.-U. Bauer, and T. Geisel. Analyzing phase transitions in high- 
+dimensional self-organizing maps. Biol. Cyb., 75:397-407, 1996. 
+[6] D.C. Somers, S. B. Nelson, and M. Sur. An emergent model of orientation selectivity 
+in cat visual cortical simple cells. J. Neurosci., 15:5448-5465, 1995. 
+[7] A. L. Yuille, J. A. Kolodny, and C. W. Lee. Dimension reduction, generalized de- 
+formable models and the development of ocularity and orientation. Neur. Netw., 9:309- 
+319, 1996. 

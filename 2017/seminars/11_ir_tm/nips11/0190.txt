@@ -1,0 +1,325 @@
+Almost Linear VC Dimension Bounds for 
+Piecewise Polynomial Networks 
+Peter L. Bartlett 
+Department of System Engineering 
+Australian National University 
+Canberra, ACT 0200 
+Australia 
+Peter. Bart lett¸anu. edu. au 
+Vitaly Maiorov 
+Department of Mathematics 
+Technion, Haifa 32000 
+Israel 
+Ron Meir 
+Department of Electrical Engineering 
+Technion, Haifa 32000 
+Israel 
+rmeir¸dumbo. technion. ac. il 
+Abstract 
+We compute upper and lower bounds on the VC dimension of 
+feedforward networks of units with piecewise polynomial activa- 
+tion functions. We show that if the number of layers is fixed, then 
+the VC dimension grows as W log W, where W is the number of 
+parameters in the network. This result stands in opposition to the 
+case where the number of layers is unbounded, in which case the 
+VC dimension grows as W 2. 
+I MOTIVATION 
+The VC dimension is an important measure of the complexity of a class of binary- 
+valued functions, since it characterizes the amount of data required for learning in 
+the PAC setting (see [BEHW89, Vap82]). In this paper, we establish upper and 
+lower bounds on the VC dimension of a specific class of multi-layered feedforward 
+neural networks. Let jr be the class of binary-valued functions computed by a 
+feedforward neural network with W weights and k computational (non-input) units, 
+each with a piecewise polynomial activation function. Goldberg and Jerrum [GJ95] 
+have shown that VCdim() < Cl(W 2 + Wk) = O(W2), where c is a constant. 
+Moreover, Koiran and Sontag [KS97] have demonstrated such a network that has 
+VCdim() >_ c2W 2 = (W2), which would lead one to conclude that the bounds 
+Almost Linear VC Dimension Bounds for Piecewise Polynomial Networks 191 
+are in fact tight up to a constant. However, the proof used in [KS97] to establish 
+the lower bound made use of the fact that the number of layers can grow with W. 
+In practical applications, this number is often a small constant. Thus, the question 
+remains as to whether it is possible to obtain a better bound in the realistic scenario 
+where the number of layers is fixed. 
+The contribution of this work is the proof of upper and lower bounds on the VC 
+dimension of piecewise polynomial nets. The upper bound behaves as O(WL 2 + 
+WL log WL), where L is the number of layers. If L is fixed, this is O(W log W), 
+which is superior to the previous best result which behaves as O(W2). Moreover, 
+using ideas from [KS97] and [GJ95] we are able to derive a lower bound on the VC 
+dimension which is f(WL) for L = O(W). Maass [Maa94] shows that three-layer 
+networks with threshold activation functions and binary inputs have VC dimension 
+f(W log W), and Sakurai [Sak93] shows that this is also true for two-layer networks 
+with threshold activation functions and real inputs. It is easy to show that these 
+results imply similar lower bounds if the threshold activation function is replaced by 
+any piecewise polynomial activation function f that has bounded and distinct limits 
+limx__ f(x) and limx_ f(x). We thus conclude that if the number of layers L is 
+fixed, the VC dimension of piecewise polynomial networks with L _ 2 layers and real 
+inputs, and of piecewise polynomial networks with L _ 3 layers and binary inputs, 
+grows as W log W. We note that for the piecewise polynomial networks considered 
+in this work, it is easy to show that the VC dimension and pseudo-dimension are 
+closely related (see e.g. [Vid96]), so that similar bounds (with different constants) 
+hold for the pseudo-dimension. Independently, Sakurai has obtained similar upper 
+bounds and improved lower bounds on the VC dimension of piecewise polynomial 
+networks (see [Sak99]). 
+2 UPPER BOUNDS 
+We begin the technical discussion with precise definitions of the VC-dimension and 
+the class of networks considered in this work. 
+Definition 1 Let X be a set, and .4 a system of subsets of X. A set S = 
+{Xl,... , xh} is shattered by .4 if, for every subset B C_ S, there exists a set A E .4 
+such that S n A = B. The VC-dimension of.4, denoted by VCdim(.4), is the largest 
+integer n such that there exists a set of cardinality n that is shattered by .4. 
+Intuitively, the VC dimension measures the size, n, of the largest set of points for 
+which all possible 2 n labelings may be achieved by sets A E .4. It is often convenient 
+to talk about the VC dimension of classes of indicator functions jc. In this case we 
+simply identify the sets of points x  X for which f(x) = I with the subsets of .4, 
+and use the notation VCdim(JC). 
+A feedforward multi-layer network is a directed acyclic graph that represents a 
+parametrized real-valued function of d real inputs. Each node is called either an 
+input unit or a computation unit. The computation units are arranged in L layers. 
+Edges are allowed from input units to computation units. There can also be an 
+edge from a computation unit to another computation unit, but only if the first 
+unit is in a lower layer than the second. There is a single unit in the final layer, 
+called the output unit. Each input unit has an associated real value, which is one 
+of the components of the input vector x  R . Each computation unit has an 
+associated real value, called the unit's output value. Each edge has an associated 
+real parameter, as does each computation unit. The output of a computation unit 
+is given by  (-e WeZe + W0), where the sum ranges over the set of edges leading to 
+192 P. L. Bartlett, 14. Maiorov and R. Meir 
+the unit, w, is the parameter (weight) associated with edge e, ze is the output value 
+of the unit from which edge e emerges, w0 is the parameter (bias) associated with 
+the unit, and rr: R  R is called the activation function of the unit. The argument 
+of rr is called the net input of the unit. We suppose that in each unit except the 
+output unit, the activation function is a fixed piecewise polynomial function of the 
+form 
+a(u) = qSi(u) for u E [ti-,ti), 
+for i = 1,... ,p+ 1 (and set to = -c and tp+l -- c3), where each ½i is a polynomial 
+of degree no more than 1. We say that rr has p break-points, and degree 1. The 
+activation function in the output unit is the identity function. Let ki denote the 
+number of computational units in layer i and suppose there is a total of W param- 
+eters (weights and biases) and k computational units (k = k + k2 +..-+ kœ_ + 1). 
+For input x and parameter vector a E A = R TM, let f(x, a) denote the output of 
+this network, and let jr = {x  f(x,a): a  R TM} denote the class of functions 
+computed by such an architecture, as we vary the W parameters. We first dis- 
+cuss the computation of the VC dimension, and thus consider the class of functions 
+sgn(J r) = {x  sgn(f(x,a)):a  RW}. 
+Before giving the main theorem of this section, we present the following result, 
+which is a slight improvement of a result due to Warren (see [ABar], Chapter 8). 
+Lemma 2.1 Suppose fl('), f2('),... , f,(') are fixed polynomials of degree at 
+most 1 in n <_ m variables. Then the number of distinct sign vectors 
+{sgn(f(a)),... ,sgn(fm(a))} that can be generated by varying a  R n is at most 
+2(2eml/n) . 
+We then have our main result: 
+Theorem 2.1 For any positive integers W, k _< W, L <_ W, l, and p, consider a 
+network with real inputs, up to W parameters, up to k computational units arranged 
+in L layers, a single output unit with the identity activation function, and all other 
+computation units with piecewise polynomial activation functions of degree 1 and 
+with p break-points. Let .T' be the class of real-valued functions computed by this 
+network. Then 
+VCdim(sgn(Y')) < 2WLlog(2eWLpk) + 2WL21og(1 + 1) + 2L. 
+Since L and k are O(W), for fixed 1 and p this implies that 
+VCdim(sgn(Y')) = O(WL log W + WL2). 
+Before presenting the proof, we outline the main idea in the construction. For 
+any fixed input x, the output of the network f(x, a) corresponds to a piecewise 
+polynomial function in the parameters a, of degree no larger than (1 + 1) œ- (recall 
+that the last layer is linear). Thus, the parameter domain A = R TM can be split 
+into regions, in each of which the function f(x, .) is polynomial. From Lemma 2.1, 
+it is possible to obtain an upper bound on the number of sign assignments that can 
+be attained by varying the parameters of a set of polynomials. The theorem will be 
+established by combining this bound with a bound on the number of regions. 
+PROOF OF THEOREM 2.1 For an arbitrary choice of m points x,x2,... ,Xm, we 
+wish to bound 
+K = I{(sgn(f(x,a)),... ,sgn(f(xm,a)))'a G A}I. 
+Almost Linear VC Dimension Bounds for Piecewise Polynomial Networks 193 
+Fix these m points, and consider a partition {S1, Se,... , SN) of the parameter 
+domain A. Clearly 
+N 
+K _ Z I{(sgn(f(xi'a))''" ,sgn(f(xm,a)))'a E $i}[. 
+i=1 
+We choose the partition so that within each region $i, f(xi,-),... , f(Zm, ') are all 
+fixed polynomials of degree no more than (1 + 1) L-1. Then, by Lemma 2.1, each 
+term in the sum above is no more than 
+w 
+The only remaining point is to construct the partition and determine an upper 
+bound on its size. The partition is constructed recursively, using the following 
+procedure. Let $ be a partition of A such that, for all $ E $, there are constants 
+bn,i,j  {0, 1} for which 
+sgn(pn,x (a) - ti) - bn,i,j for all a  $, 
+wherej  {1,...,m), h  {1,...,k) andi E {1,...,p). Here ti are the break- 
+points of the piecewise polynomial activation functions, and pn,x is the affine func- 
+tion describing the net input to the h-th unit in the first layer, in response to xj. 
+That is, 
+Ph,x ---- ah ß Xj d- ah,O, 
+where an  R , an,0  R are the weights of the h-th unit in the first layer. Note 
+that the partition $ is determined solely by the parameters corresponding to the 
+first hidden layer, as the input to this layer is unaffected by the other parameters. 
+Clearly, for a  $, the output of any first layer unit in response to an xj is a fixed 
+polynomial in a. 
+Now, let W1,... , Wœ be the number of variables used in computing the unit outputs 
+up to layer 1,... , L respectively (so W = W), and let k,... , k be the number of 
+computation units in layer 1,... , L respectively (recall that kœ - 1). Then we can 
+choose $ so that [$1[ is no more than the number of sign assignments possible with 
+mklp arline functions in W1 variables. Lemma 2.1 shows that [$11 < 2 2erakip 
+-- W1 
+Now, we define S (for n  1) as follows. Assume that for all S in S-1 and all 
+xj, the net input of every unit in layer n in response to xj is a fixed polynomial 
+function of a  S, of degree no more than (1 + 1) -1. Let S be a partition of A 
+that is a refinement of 8_ (that is, for all S E 8, there is an S' E 8_ with 
+S  S'), such that for all S E 8 there are constants bn,i,j  {0, 1} such that 
+sgn(pn, (a) - ti): bh,i,j for all a e S, (2) 
+where pn, is the polynomial function describing the net input of the h-th unit in 
+the n-th layer, in response to xj, when a  S. Since S  S' for some S'  _, (2) 
+implies that the output of each n-th layer unit in response to an xj is a fixed 
+polynomial in a of degree no more than l(1 + 1) -1, for all a  S. 
+Finally, we can choose S such that, for all S'  S-1 we have ]{S  S ß S  
+S}[ is no more than the number of sign assignments of mkp polynomials in W 
+variables of degree no more than (l + 1) -, and by Lemma 2.1 this is no more than 
+{2emkp(l+l)_ ) W 
+2   . Notice also that the net input of every unit in layer n + 1 in 
+194 P L. Bartlett, V. Maiorov and R. Meir 
+response to xj is a fixed polynomial function of a C $ C $n of degree no more than 
+(1 + 1) n. 
+Proceeding in this way we get a partition $œ-1 of A such that for $  $œ_ the 
+network output in response to any xj is a fixed polynomial of a G $ of degree no 
+more than l(1 + 1) œ-2. Furthermore, 
+(2emklp W1 L-1 (2erakip(1 + 1) i-1) w 
+i=2 
+L-1 (2emkip(l + l)i_l ) W 
+_<II 2 
+i=1 Wi 
+Multiplying by the bound (1) gives the result 
+œ (2emkip(l+l)i-)w, 
+K<H2 
+i=1 Wi 
+Since the points xl,..., Xm were chosen arbitrarily, this gives a bound on the max- 
+imal number of dichotomies induced by a  A on m points. An upper bound on 
+the VC-dimension is then obtained by computing the largest value of m for which 
+this number is at least 2 m, yielding 
+œ ( 2empki (1 + 1)i- ) 
+m < L+ZWilog, 
+i=1 
+< L[I + (L- X)Wlog(/+ 1) + Wlog(2empk)], 
+where all logarithms are to the base 2. We conclude (see for example [Vid96] Lemma 
+4.4) that 
+VCdim(5 r) < 2L[(L- X)Wlog(/+ 1) + Wlog(2eWLpk) + 1]. 
+I 
+We briefly mention the application of this result to the problem of learning a re- 
+gression function E[YIX = x], from n input/output pairs {(Xi, Y/)}=, drawn 
+independently at random from an unknown distribution P(X, Y). In the case of 
+quadratic loss, L(f) = E(Y-f(X)) 2, one can show that there exist constants cl _> 1 
+and c2 such that 
+MPdim(5 r) log n 
+EL(f) _< s 2+ inf œ(f) + c2, 
+where s 2 = E [Y- E[YIX]] 2 is the noise variance, L(f) = E [(E[YIX ] - f(X)) 2] is 
+the approximation error of f, and f, is a function from the class jr that approxi- 
+mately minimizes the sample average of the quadratic loss. Making use of recently 
+derived bounds [MM97] on the approximation error, inffE  L(f), which are equal, 
+up to logarithmic factors, to those obtained for networks of units with the stan- 
+dard sigmoidal function a(u) = (1 + e-U) -, and combining with the considerably 
+lower pseudo-dimension bounds for piecewise polynomial networks, we obtain much 
+better error rates than are currently available for sigmoid networks. 
+3 LOWER BOUND 
+We now compute a lower bound on the VC dimension of neural networks with 
+continuous activation functions. This result generalizes the lower bound in [KS97], 
+since it holds for any number of layers. 
+Almost Linear VC Dimension Bounds for Piecewise Polynomial Networks 195 
+Theorem 3.1 Suppose f ß R -> R has the following properties: 
+1. lima_ f (ct) = 1 and lim__ f (ct) = 0, and 
+2. f is differentiable at some point xo with derivative f'(xo)  O. 
+Then for any L _> 1 and W _> 10L - 14, there is a feedforward network with the 
+following properties: The network has L layers and W parameters, the output unit 
+is a linear unit, all other computation units have activation function f, and the set 
+sgn(J r) of functions computed by the network has 
+VCdim(sgn()) -> , 
+where LuJ is the largest integer less than or equal to u. 
+PROOF As in [KS97], the proof follows that of Theorem 2.5 in [GJ95], but we 
+show how the functions described in [G J95] can be computed by a network, and 
+keep track of the number of parameters and layers required. We first prove the 
+lower bound for a network containing linear threshold units and linear units (with 
+the identity activation function), and then show that all except the output unit 
+can be replaced by units with activation function f, and the resulting network still 
+shatters the same set. For further details of the proof, see the full paper [BMM98]. 
+Fix positive integers M, N C N. We now construct a set of MN points, which 
+may be shattered by a network with O(N) weights and O(M) layers. Let {ai}, 
+i = 1, 2,... , N denote a set of N parameters, where each ai  [0, 1) has an M-bit 
+binary representation ai -- Y4__ 1 2-Jai,j, ai,j  {0,1}, i.e. the M-bit base two 
+representation of ai is ai = O.ai,ai,2 ... ai,M. We will consider inputs in Bv x BM, 
+where Bv = {ei: I < i < N}, ei  {0, 1} v has i-th bit I and all other bits 0, and 
+BM is defined similarly. We show how to extract the bits of the ai, so that for 
+input x = (et, am) the network outputs al,m. Since there are NM inputs of the 
+form (½/,½m), and al,m can take on all possible 2 Mv values, the result will follow. 
+There are three stages to the computation of al,m: (1) computing at, (2) extracting 
+at,k from at, for every k, and (3) selecting al,m among the at,ks. 
+Suppose the network input is x = ((u,... ,uv),(v,... ,v4)) = (et,em). Using 
+one linear unit we can compute y/= uiai ---- at. This involves N + 1 parameters 
+and one computation unit in one layer. In fact, we only need N parameters, but we 
+need the extra parameter when we show that this linear unit can be replaced by a 
+unit with activation function f. 
+Consider the parameter ck = O.at,k ... at,M, that is, ck = Y'/--k 2k--Jat,J for k = 
+1,... , M. Since ck _> 1/2 iff al,k -- 1, clearly sgn(ck - 1/2) = al,k for all k. Also, 
+c = at and ck = 2ck_! - at,k-. Thus, consider the recursion 
+Ck = 2Ck-1 -- al,k-1 
+at,k = sgn(ck - 1/2), 
+with initial conditions c = at and al, = sgn(at - 1/2). Clearly, we can compute 
+at,,... , at,M- and c2,... , c4- in another 2(M - 2) + 1 layers, using 5(M - 2) + 2 
+parameters in 2(M - 2) + 1 computational units. 
+We could compute at,M in the same way, but the following approach gives fewer 
+layers. Setb=sgn 2cM_-at,M_-Y'i= vi . IfmMthenb=0. Ifm=M 
+then the input vector (v,... ,v) = e4, and thus y vi = 0, implying that 
+b = sgn(cM) = sgn(O.at,M): at,M. 
+196 P. L. Bartlett, l. Maiorov and R. Meir 
+In order to conclude the proof, we need to show how the variables al,m may be 
+recovered, depending on the inputs (v,v2,... ,vM). We then have al,m -- b V 
+ViM=  (at,i A vi). Since for boolean x and y, x A y = sgn(x + y - 3/2), and V/M__ xi = 
+sgn(y,/M__ xi - 1/2), we see that the computation of al,m involves an additional 5M 
+parameters in M + i computational units, and adds another 2 layers. 
+In total, there are 2M layers and 10M+ N- 7 parameters, and the network shatters 
+a set of size NM. Clearly, we can add parameters and layers without affecting 
+the function of the network. So for any L,W E N, we can set M = [L/2J and 
+N = W + 7 - 10M, which is at least [W/2J provided W _> 10L - 14. In that case, 
+the VC-dimension is at least [L/2J [W/2J. 
+The network just constructed uses linear threshold units and linear units. However, 
+it is easy to show (see [KS97], Theorem 5) that each unit except the output unit can 
+be replaced by a unit with activation function f so that the network still shatters the 
+set of size MN. For linear units, the input and output weights are scaled so that the 
+linear function can be approximated to sut2ficient accuracy by f in the neighborhood 
+of the point x0. For linear threshold units, the input weights are scaled so that the 
+behavior of f at infinity accurately approximates a linear threshold function. I 
+References 
+[ABar] 
+[BEHW89] 
+[BMM98] 
+[½395] 
+[KS97] - 
+[Maa94] 
+[MM97] 
+[Sak93] 
+[Sak99] 
+[Vap82] 
+[Vid96] 
+M. Anthony and P. L. Bartlett. Neural Network Learning: Theoretical 
+Foundations. Cambridge University Press, 1999 (to appear). 
+A. Blumer, A. Ehrenfeucht, D. Haussler, and M. K. Warmuth. Learn- 
+ability and the Vapnik-Chervonenkis dimension. J. ACM, 36(4):929- 
+965, 1989. 
+P. L. Bartlett, V. Maiorov, and R. Meir. Almost linear VC-dimension 
+bounds for piecewise polynomial networks. Neural Computation, 
+10:2159-2173, 1998. 
+P.W. Goldberg and M.R. Jerrum. Bounding the VC Dimension of 
+Concept Classes Parameterized by Real Numbers. Machine Learning, 
+18:131-148, 1995. 
+P. Koiran and E.D. Sontag. Neural Networks with Quadratic VC Di- 
+mension. Journal of Computer and System Science, 54:190-198, 1997. 
+W. Maass. Neural nets with superlinear VC-dimension. Neural Com- 
+putation, 6(5):877-884, 1994. 
+V. Maiorov and R. Meir. On the Near Optimality of the 
+Stochastic Approximation of Smooth Functions by Neural Networks. 
+Submitted for publication, 1997. 
+A. Sakurai. Tighter bounds on the VC-dimension of three-layer net- 
+works. In World Congress on Neural Networks, volume 3, pages 540- 
+543, Hillsdale, N J, 1993. Erlbaum. 
+A. Sakurai. Tight bounds for the VC-dimension of piecewise polyno- 
+mial networks. In Advances in Neural Information Processing Systems, 
+volume 11. MIT Press, 1999. 
+V. N. Vapnik. Estimation of Dependences Based on Empirical Data. 
+Springer-Verlag, New York, 1982. 
+M Vidyasagar. A Theory of Learning and Generalization. Springer 
+Verlag, New York, 1996. 

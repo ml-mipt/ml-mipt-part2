@@ -1,0 +1,273 @@
+Independent Component Analysis of 
+Intracellular Calcium Spike Data 
+Klaus Prank, Julia Brger, Alexander von zur Miihlen, 
+Georg Brabant, Christof Schfl 
+Department of Clinical Endocrinology 
+Medical School Hannover 
+D-30625 Hannover 
+Germany 
+Abstract 
+Calcium (Ca'+)is an ubiquitous intracellular messenger which reg- 
+ulates cellular processes, such as secretion, contraction, and cell 
+proliferation. A number of different cell types respond to hormonal 
+stimuli with periodic oscillations of the intracellular free calcium 
+concentration ([Ca'+]i). These Ca '+ signals are often organized 
+in complex temporal and spatial patterns even under conditions 
+of sustained stimulation. Here we study the spario-temporal as- 
+pects of intracellular calcium ([Ca'+]i) oscillations in clonal 3-cells 
+(hamster insulin secreting cells, HIT) under pharmacological stim- 
+ulation (SchSfl et al., 1996). We use a novel fast fixed-point al- 
+gorithm (Hyv/irinen and Oja, 1997) for Independent Component 
+Analysis (ICA) to blind source separation of the spario-temporal 
+dynamics of [Ca'+]i in a HIT-cell. Using this approach we find two 
+significant independent components out of five differently mixed in- 
+put signals: one [Ca'+]i signal with a mean oscillatory period of 
+68s and a high frequency signal with a broadband power spectrum 
+with considerable spectral density. This results is in good agree- 
+ment with a study on high-frequency [Ca'+]i oscillations (PaluS 
+et al., 1998) Further theoretical and experimental studies have to 
+be performed to resolve the question on the functional impact of 
+intracellular signaling of these independent [Ca'+]i signals. 
+932 K. Prank et al. 
+1 INTRODUCTION 
+Independent component analysis (ICA) (Comon, 1994; Jutten and Herault, 1991) 
+has recently received much attention as a signal processing method which has been 
+successfully applied to blind source separation and feature extraction. The goal of 
+ICA is to find independent sources in an unknown linear mixture of measured sen- 
+sory data. This goal is obtained by reducing 2nd-order and higher order statistical 
+dependencies to make the signals as independent as possible. Mainly three different 
+approaches for ICA exist. The first approach is based on batch computations min- 
+imizing or maximizing some relevant criterion functions (Cardoso, 1992; Comon, 
+1994). The second category contains adaptive algorithms often based on stochastic 
+gradient methods, which may have implementations in neural networks (Amari et 
+al., 1996; Bell and Sejnowski, 1995; Delfosse and Loubaton, 1995; Hyv/irinen and 
+Oja, 1996; Jutten and Herault, 1991; Moreau and Macchi, 1993; Oja and Karhunen, 
+1995). The third class of algorithms is based on a fixed-point iteration scheme for 
+finding the local extrema of the kurtosis of a linear combination of the observed 
+variables which is equivalent to estimating the non-Gaussian independent compo- 
+nents (Hyv/irinen and Oja 1997). Here we use the fast fixed-point algorithm for 
+independent component analysis proposed by Hyv/irinen and Oja (1997) to analyze 
+the spario-temporal dynamics of intracellular free calcium ([Ca2+]i) in a hamaster 
+insulin secreting cell (HIT). 
+Oscillations of [Ca2+]i have been reported in a number of electrically excitable and 
+non-excitable cells and the hypotheses of frequency coding were proposed a decade 
+ago (Berridge and Galione, 1988). Recent experimental results clearly demonstrate 
+that [Ca2+]i oscillations and their frequency can be specific for gene activation con- 
+cerning the efficiency as well as the selectivity (Dolmetsch et al., 1998). Cells are 
+highly compartmentalized structures which can not be regarded as homogenous en- 
+tities. Thus, [Ca2+]i oscillations do not occur uniformly throughout the cell but 
+are initiated at specific sites which are distributed in a functional and nonunifortm 
+manner. These [Ca2+]i oscillations spread across individual cells in the form of 
+Ca 2+ waves. [Ca2+]i gradients within cells have been proposed to initiate cell mi- 
+gration, exocytosis, lymphocyte, killer cell activity, acid secretion, transcellular ion 
+transport, neurotransmitter release, gap junction regulation, and numerous other 
+functions (Tsien and Tsien, 1990). Due to this fact it is of major importance to 
+study the spario-temporal aspects of [Ca2+]i signaling in small sub compartments 
+using calcium-specific fluorescent reporter dyes and digital videomicroscopy rather 
+than studying the cell as a uniform entity. The aim of this study was to define the 
+independent components of the spario-temporal [Ca2+]i signal. 
+2 METHODS 
+2.1 
+FAST FIXED-POINT ALGORITHM USING KURTOSIS FOR 
+INDEPENDENT COMPONENT ANALYSIS 
+In Independent Component Analysis (ICA) the original independent sources are un- 
+known. In this study we have recorded the [Ca2+]i signal in single HIT-cells under 
+pharmacological stimulation at different subcellular regions (m = 5) in parallel. 
+The [Ca2+]i signals (mixtures of sources) are denoted as xx,x2,...,Xm. Each xi 
+is expressed as the weighted sum of n unknown statistically independent compo- 
+Independent Component Analysis of lntracellular Calcium Spike Data 933 
+nents (ICs), denoted as s, s.,..., sn. The components are assumed to be mutually 
+statistically independent and zero-mean. The measured signals xi as well as the in- 
+dependent component variables can be arranged into vectors x = (xx, x2,..., Xl) 
+and s = (sx, s2,..., sn) respectively. The linear relationship is given by: 
+x = As (1) 
+Here A is a constant mixing matrix whose elements aij are the unknown coefficients 
+of the mixtures. The basic problem of ICA is to estimate both the mixing matrix 
+A and the realizations of the si using only observations of the mixtures xj. In 
+order to perform ICA, it is necessary to have at least as many mixtures as there 
+axe independent sources (m _> n). The assumption of zero mean of the ICs is no 
+restriction, as this can always be accomplished by subtracting the mean from the 
+random vector x. The ICs and the columns of A can only be estimated up to a 
+multiplicative constant, because any constant multiplying an IC in eq. I could be 
+cancelled by dividing the corresponding column of the mixing matrix A by the same 
+constant. For mathematical convenience, the ICs are defined to have unit variance 
+making the (non-Gaussian) ICs unique, up to their signs (Comon, 1994). Here we 
+use a novel fixed-point algorithm for ICA estimation which is based on 'contrast' 
+functions whose extrema are closely connected to the estimation of ICs (Hyv/irinen 
+and Oja, 1997). This method denoted as fast fixed-point algorithm has a number 
+of desirable properties. First, it is easy to use, since there are no user-defined 
+parameters. Furthermore, the convergence is fast, conventionally in less than 15 
+steps and for an appropriate contrast function, the fixed-point algorithm is much 
+more robust against outliers than most ICA algorithms. 
+Most solutions to the ICA problem use the fourth-order cumulant or kurtosis of the 
+signals, defined for a zero-mean random variable x as: 
+kurt(x) -- E(x 4) - 3(E(x2)) 2, 
+(2) 
+where E{x} denotes the mathematical expectation of x. The kurtosis is negative for 
+source signals whose amplitude has sub-Gaussian probability densitites (distribution 
+flatter than Gaussian, positive for super Gaussian) sharper than Gaussian, and zero 
+for Gausssian densities. Kurtosis is a contrast function for ICA in the following 
+sense. Consider a linear combination of the measured mixtures x, say wTx, where 
+the vector w is constrained so that E{(w') 2 } = 1. When w' = -si, for some i, 
+i.e. when the linear combination equals, up to the sign, one of the ICs, the kurtosis 
+of w' is locally minimized or maximized. This property is widely used in ICA 
+algorithms and forms the basis of the fixed-point algorithm used in this study which 
+finds the relevant extrema of kurtosis also for non-whitened data. Based on this fact, 
+Hyv/irinen and Oja (1997) introduced a very simple and highly efficient fixed-point 
+algorithm for computing ICA, calculated over sphered zero-mean vectors x, that is 
+able to find the rows of the separation matrix (denoted as w) and so identify one 
+independent source at a time. The algorithm which computes a gradient descent 
+over the kurtosis is defined as follows: 
+1. Take a random initial vector wo of unit norm. Let 1 = 1. 
+2. Let wt = E{v(w_lV) 3} - 3w_i. The expectation can be estimated using 
+a large sample of v vectors. 
+934 K. Prank et al. 
+3. Divide w by its norm (e.g. the Euclidean norm II w II: 
+4. If I w[w_ ] is not close enough to 1, let 1 = 1 + 1 and go back to step 2. 
+Otherwise, output the vector w. 
+To calculate more than one solution, the algorithm may be run as many times as 
+required. It is nevertheless, necessary to remove the information contained in the 
+solutions already found, to estimate each time a different independent component. 
+This can be achieved, after the fourth step of the algorithm, by simply subtracting 
+the estimated solution J = w' from the unsphered data x. 
+In the first step of analysis we determined the eigenvalues of the covariance matrix 
+of the measured [Ca'+]i signals si to reduce the dimensionality of the system. 
+Then the fast fixed-point algorithm was run using the experimental [Ca'+]i data to 
+determine the ICs. The resulting ICs were analyzed in respect to their frequency 
+content by computing the Fourier power spectrum. 
+2.2 
+MEASUREMENT OF INTRACELLULAR CALCIUM IN 
+HIT-CELLS 
+To measure [Ca2+]i , HIT (hamster insulin secreting tumor)-cells were loaded with 
+the fluorescent indicator Fura-2/AM and Fura-2 fluorescence was recorded at five 
+different subcellular regions in parallel using a dual excitation spectrofiuorometer 
+videoimaging system. The emission wavelength was 510 nm and the excitation 
+wavelengths were 340 nm and 380 nm respectively. The ration between the excita- 
+tion wavelength (Fa4onm/Fasonm) which correlates to [Ca2+]i was sampled at a rate 
+of I Hz over 360 s. [Ca2+]i spikes in this cell were induced by the administration 
+of I nM arginine vasopressin (AVP). 
+3 RESULTS 
+From the five experimental [Ca2+]i signals (Fig. 1) we determined two significant 
+eigenvalues of the covariance matrix. The fixed-point algorithm converged in less 
+than 15 steps and yielded two different ICs, one slowly oscillating component with 
+a mean period of 68 s and one component with fast irregular oscillations with a fiat 
+broadband power spectrum (Fig. 2). The spectral density of the second component 
+was considerably larger than that for the high-frequency content of the first slowly 
+oscillating component. 
+4 CONCLUSIONS 
+Changes in [Ca2+]i associated with Ca + oscillations generally do not occur uni- 
+formly throughout the cell but are initiated at specific sites and are able to spread 
+across individual cells in the form of intracellular Ca + waves. Furthermore, Ca + 
+signaling is not limited to single cells but occurs between adjacent cells in the form of 
+intercellular Ca + waves. The reasons for these spatio-temporal patterns of [Ca2+]i 
+are not yet fully understood. It has been suggested that information is encoded in 
+the frequency, rather than the amplitude, of Ca + oscillations, which has the ad- 
+vantage of avoiding prolonged exposures to high [Ca2+]i. Another advantage of 
+Independent Component Analysis of lntracellular Calcium Spike Data 935 
+0 .0 100 1.0 200 2.0 $00 
+E 0 50 1 O0 1 .0 200 250 800 
+,,.4 /      
+So 150 250 
+0 .0 100 1.0 200 2.0 800 
+0 50 100 1.0 200 2.0 800 
+time {S) 
+Figure 1: Experimental time series of [Ca'+]i in a/%cell (insulin secreting cell from 
+a hamster, HIT-cell) determined in five subcellular regions. The data are given as 
+the ratio between both exciation wavelengths of 340 nm and 380 nm respectively 
+which correspond to [Ca'+]i. [Ca'+]i can be calculated from this ratio. The plotted 
+time series are whitened. 
+frequency modulated signaling is its high signal-to-noise ratio. In the spatial do- 
+main, the spreading of a Ca '+ oscillation as a Ca '+ wave provides a mechanism 
+by which the regulatory signal can be distributed throughout the cell. The exten- 
+sion of Ca '+ waves to adjacent cells by intercellular communication provides one 
+mechanism by which multicellular systems can effect coordinated and cooperative 
+cell responses to localized stimuli. In this study we demonstrated that the [Ca'+]i 
+signal in clonal/-cells (HIT cells) is composed of two independent components 
+using spario-temporal [Ca'+]i data for analysis. One component can be described 
+as large amplitude slow frequency oscillations whereas the other one is a high fre- 
+quency component which exhibits a broadband power spectrum. These results are 
+in good agreement with a previous study where only the temporal dynamics of 
+[Ca2+]i in HIT cells has been studied. Using coarse-grained entropy rates com- 
+puted from information-theoretic functionals we could demonstrate in that study 
+that a fast oscillatory component of the [Ca'+]i signal can be modulated phar- 
+macologically suggesting deterministic structure in the temporal dynamics (Palu 
+et al., 1998). Since Ca '+ is central to the stimulation of insulin secretion from 
+pancreatic/%cells future experimental and theoretical studies should evaluate the 
+impact of the different oscillatory components of [Ca'+]i onto the secretory pro- 
+cess as well as gene transcription. One possibility to resolve that question is to 
+use a recently proposed mathematical model which allows for the on-line decoding 
+of the [Ca'+]i into the cellular response represented by the activation (phospho- 
+936 K. Prank et al. 
+E 2 
+--4 
+time 
+4 
+B 
+lOO 2oo 8o0 
+time 
+1( -4 
+c 
+lO -4 
+D 
+0 0.1 0.2 0.8 0.4 O.S 0.1 0.2 0.8 0.4 0.5 
+fi'equency (Hz) frequency (Hz) 
+Figure 2: Results from the independent component analysis by the .fast fixed-point 
+algorithm. Two independent components of [Ca'+]i were found. A: slowly oscillat- 
+ing [Ca'+]i signal, B: fast oscillating [Ca'+]i signal. Fourier power spectra of the 
+independent components. C: the major [Ca2+]i oscillatory period is 68 s, D: fiat 
+broadband power spectrum. 
+rylation) of target proteins (Prank et al., 1998). Very recent experimental data 
+clearly demonstrate that specificty is encoded in the frequency of [Ca2+]i oscil- 
+lations. Rapid oscillations of [Ca2+]i are able to stimulate a set of transcription 
+factors in T-lymphocytes whereas slow oscillations activate only one transcription 
+factor (Dolmetsch et al., 1998). Frequency-dependent gene expression is likely to 
+be a widespread phenomenon and oscillations of [Ca2+]i can occur with periods 
+of seconds to hours. The technique of independent component analyis should be 
+able to extract the spatio-temporal features of the [Ca2+]i signal in a variety of 
+cells and should help to understand the differential regulation of [Ca2+]i-dependent 
+intracellular processes such as gene transcription or secretion. 
+Acknowledgements 
+This study was supported by Deutsche Forschungsgemeinschaft under grants 
+Scho 466/1-3 and Br 915/4-4. 
+Independent Component Analysis of lntracellular Calcium Spike Data 937 
+References 
+Amari, S., Cichocki, A. & Yang, H. (1996) A new learning algorithm for blind source 
+separation. In Touretzky, D.S., Mozer, M. C. & Hasselmo, M. E., (eds.), Advances 
+in Neural Information Processing 8, pp. 757-763. Cambridge, MA: MIT Press. 
+Bell, A. & Sejnowski, T. (1995) An information-maximization approach to blind 
+separation and blind deconvolution. Neural Computation 7:1129-1159. 
+Berridge, M. & Galione, A. (1988) Cytosolic calcium oscillators. FASEB 2:3074- 
+3082. 
+Cardoso, J. F. (1992) Iterative techniques for blind source separation using only 
+fourth-order cumulants. In Proc. EUSIPCO (pp. 739-742). Brussels. 
+Comon, P. (1994) Independent component analysis - a new concept? Signal Pro- 
+cesing 36:287-314. 
+Deffosse, N. & Loubaton, P. (1995) Adaptive blind separation of independent 
+sources: a deflation approach. Signal Processing 45:59-83. 
+Dolmetsch, R. E., Xu, K. & Lewis, R. S. (1998) Calcium oscillations increase the 
+efficiency and specificity of gene expression. Nature 392:933-936. 
+Hyv/irinen, A. & Oja, E. (1996) A neuron that learns to separate one independent 
+component from linear mixtures. In Proc. IEEE Int. Conf. on Neural Networks, 
+pp. 62-67, Washington, D.C. 
+Hyv/irinen, A. & Oja, E. (1997) A fast fixed-point algorithm for independent com- 
+ponent analysis. Neural Computation 9:1483-1492. 
+Jutten, C. & Heranlt, J. (1991) Blind separation of sources, part I: An adaptive 
+algorithm based on neuromimetic architecture. Signal Processing 24:1-10. 
+Moureau, E., & Macchi, O. (1993) New serf-adaptive algorithms for source separa- 
+tion based on contrast functions. In Proc. IEEE Signal Processing Workshop on 
+Higher Order Statistics, pp. 215-219, Lake Tahoe, USA. 
+Oja, E. & Karhunen, J. (1995) Signal separation by nonlinear hebbian learning. 
+In Palaniswami, M., Attikiouzel, Y., Marks, R., Fogel, D. & Fukuda, T. (eds.) 
+Computational Intelligence - a Dynamic System Perspective pp. 83-97. IEEE Press, 
+New York. 
+Palu, M., SchSfl, C., yon zur Miihlen, A., Brabant, G. & Prank, K. (1998) Coarse- 
+grained entropy rates quantify fast Ca '+ dynamics modulated by pharmacological 
+stimulation. Pacific Symposium on Biocomputing i998:645-656. 
+Prank, K., L/ier, L., Wagner, M., yon zur Miihlen, A., Brabant, G. & SchSfl, C. 
+(1998) Decoding of intracellular calcium spike trains. Europhys. Left. 42:143-147. 
+SchSfl, C., RSssig, L., Leitoff, H., Mader, T., yon zur Miihlen, A. & Brabant, G. 
+(1996) Generation of repetitive Ca '+ transients by bombesin requires intracellu- 
+lar release and influx of Ca '+ through voltage-dependent and voltage independent 
+channels in single HIT cells. Cell Calcium 19(6):485-493. 
+Tsien, R. W. & Tsien, R. Y. (1990) Calcium channels, stores, and oscillations. 
+Annu. Rev. Cell Biol. 6:715-760. 

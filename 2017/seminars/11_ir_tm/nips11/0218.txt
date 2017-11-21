@@ -1,0 +1,290 @@
+Finite-dimensional approximation of 
+Gaussian processes 
+Giancarlo Ferrari Trecate 
+Dipartimento di Informatica e Sistemistica, Universitk di Pavia, 
+Via Ferrata 1, 27100 Pavia, Italy 
+f errari¸conpro. unipv. it 
+Christopher K. I. Williams 
+Department of Artificial Intelligence, University of Edinburgh, 
+5 Forrest Hill, Edinburgh EH1 2QL, 
+ckiw¸dai. ed. ac. uk. 
+Manfred Opper 
+Neural Computing Research Group 
+Division of Electronic Engineering and Computer Science 
+Aston University, Birmingham, B4 7ET, UK 
+m. opper¸aston. ac. uk 
+Abstract 
+Gaussian process (GP) prediction suffers from O(n 3) scaling with the 
+data set size n. By using a finite-dimensional basis to approximate the 
+GP predictor, the computational complexity can be reduced. We de- 
+rive optimal finite-dimensional predictors under a number of assump- 
+tions, and show the superiority of these predictors over the Projected 
+Bayes Regression method (which is asymptotically optimal). We also 
+show how to calculate the minimal model size for a given n. The 
+calculations are backed up by numerical experiments. 
+I Introduction 
+Over the last decade there has been a growing interest in the Bayesian approach to 
+regression problems, using both neural networks and Gaussian process (GP) prediction, 
+that is regression performed in function spaces when using a Gaussian random process 
+as a prior. 
+The computational complexity of the GP predictor scales as O(n3), where n is the size 
+Finite-Dimensional Approximation of Gaussian Processes 219 
+of the dataset 1. This suggests using a finite-dimensional approximating function space, 
+which we will assume has dimension m < n. The use of the finite-dimensional model is 
+motivated by the need for regression algorithms computationally cheaper than the GP 
+one. Moreover, GP regression may be used for the identification of dynamical systems 
+(De Nicolao and Ferrari Trecate, 1998), the next step being a model-based controller 
+design. In many cases it is easier to accomplish this second task if the model is low 
+dimensional. 
+Use of a finite-dimensional model leads naturally to the question as to which basis is 
+optimal. Zhu et al. (1997) show that, in the asymptotic r6gime, one should use the 
+first m eigenfunctions of the covariance function describing the Gaussian process. We 
+call this method Projected Bayes Regression (PBR). 
+The main results of the paper are: 
+1. Although PBR is asymptotically optimal, for finite data we derive a predictor 
+hø(x) with computational complexity O(n2m) which outperforms PBR, and 
+obtain an upper bound on the generalization error of hø(x). 
+2. In practice we need to know how large to make m. We show that this depends 
+on n and provide a means of calculating the minimal m. We also provide 
+empirical results to back up the theoretical calculation. 
+2 Problem statement 
+Consider the problem of estimating an unknown function f(x) : ll a -> ll, from the 
+noisy observations 
+ti = f(xi) + ei, i= 1,...,n 
+where i are i.i.d. zero-mean Gaussian random variables with variance a 2 and the 
+samples xi are drawn independently at random from a distribution p(x). The prior 
+probability measure over the function f(.) is assumed to be Gaussian with zero mean 
+and autocovariance function C(,2). Moreover we suppose that f(.), Xi, el, are 
+mutually independent. Given the data set Z)n = {2, t-}, where 2 = [xl,...,xn] and 
+ = [t,..., tn]', it is well known that the posterior probability P(fIZ)n) is Gaussian 
+and the GP prediction can be computed via explicit formula (e.g. Whittle, 1963) 
+f(x) - m[fl/)n](x ) - [C(x, xl) ... C(x, xn)] H-I, {H}i j '-C(x,,xj) + a250 
+where H is a n x n matrix and 5ij is the Kronecker delta. 
+In this work we are interested in approximating f in a suitable m-dimensional space 
+that we are going to define. Consider the Mercer-Hilbert expansion of C(1, 2) 
+jf C(,2)Ti(2)p(2)d2 = /ii(1), JfR Ti()Tj()p()d=Sij (1) 
+d d 
+i----1 
+where the eigenvalues hi are ordered in a decreasing way. 
+Then, in (Zhu et al., 1997) is shown that, at least asymptotically, the optimal model 
+belongs to A4 = Span {i, i = 1,..., m}. This motivates the choice of this space even 
+when dealing with a finite amount of data. 
+Now we introduce the finite-dimensional approximator which we call Projected Bayes 
+Regression. 
+10(n) arises from the inversion of a n x n matrix. 
+220 G. Ferrar-Trecate, C. K. I. Williams and M. Opper 
+Definition ! 
+A- (A-l+/(I)'(I)), (A)ij'--Ai6ij and 
+k(x)-' , -' 
+m(x) 
+The PBR approximator is b(x) = k' (x)w, where w-' fA-'f, f-' l/a 2, 
+I 91 (xl) ''' (/9ra (Xl) 1 
+tfl (Xn)... m(Xn) 
+The name PBR comes from the fact that b(x) is the GP predictor when using the 
+mis-specified prior 
+m 
+](x) = ywiTi(x), w  N(0, A) (2) 
+i=1 
+whose autocovariance function is the projection of C(1, 2) on 2M. From the compu- 
+tational point of view, is interesting to note that the calculation of PBR scales with 
+the data as O(m2n), assuming that n >> m (this is the cost of computing the matrix 
+product A - (I)'). 
+Throughout the paper the following measures of performance will be extensively used. 
+Definition 2 Let s(x) be a predictor that uses only information from T)n. Then its 
+2-error and generalization error are respectively defined as 
+[(t* - s(x*))2], 
+An estimator sø(x) belonging to a class 7/ is said 2-optimal or simply optimal if, re- 
+spectively, Eso(n, 2) _< Es(n,) or E,9o(n) < Es9(n), for all the s(x)  7/ and the data 
+sets 2. 
+Note that 2-optimality means optimality for each fixed vector 2 of data points. Obvi- 
+ously, if sø(x) is 2-optimal it is also simply optimal. These definitions are motivated by 
+the fact that for Gaussian process priors over functions and a predictor s that depends 
+linearly on , the computation of Es(n, 2) can be carried out with finite-dimensional 
+matrix calculations (see Lemma 4 below), although obtaining Esa(n ) is more difficult, 
+as the average over 2 is usually analytically intractable. 
+3 Optimal finite-dimensional models 
+We start considering two classes of linear approximators, namely 
+7/-' {g(x)- k'(x)LlL mxn} and 7/2'- {h(x)- k'(x)F'lF mxm}, where 
+the matrices L and F are possibly dependent on the xi samples. We point out that 
+7/2 C 7/ and that the PBR predictor b(x)  7-/2. Our goal is the characterization of 
+the optimal predictors in 7-/ and 7/2. Before stating the main result, two preliminary 
+lemmas are given. The first one is proved in (Pilz, 1991) while the second follows from 
+a straightforward calculation. 
+Lemma 3 Let A E II *x, B E ,x, A > O. Then it holds that 
+inf Tr[(ZAZ' - ZB-B'Z')] = Tr[-B'A-B] 
+ZER"x 
+and the minimum is achieved for the matrix Z* = B' A -. 
+Lemma 4 Let g(x) E 7/. Then it holds that 
+E9(n'2) = Z Ai + a 2 + q(L), 
+i----1 
+q(L)-' Tr [LHL' 
+- 2L(I)A]. 
+Finite-Dimensional Approximation of Gaussian Processes 221 
+Proof. In view of the 
+[C(x*,x) ... C(x*,x,)]' , it holds 
+[(t* - = 
+ß-error definition, setting r(x*) 
+(3) 
+Note that Ex. [k(x*)k'(x*)] : Ira, Ex. [r(x*)k'(x*)] - A, and, from the Mercer- 
+Hilbert expansion (1), E. [C(x*,x*)] +o 
+= i= ,Xi. Then, taking the mean of (3) w.r.t. 
+x*, the result follows. D 
+Theorem 5 
+given by F = F ø = A'I)"I)('I)' H'I)) -, Vn _> m, are 2-optimal. Moreover 
+Ego(n, ) = y,,Xi + 62- Tr [A'H-A] 
+i=1 
+Eho(n,.) = y. Xi + 6 2- Tr [A¾((I)'H)-i(I)'A] 
+i=l 
+The predictors gø(x) e -1 given by L = L ø = A,I)' H - and hø(x) 6 742 
+(4) 
+Proof. We start considering the gø(x) case. In view of Lemma 4 we need only to 
+minimize q(L) w.r.t. to the matrix L. By applying Lemma 3 with B = (I)A, A = H > 0, 
+Z = L, one obtains 
+argnnq(L)-'L ø = A'H - minq(L)= -Tr [A'H-A] (5) 
+L 
+so proving the first result. For the second case, we apply Lemma 4 with L = F' and 
+then perform the minimization of q(F'), w.r.t. the matrix F. This can be done as 
+before noting that ' H -1 > 0 only when n >_ m. [] 
+Note that. the only difference between gø(x) and the GP predictor derives from the 
+approximation of the functions C(x, xk) with -.im=l ,igi(X)gi(Xk). Moreover the com- 
+plexity of gø(x) is O(n 3) the same of f(x). On the other hand hø(x) scales as O(n2m), 
+so having a computational cost intermediate between the GP predictor and PBR. Intu- 
+itively, the PBR method is inferior to h ø as it does not take into account the ß locations 
+in setting up its prior. We can also show that the PBR predictor b(x) and hø(x) are 
+asymptotically equivalent. 
+/,From (4) is clear that the explicit evaluations of Ea9o(n ) and Ego(n) are in 
+general very hard problems, because the mean w.r.t. the xi samples that 
+enters in the (I) and H matrices. In the remainder of this section we 
+will derive an upper bound on Ego(n). Consider the class of approximators 
+743--' {U(X)--' ff (x)D'I/-[D 6 ]mxm,(m)i j : diSij }. Because of the inclusions 743 C 
+742 C 74, if uø(x) is the -optimal predictor in 743, then Eo(n) _< Ego(n) _< Eo(n). 
+Due the diagonal structure of the matrix D, an upper bound to Euo(n) may be expli- 
+citly computed, as stated in the next Theorem. 
+Theorem 6 
+The approximator uø(x) 6 743 given by 
+( O )ij -- ( Oø )ij --  )),.. (ij , 
+(6) 
+222 G. Ferrari-Trecate, C. K. I. Williams and M. Opper 
+is -optimal. Moreover an upper-bound on its generalization error is given by 
+Eo _< Ai+a2--n yqkAk, qk=c 
+i=1 
+c, = (n- 1)A, +/C(x,x)T(x)p(x)dx + a . 
+(7) 
+Proof. In order to find the -optimal approximator in J/a, we start applying the 
+Lemma 4 with L = Drb'. Then we need to minimize 
+ra m 
+q(Dq)') = y d (q)'H))ii- 2 y di ((I)'(I)A) . (8) 
+i=1 i=1 
+w.r.t. di so obtaining (6). To bound Eo (n), we first compute the generalization error 
+of a generic approximation u(x) that is E = E [q(D')] + i Ai + a2. After 
+verifying that 
+r [('A)ii] = Ain, E [('H)ii] =nci, 
+we obtain from (8), assuming the di constant, 
+-{-oo m m 
+Eu 9 = y.ki +o '2 +nZdci- 2nydi.i. 
+i=1 i=1 i=1 
+Minimizing E w.r.t. di, and recalling' that uø(x) is also simply optimal the formula 
+(7) follows. I2 When C(i, 2) is stationary, the expression of the ci coefficient becomes 
++c 0' 2 
+simply ci = (n- 1)Ai + i=l Ai + ß 
+Remark : A naive approach to estimating the coefficients in the estimator 
+-i% wi½i(x) would be to set lbi = n-i('t)i as an approximation to the integral 
+wi = f c)i(x)f(x)p(x)dx. The effect of the matrix D is to "shrink" the bi's of the 
+higher-frequency eigenfunctions. If there was no shrinkage it would be necessary to 
+limit m to stop the poorly-determined wi's from dominating, but equation 7 shows 
+that in fact the upper bound is improved as m increases. (In fact equation 7 can be 
+used as an upper bound on the GP prediction error; it is tightest when m  cx.) This 
+is consistent with the idea that increasing m under a Bayesian scheme should lead to 
+improved predictions. In practice one would keep m < n, otherwise the approximate 
+algorithm would be computationally more expensive than the O(n a) GP predictor. 
+4 Choosing m 
+For large n, we can show that 
+where b(x) is the PBR approximator of Definition 1. (This arises because the matrix 
+(b(I) becomes diagonal in the limit n  oe due to the orthogonality of the eigenfunc- 
+tions.) 
+In equation 9, the factor (A-i +/n) -1 indicates by how much the prior variance of 
+the ith eigenfunction ½i has been reduced by the observation of the n datapoints. 
+(Note that this expression is exactly the same as the posterior variance of the mean 
+Finite-Dimensional Approximation of Gaussian Processes 223 
+(a) 
+(b) 
+Figure 1' (a) Eo(n) and detaching points for various model orders. Dashed: m = 3, 
+dash-dot: m = 5, dotted: m = 8, solid: E(n). (b) Eg(n) - Eo(n) plotted against n. 
+of a Gaussian with prior N(0, hi) given n observations corrupted by Gaussian noise 
+of variance/-.) For an eigenfunction with hi >> a2/n, the posterior is considerably 
+tighter than the prior, but when hi << a2/n, the prior and posterior have almost the 
+same width, which suggests that there is little point in including these eigenfunctions 
+in the finite-dimensional model. By omitting all but the first m eigenfunctions we add 
+a term im+ hi to the expected generalization error. 
+This means that for a finite-dimensional model using the first m eigenfunctions, we 
+expect that E(n) _ E(n) up to a training set size  determined by 
+We call  the detatching point for the m-dimensional approximator. Conversely, in 
+practical regression problems the data set size n is known. Then, from the knowledge 
+of the autocovariance eigenvalues, is possible to determine, via the detatching points 
+formula, the order m of the approximation that should be used in order to guarantee 
+Eo(n) 
+5 Experimental results 
+We have conducted experiments using the prior covariance function C(, 2) - (1 + 
+h)e - where h = I -21//. with / = 0.1. This covariance function corresponds 
+to a Gaussian process which is once mean-squared differentiable. It lies in the family 
+of stationary covariance functions C(h) = hK(h) (where K(.) is a modified Bessel 
+function), with  = 3/2. The eigenvalues and eigenfunctions of this covariance kernel 
+for the density p(x)  U(0, 1) have been calculated in Vivarelli (1998). 
+In our first experiment (using a2 = 1) the learning curves of b(x), hø(x) and f(x) were 
+obtained; the average over the choice of training data sets was estimated by using 100 
+different ß samples. It was noticed that E (n) and Eo (n) practically coincide, so only 
+the latter curve is drawn in the pictures. 
+In Figure l(a) we have plotted the learning curves for GP regression and the ap- 
+proximation hø(x) for various model orders. The corresponding detaching points are 
+also plotted, showing their effectiveness in determining the size of data sets for which 
+(n) The minimum possible error attainable is a 2 = 1.0 For finite- 
+. 
+dimensional models this is increased by Yim+ hi; these "plateaux" can be clearly 
+seen on the right hand side of Figure l(a). 
+224 G. Ferrari-Trecate, C. K. I. Williams and M. Opper 
+Our second experiment demonstrates the differences in performance for the hø(x) and 
+b(x) estimators, using a 2 = 0.1. In Figure l(b) we have plotted the average difference 
+E(n)- Eo(n). This was obtained by averaging Eb(n, 2)- Eho(n, 2) (computed with 
+the same 2, i.e. a paired comparison) over 100 choices of 2, for each n. Notice that 
+h ø is superior to the PBR estimator for small n (as expected), but that they are 
+asymptotically equivalent. 
+6 Discussion 
+In this paper we have shown that a finite-dimensional predictor h ø can be construc- 
+ted which has lower generalization error than the PBR predictor. Its computational 
+complexity is O(n2m), lying between the O(n 3) complexity of the GP predictor and 
+O(m2n) complexity of PBR. We have also shown how to calculate m, the number of 
+basis functions required, according to the data set size. 
+We have used finite-dimensional models to approximate GP regression. An interesting 
+alternative is found in the work of Gibbs and MacKay (1997), where approximate 
+matrix inversion methods that have O(n 2) scaling have been investigated. It would be 
+interesting to compare the relative merits of these two methods. 
+Acknowledgements 
+We thank Francesco Vivarelli for his help in providing the learning curves for Ej(n) and the 
+eigenfunctions/values in section 5. 
+References 
+[1] De Nicolao, G., and Ferrari Trecate, G. (1998). Identification of NARX models using 
+regularization networks: a consistency result..IEEE Int. Joint Conf. on Neural Networks, 
+Anchorage, US, pp. 2407-2412. 
+[2] Gibbs, M. and MacKay, D. J. C.'(1997). EJ:cient Implementation of Gaussian Pro- 
+cesses. Cavendish Laboratory, Cambridge, UK. Draft manuscript, available from 
+http://wol. ra. phy. cam. ac. uk/mackay/homepage. html. 
+[3] Opper, M. (1997). Regression with Gaussian processes: Average case performance. In I. K. 
+Kwok-Yee, M. Wong and D.-Y. Yeung (eds), Theoretical Aspects of Neural Computation: 
+A Multidisciplinary Perspective. Springer-Verlag. 
+[4] Pilz, J. (1991). Bayesian estimation and experimental design in linear regression models. 
+Wiley & Sons. 
+[5] Ripley, B. D. (1996). Pattern recognition and neural networks. CUP. 
+[6] Wahba, G. (1990). Spline models for observational data. Society for Industrial and Applied 
+Mathematics. CBMS-NSF Regional Conf. series in applied mathematics. 
+[7] Whittle, P. (1963). Prediction and regulation by linear least-square methods. English Uni- 
+versities Press. 
+[8] Williams C. K. I. (1998). Prediction with Gaussian processes: from linear regression to 
+linear prediction and beyond. In Jordan, M.I. editor, Learning and inference in graphical 
+models. Kluwer Academic Press. 
+[9] Vivarelli, F. (1998).Studies on generalization in Gaussian processes and Bayesian Neural 
+Networks. Forthcoming PhD thesis, Aston University, Birmingham, UK. 
+[10] Zhu, H., and Rohwer, R. (1996). Bayesian regression filters and the issue of priors. Neural 
+Computing and Applications, 4:130-142. 
+[11] Zhu, H., Williams, C. K. I. Rohwer, R. and Morciniec, M. (1997). Gaussian regression and 
+optimal finite dimensional linear models. Tech. Rep. NCRG/97/011. Aston University, 
+Birmingham, UK. 

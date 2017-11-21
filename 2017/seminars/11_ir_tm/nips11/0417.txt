@@ -1,0 +1,343 @@
+Efficient Bayesian Parameter Estimation in Large 
+Discrete Domains 
+Nir Friedman 
+Hebrew University 
+nirOcs. huj i. ac. il 
+Yoram Singer 
+AT&T Labs 
+sinerOresearch. art. com 
+Abstract 
+We examine the problem of estimating the parameters of a multinomial 
+distribution over a large number of discrete outcomes, most of which 
+do not appear in the training data. We analyze this problem from a 
+Bayesian perspective and develop a hierarchical prior that incorporates 
+the assumption that the observed outcomes constitute only a small subset 
+of the possible outcomes. We show how to efficiently perform exact 
+inference with this form of hierarchical prior and compare it to standard 
+approaches. 
+1 Introduction 
+One of the most important problems in statistical inference is multinomialestimation: Given 
+a past history of observations independent trials with a discrete set of outcomes, predict 
+the probability of the next trial. Such estimators are the basic building blocks in more 
+complex statistical models, such as prediction trees [ 1, 12, 11], hidden Markov models [9] 
+and Bayesian networks [3, 6]. The roots of multinomial estimation go back to Laplace's 
+work in the 18th century [7]. 
+In Bayesian theory, the classic approach to multinomial estimation is via the use of the 
+Dirichlet distribution (see for instance [4]). Laplace's "law of succession" and other 
+common methods can be derived using Bayesian inference with the Dirichlet distribution 
+as a prior distribution. The Dirichlet distribution has several properties that are useful 
+in statistical inference. In particular, estimates with Dirichlet priors are consistent (the 
+estimate converges with probability one to the true distribution), conjugate (the posterior 
+distribution is also a Dirichlet distribution), and can be computed efficiently (queries of 
+interest have a closed-form solution). Furthermore, theoretical studies of online prediction 
+of individual sequences show that prediction using Dirichlet priors is competitive with any 
+other prior distribution (see for instance [2] and the references therein). 
+Unfortunately, in some key applications, Dirichlet priors are unwieldy. These applications 
+are characterized by several features: ( a ) The set of possible outcomes is extremely large, 
+and often not known in advance. (b) The number of training examples is small compared 
+418 N. Friedman and Y. Singer 
+to the number of possible outcomes. (c) The outcomes that have positive probability 
+constitute a relatively small subset of the possible outcomes; this subset, however, is not 
+known in advance. In these situations, predictions based on a Dirichlet priors tend to assign 
+most of the probability mass to outcomes that were not seen in the training set. 
+For example, consider a natural language application, where outcomes are words drawn 
+from an English dictionary, and the problem is predicting the probability of words that follow 
+a particular word, say "Bosnia". If we do not have any prior knowledge, we can consider 
+any word in the dictionary as a possible candidate. Yet, our knowledge of language would 
+lead us to believe that in fact, only few words, such as "Herzegovina", should naturally 
+follow the word "Bosnia". Furthermore, even in a large corpus, we do not expect to see 
+many training examples that involve this phrase. As another example consider the problem 
+of estimating the parameters of a discrete dynamical system. Here the task is to find a 
+distribution over the states that can be reached from a particular state s (possibly after the 
+system receives an external control signal). Again, in many domains it is natural to assume 
+that the system is sparse: only a small subset of states is reachable from any state. 
+In this paper, we present a Bayesian treatment of this problem using an hierarchical prior 
+that averages over an exponential number of hypotheses each of which represents a subset 
+of the feasible outcomes. Such a prior was previously used in a specific context of online 
+prediction using suffix tree transducers [11]. As we show, although this prior involves 
+exponentially many hypotheses, we can efficiently perform predictions. Moreover, our 
+approach allows us to deal with countably infinite number of outcomes. 
+2 Dirichlet priors 
+Let X be a random variable that can take L possible values from a set E. Without loss of 
+generality, let E - { 1,... L}. We are given a training set D that contains the outcomes 
+of N independent draws ate,..., atv of X from an unknown multinomial distribution ?*. 
+We denote by Ni be the number of occurrences of the Symbol i in the training data. The 
+multinomial estimation problem is to find a good approximation for ?*. 
+This problem can be stated as the problem of predicting the outcome atv+  given at ,..., atN. 
+Given a prior distribution over the possible multinomial distributions, the Bayesian estimate 
+is: 
+P(x I = f P( xN+ 
+where 0 -- (01,..., 0z,) is a vector that describes possible values of the (unknown) proba- 
+bilities P* ( 1),..., P* (L), and  is the "context" variable that denotes all other assumptions 
+about the domain. (We consider particular contexts in the next section.) 
+The posterior probability of 0 can rewritten using Bayes law as: 
+P(O I P(xl,...,x N I - P(O If) II 
+i 
+The family of Dirichlet distributions is conjugate to the multinomial distribution. That is, 
+if the prior distribution is from this family, so is the posterior. A Dirichlet prior for X is 
+specified by hyperparameters a,..., az,, and has the form: 
+P(01)-- I"(-]4øq)'HO'-I (Oi-- 1 andOi _> Oforalli) 
+YIi l"(oq) i i 
+where F(x) = fo  t:-le-tdt is the gamma function. Given a Dirichlet prior, the initial 
+prediction for each value of X is P(X 1 = i] - foiP(Ol)dO- It is 
+Efficient Bayesian Parameter Estimation in Large Discrete Domains 419 
+easy to see that, if the prior is a Dirichlet prior with hyperparameters ct,..., aL, then the 
+posterior is a Dirichlet with hyperparameters ct + N,..., aœ + Nœ. Thus, we get that 
+the prediction for X N+ is P(X N+ -- i [ z,...,zN,) -- (ai +,Ni)/5-j(aj q- Nj). 
+We can think of the hyperparameters oi as the number of "imaginary' examples in which 
+we saw outcome i. Thus, the ratio between hyperparameters corresponds to our initial 
+assessment of the relative probability of the corresponding outcomes. The total weight of 
+the hyperparameters represent our confidence (or entrenchment) in the prior knowledge. 
+As we can see, if this weight is large, our estimates for the parameters tend to be further off 
+from the empirical frequencies observed in the training data. 
+3 Hierarchical priors 
+We now describe structured priors that capture our uncertainty about the set of "feasible" 
+values of X. We define a random variable V that takes values from the set 2 z of possible 
+subsets of Z. The intended semantics for this variable is that Oi > 0 iff i 6 V. 
+Clearly, the hypothesis V = Z  (for Z  C_ Z) is consistent with training data only if Z  
+contains all the indices i for which Ni > 0. We denote by Z ø the set of observed symbols. 
+That is, Z ø = {i ß Ni > 0}, and we let k ø = IZøI- 
+Suppose we know the value of V. Given this assumption, we can define a Dirichlet prior 
+over possible multinomial distributions 0 if we use the same hyper-parameter ct for each 
+symbol in V. Formally, we define the prior: 
+P(OIV) = 
+Using Eq. (2), 
+r(Ivl-) 07-' 
+iv 
+we have that: 
+(E Oi -- 1, Vi, Oi >_ O, and Oi -- 0 for all i  V) 
+i 
+,.. IVla+N 
+P(X - i lz V) = 0 
+(3) 
+ifi6 V 
+(4) 
+otherwise 
+Now consider the case where we are uncertain about the actual set of feasible outcomes. 
+We construct a two tiered prior over the values of V. We start with a prior over the size 
+of V, and then assume that all sets of the same cardinality have the same prior probability. 
+We let the random variable $ denote the cardinality of V. We assume that we are given a 
+distribution P(S = k) for k -- 1,..., L. We define the prior over sets to be: 
+P(V[$: k)= (5) 
+We now examine how to compute the posterior predictions given this hierarchical prior. Let 
+D denote the training data a:  ,..., z N. Then it is easy to verify that 
+P(X N+ =il D) 
+_ y a+ Ni )' P(V[D) (6) 
+ka+ N  
+k v, lvl=k,iv 
+Let us now examine which sets V actually contribute to this sum. 
+First, we note that sets that do not contain 5; ø have zero posterior probability, since they 
+are inconsistent with the observed data. Thus, we can examine only sets V that contain Z ø. 
+Second, as we noted above, P(D I V) is the same for all sets of cardinality k that contain 
+Z ø. Moreover, by definition the prior for all these sets is the same. Using Bayes rule, we 
+conclude that P(V I D) is the same for all sets of size k that contain Z ø. Thus, we can 
+420 N. Friedman and Y. Singer 
+simplify the inner summation in Eq. (6), by multiplying the number of sets in the score of 
+the summation by the posterior probability of such sets. 
+There are two cases. If i 6 Y?, then any set V that has non-zero posterior probability for i 
+appears in the sum. Thus, in this case we can write: 
+P(X N+I = i ] D) =   + Ni P(S = kid ) if/6 Z ø 
+ka+N 
+If i  Z ø, then we need to estimate the fraction of subsets of V with non-zero posterior that 
+contain i. This leads to an equation similar to the one above, but with a correction for this 
+fraction. By symmetry all unobserved outcomes have the same posterior probability. Thus, 
+we can simply divide the mass that was not assigned to the observed outcomes among the 
+unseen symbols. 
+Notice that the single term in Eq. (3) that depends on Ni can be moved outside 
+the summation. Thus, to make predictions, we only need to estimate the quantity: 
+C(O, L) L o+Ne(k i O) 
+"- Ek=k ø ka+N 
+and then 
+P(X v+' = i l D)= { ø+JvC(D'L) if/6 Z ø 
+_A-(1-C(D,L)) ifiCZ ø 
+We can therefore think of C(D, L) as scaling factor that we apply to the Dirichlet prediction 
+that assumes that we have seen all of the feasible symbols. The quantity 1 - C(D, L) is the 
+probability mass assigned to novel (i.e., unseen) outcomes. Using properties of Dirichlet 
+priors we get the following characterization of C(D, L). 
+mk 
+Proposition 3.1: P($ = kid ) = 
+! r() 
+where rn = P($ = k) -. ß r(a+N)' 
+Proof: To compute C(D, L), we need to compute P(S = k ] D). Using Bayes rule, we 
+have that 
+P(D I S = k)P(S = k) (7) 
+P(k I o) = P(D IS = k')P(S = k') 
+By introduction of variables, we have that: 
+P(D I S = k) =  P(D I V)P(V I S = k). 
+v_ro,lvl= 
+Using standard properties of Difichlet priors, we have that if Zo  V, then 
+e(OlW) = r(Iwl + w) (8) 
+Now, using Eq. (8) and (5), we get that ifZ ø  V, d k = IvI, then 
+F(k, + N) F(a)  F(, + Ni). (9) 
+iE o 
+ThUS, 
+P(OIS=k) 
+(10) 
+Efficient Bayesian Parameter Estimation in Large Discrete Domains 421 
+0.3 
+0.25 
+0.2 
+0.15 
+0.1 
+0.05 
+N = 20 ß 
+'' N = 50 .... -- 
+,'"A N = 100 
+,' , N = 200 
+,;/ . ,x N = 400 
+,,' I ,;// ,  '-'- 
+20 22 24 26 28 30 32 34 
+k 
+1 
+0.9 
+0.8 
+0.7 
+0,6 
+0.5 
+0.4 
+0.3 
+- N 50 .....  
+N 100 
+'N 200 
+N 400 ...... 
+I I I I 
+50 100 150 200 250 
+L 
+B 
+Figure 1' Left: Illustration of the posterior distribution P (S I D) for different values of N, 
+with k ø = 20, L = 100, c = .25, and P(S = k) oc 0.25 . Right: Illustration showing the 
+change in C(D, L) for different values of N, with k ø: 25, c - 1, and P(S = k) oc 0.9 . 
+The term in the square brackets does not depend on the choice of k. Thus, it cancels out 
+when plug Eq. (10) in Eq.(7). The desired equality follows directly. I 
+From the above proposition we immediately get that 
+kc + N rn  
+k=k ø kt_> k ø 
+rn (11) 
+Note that P(S = k I D) and C(D, L) depend only on k ø and N and does not depend on the 
+distribution of counts among the k ø observed symbols. Also note that when N is sufficiently 
+larger than k ø (and this depends on the choice of a), then the term (_o)! r(+N) is 
+much smaller than 1. This implies that the posterior for larger sets decays rapidly. We can 
+see this behavior on the left hand side of Figure 1 that shows the posterior distribution of 
+?($ I D) for different dataset sizes. 
+4 Unbounded alphabets 
+By examining the analytic form of C(D, L), we see that the dependency on L is expressed 
+only in the number of terms in the summation. If the terms rn vanish for large k, then 
+C(D, L) becomes insensitive to the exact size of the alphabet. We can see this behavior on 
+the right hand side of Figure 1, which shows C(D, L) as a function of L. As we can see, 
+when L is close to le ø, then C(D, L) is close to 1. As L grows, C(D, L) asymptotes to a 
+value that depends on N and k ø (as well as a and the prior P(S = k)). 
+This discussion suggests that we can apply our prior in cases where we do not know L 
+in advance. In fact, we can assume that L is unbounded. That is, Z is isomorphic to 
+{ 1,2,...}. Assume that we assign the prior P(S = k) for each choice of L, and that 
+limœ_o P(S = k) exists for all k. We define C(D, oc) = limœ_o C(D, L). We then 
+use for prediction the term P(X N+I - i 
+-- koo+N 
+For this method to work, we have to ensure that C(D, oo) is well defined; that is, that the 
+limit exists. Two such cases are identified by the following proposition (proof omitted). 
+Proposition 4. h If P(S : k)is exponentially decreasing in k or if r _> 1 and P(S -- k) 
+is polynomially decreasing in k, then C ( D , oo ) is well-defined. 
+In practice we evaluate C(D, oo) by computing successive values of (the logarithm of) 
+rn, until we reach values that are significantly smaller than the largest value beforehand. 
+422 N. Friedman and Y. Singer 
+Method 
+A  
+B (Approximated Good-Turing) 
+Sparse-Multinomial (Poly) 
+Sparse-Multinomial (Exp) 
+Perplexity 
+Observed Novel Overall 
+28.19 141.7 28.20 
+28.15 802.7 28.19 
+27.97 3812.9 28.02 
+27.97 3913.1 28.03 
+Table 1' Perplexity results on heterogeneous character data. 
+Since rn is exponentially decaying, we can ignore the mass in the tail of the sequence. As 
+we can see from the right hand side of Figure 1, there is not much difference between the 
+prediction using a large L, and unbounded one. 
+5 Empirical evaluation 
+We used the proposed estimation method to construct statistical models for predicting the 
+probability of characters in the context of the previously observed character. Such models, 
+often referred to as bigram models, are of great interest in applications such as optical 
+character recognition and text compression. We tested two of prior distributions for the 
+alphabet size Po(S = k): an exponential prior, Po(S -- k) o/3, and a polynomial prior, 
+Po(S = k) o k -. The training and test material were derived from various archives and 
+included different types of files such C programs, core dumps, and ascii text files. The 
+alphabet for the algorithm consists of all the (ascii and non-ascii) 256 possible characters. 
+The training data consisted of around 170 mega bytes and for testing we used 35 mega 
+bytes. 
+Each model we compared had to assign a probability to any character. If a character 
+was not observed in the context of the previous character, the new character is assigned 
+the probability of the total mass of novel events. We compared our approach with two 
+estimation techniques that have been shown to perform well on natural data sets [13]. The 
+first estimates the probability of a symbol i in the context of a given word as  where 
+r is the number of different characters observed at given context (the previous character). 
+The second method, based on an approximation of the Good-Turing estimation scheme [5], 
+estimates the probability of a symbol i as (-f/V)N' where f is the number of different 
+N ' 
+characters that have been observed only once at for the given context (for more details 
+see [ 13]). For evaluation we used the perplexity which is simply the exponentiation of the 
+average log-loss on the test data. Table 1 summarizes the average test-set perplexity for 
+observed characters, novel events, and the overall perplexity. In the experiments we fixed 
+ct = 1/2 for the parameters of the Dirichlet priors and/3 = 2 for the exponentially and 
+polynomially decaying priors of the alphabet size. 
+One can see from the table that predictions using sparse-multinomials achieve the lowest 
+overall perplexity. (The differences are statistically significant due to the size of the data.) 
+The performance based on the two different priors for the alphabet size is comparable. The 
+results indicate the all the leverage in using sparse-multinomials for prediction is due to 
+more accurate predictions for observed events. Indeed, the perplexity of novel events using 
+sparse-multinomials is much higher than when using either method A or B. Put another 
+way, our approach prefers to "sacrifice" events with low probability (novel events) and 
+suffer high loss in favor of more accurate predictions for frequently occurring events. The 
+net effect is a lower overall perplexity. 
+Efficient Bayesian Parameter Estimation in Large Discrete Domains 
+6 Discussion 
+423 
+In this paper we presented a Bayesian approach for the problem of estimating the parameters 
+of a multinomial source over a large alphabet. Our method is based on hierarchical priors. 
+We clearly identify the assumptions made by these priors. Given these assumptions, 
+prediction reduces to probabilistic inference. Our main result is showing how to perform 
+this inference exactly in an efficient manner. Among the numerous techniques that have 
+been used for multinomial estimation the one proposed by Ristad [10] is the closest to 
+ours. Though the methodology used by Ristad is substantially different than ours, his 
+method can been seen as a special case of sparse-multinomials with ct set to 1 and with a 
+specific prior on alphabet sizes. The main advantage of these choices is a simpler inference 
+procedure. This simplicity comes at the price of losing flexibility. In addition, our method 
+explicitly represents the posterior distribution. Hence, it is more suitable for tasks, such 
+as stochastic sampling, where an explicit representation of the approximated distribution 
+is required. Finally, our method can be combined with other Bayesian approaches for 
+language modeling such as the one proposed by MacKay and Peto [8], and with Bayesian 
+approaches for learning complex models such as Bayesian networks [6]. 
+Acknowledgments We are grateful to Fernando Pereira and Stuart Russell for discussions 
+related to this work. This work was done while Nir Friedman was at U.C. Berkeley and 
+supported by ARO under grant number DAAH04-96-1-0341 and by ONR under grant 
+number N00014-97-1-0941. 
+References 
+[10] 
+[11] 
+[12] 
+[13] 
+[1] w. Buntine. Learning classification trees. In Artificial Intelligence Frontiers in 
+Statistics. Chapman & Hall, 1993. 
+[2] B.S. Clarke and A.R. Barron. Jeffrey's prior is asymptotically least favorable under 
+entropic risk. J. Stat. Planning and Inference, 41:37-60, 1994. 
+[3] G. F. Cooper and E. Herskovits. A Bayesian method for the induction of probabilistic 
+networks from data. Machine Learning, 9:309-347, 1992. 
+[4] M. H. DeGroot. Optimal Statistical Decisions. McGraw-Hill, 1970. 
+[5] I.J. Good. The population frequencies of species and the estimation of population 
+parameters. Biometrika, 40(3): 237-264, 1953. 
+[6] D. Heckerman, D. Geiger, and D. M. Chickering. Learning Bayesian networks: The 
+combination of knowledge and statistical data. Machine Learning, 20:197-243, 1995. 
+[7] P.S. Laplace. Philosophical Essay on Probabilities. Springer-Verlag, 1995. 
+[8] D.J.C. MacKay and L. Peto. A hierarchical Dirichlet language model. Natural 
+Language Eng., 1(3): 1-19, 1995. 
+[9] L. R. Rabiner and B. H. Juang. An introduction to hidden Markov models. IEEE 
+ASSP Mag., 3(1):4-16, 1986. 
+E. Ristad. A natural law of succession. Tech. Report CS-TR-495-95, Princeton Univ., 
+1995. 
+Y. Singer. Adaptive mixtures of probabilistic transducers. Neur. Comp., 9(8): 1711- 
+1734, 1997. 
+F.M.J. Willems, Y.M. Shtarkov, and T.J. Tjalkens. The context tree weighting method: 
+basic properties. IEEE Trans. on Info. Theory, 41(3):653-664, 1995. 
+I.H. Witten and T.C. Bell. The zero-frequency problem: estimating the probabilities of 
+novel events in adaptive text compression. IEEE Trans. on Info. Theory, 37(4): 1085- 
+1094, 1991. 

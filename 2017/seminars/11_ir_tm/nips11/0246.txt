@@ -1,0 +1,337 @@
+The Belief in TAP 
+Yoshiyuki Kabashima 
+Dept. of Compt. Intl. &; Syst. Sci. 
+Tokyo Institute of Technology 
+Yokohama 226, Japan 
+David Saad 
+Neural Computing Research Group 
+Aston University 
+Birmingham B4 7ET, UK 
+Abstract 
+We show the similarity between belief propagation and TAP, for 
+decoding corrupted messages encoded by Sourlas's method. The 
+latter is a special case of the Gallager error-correcting code, where 
+the code word comprises products of Ix' bits selected randomly from 
+the original message. We examine the efficacy of solutions obtained 
+by the two methods for various values of Ix' and show that solutions 
+for I( > 3 may be sensitive to the choice of initial conditions in 
+the case of unbiased patterns. Good approximations are obtained 
+generally for I, = 2 and for biased patterns in the case of Ix' > 3, 
+especially when Nishimori's temperature is being used. 
+I Introduction 
+Belief networks [1] are diagrammatic representations of joint probability distribu- 
+tions over a set of variables. This set is usually represented by the vertices of 
+a graph, while arcs between vertices represent probabilistic dependencies between 
+variables. Belief propagation provides a convenient mathematical tool for calculat- 
+ing iteratively joint probability distributions between variables and have been used 
+in a variety of cases, most recently in the field of error correcting codes, for decoding 
+corrupted messages [2] (for a review of graphical models and their use in the context 
+of error-correcting codes see [3]). 
+Error-correcting codes provide a mechanism for retrieving the original message after 
+corruption due to noise during transmission. Of a particular interest to the current 
+paper is an error-correcting code presented by Sourlas [4] which is a special case of 
+the Gallager codes [5]. The latter have been recently re-discovered by MacKay and 
+Neal [2] and seem to have a significant practical potential. 
+In this paper we will examine the similarities between the belief propagation (BP) 
+and TAP approaches, used to decode corrupted messaged encoded by Sourlas's 
+method, and compare the solutions obtained by both approaches to the exact results 
+obtained using the replica method [8]. The statistical mechanics approach will then 
+The Belief in TAP 247 
+allow us to draw some conclusion on the efficacy of the TAP/BP approach in the 
+context of error correcting codes. 
+The paper is arranged in the following manner: In section 2 we will introduce the 
+encoding method and describe the decoding task. The Belief Propagation approach 
+to the decoding process will be introduced in section 3 and will be compared to the 
+TAP approach for diluted spin systems in section 4. Numerical solutions for various 
+cases will be presented in section 5 and we will summarize our results and discuss 
+their implications in section 6. 
+2 The decoding problem 
+In a general scenario, a message represented ly an N dimensional binary vector  
+is encoded by a vector j0 which is then transmitted through a noisy channel with 
+some flipping probability p per bit. The received message J is then decoded to 
+retrieve the original message. Sourlas's code [4], is based on encoded message bits 
+of the form Jiø,i iK=ii ... iK, taking the product of different K message sites 
+for each code wm:' bit. 
+In the statistical mechanics approach we will attempt to retrieve the original mes- 
+sage by exploring the ground state of the following Hamiltonian which corresponds 
+to the preferred state of the system in terms of 'energy' 
+'------ E 'A{ i,,...ig} J{i,...iK} Si...SiK- F//Sk, (1) 
+(i ,...ic} 
+where $ is an N dimensional binary vector of dynamical variables and .A is a sparse 
+tensor with C unit elements per index (other elements are zero), which determines 
+the components of j0. The last term on the right is required in the case of sparse 
+(biased) messages and will require assigning a certain value to the additive field 
+F//, related to the prior belief in the Bayesian framework. 
+The statistical mechanical analysis can be easily linked to the Bayesian frame- 
+work [4] in which one focuses on the posterior probability using Bayes theorem 
+P($1J) 1-I P(Jul$) P0($) where y runs over the message components and 
+represents the prior. Knowing the posterior one can calculate the typical retrieved 
+message elements and their alignment, which correspond to the Bayes-optimal de- 
+coding. The logarithms of the likelihood and prior terms are directly related to the 
+first and second components of the Hamiltonian (Eq.1). 
+One should also note that A{i,...i)J{i,...iK) represents a similar encoding scheme 
+to that of Ref. [2] where a sparse matrix with Is; non-zero elements per row multiplies 
+the original message  and the resulting vector, modulo 2, is transmitted. 
+Sourlas analyzed this code in the cases of K = 2 and K - cx, where the ratio 
+C/K -- cx, by mapping them onto the SK [9] and Random Energy [10] models 
+respectively. However, the ratio R-K/C constitutes the code rate and the scenarios 
+examined by Sourlas therefore correspond to the limited case of a vanishing code 
+rate. The case of finite code rate, which we will consider here, has only recently 
+been analyzed [8]. 
+3 Decoding by belief propagation 
+As our goal, of calculating the posterior of the system P($[J) is rather difficult, we 
+resort to the methods of BP, focusing on the calculation of conditional probabilities 
+when some elements of the system are set to specific values or removed. 
+248 Y. Kabashirna and D. Saad 
+The approach adopted in this case, which is quite similar to the practical approach 
+employed in the case of Gallager codes [2], assumes a two layer system corresponding 
+to the elements of the corrupted message J and the dynamical variables $ respec- 
+tively, defining conditional probabilities which relate elements in the two layers: 
+(2) 
+where the index y represents an element of the received vector message J, con- 
+stituted by a particular choice of indices i,...iK, which is connected to the cor- 
+responding index of $ (l in the first equation), i.e., for which the corresponding 
+element .A{i,...iK) is non-zero; the notation {S;t} refers to all elements of $, ex- 
+cluding the/-th element, which are connected to the corresponding index of J (y 
+in this case for the second equation); the index a: can take values of +1. The con- 
+ditional probabilities qu and r x will enable us, through recursive calculations to 
+ul 
+obtain an approximated expression to the posterior. 
+Employing Bayes rule and the assumption that the dependency of S on 
+an element J`, is factorizable and vice versa: 79(Sh,S,...St,.l{J`,iu}) = 
+K 
+1-[=p(Sk]{J`,;u} ) and P({Jv#u} [St=x) - 
+- I and rj  of the form 
+one can rewrite a set of coupled equations for q, 
+(3) 
+-1 
+where aut is a normalizing factor such that q + qut = 1 and p = 79 (St = a:) are 
+our prior beliefs in the value of the source bits S. 
+This set of equations can be solved iteratively [2] by updating a coupled set of differ- 
+ql _-1 _,1 
+ence equations for 6qua- u-qu  and 6rut derived for this specific model, 
+-- ul-- ul , 
+making use of the fact that the variables ru , and sub-sequentially the variables 
++l:(1-t-Srut)/2 and Eq.(3). At each 
+can be calculated by exploiting the relation rut 
+iteration we can also calculate the pseudo-posterior probabilities q[- atp' I-I,, 
+where at are normalizing factors, to determine the current estimated value of 
+Two points that are worthwhile noting: Firstly, the iterative solution makes use of 
+I -1 
+the normalization rut+rut = 1, which is not derived from the basic probability rules 
+and makes implicit assumptions about the probabilities of obtaining S = +1 for all 
+elements I. Secondly, the iterative solution would have provided the true posterior 
+probabilities q if the graph connecting the message J and the encoded bits $ would 
+have been free of cycles, i.e., if the graph would have been a tree with no recurrent 
+dependencies among the variables. The fact that the framework provides adequate 
+practical solutions has only recently been explained [13]. 
+4 Decoding by TAP 
+We will now show that for this particular problem it is possible to obtain a similar 
+set of equations from the corresponding statistical mechanics framework based on 
+Bethe approximation [11] or the TAP (Thouless-Anderson-Palmer) approach [12] 
+to diluted systems 1 In the statistical mechanics approach we assign a Boltzmann 
+i The terminology in the case of diluted systems is slightly vague. Unlike in the case 
+of fully connected systems, self consistent equations of diluted systems cannot be derived 
+The Belief in TAP 249 
+weight to each set comprising an encoded message bit Jr and a dynamical vector $ 
+wB (Jrl$) = e - g(Jl$) , (4) 
+such that the first term of the system's Hamiltonian (Eq.1) can be rewritten as 
+Er g (Jr I$), where the index y runs over all non-zero sites in the multidimensional 
+tensor .A. We will now employ two straightforward assumptions to write a set of 
+coupled equations for the mean field qrt - 7) (St[ {J;r}), which may be identified 
+as the same variable as in the belief network framework (Eq.2), and the effective 
+Boltzmann weight Weft(Jr[St , {J;r}): 
+1) we assume a mean field behavior for the dependence of the dynamical variables 
+S on a certain realization of the message sites J, i.e., the dependence is factorizable 
+and may be replaced by a product of mean fields. 
+2) Boltzmann weights (effective) for site St are factorizable with respect to 
+The resulting set of equations are of the form 
+Weft(J r ] St, {J;r)) = Tr{sk,) wB (Jr I S) 
+Sk 
+pf' Is,, (5) 
+art H Weft ' 
+where ar is a normalization factor and p? is our prior knowledge of the source's 
+bias. Replacing the effective Boltzmann weight by a normalized field, which may 
+s, of Eq.(2), we obtain 
+be identified as the variable rrt 
+rus = 7 ) (St ] Jr, {J;r}) - ar Weft(Jr I S, {J#r}) , (6) 
+i.e., a set of equations equivalent to Eq.(3). The explicit expressions of the normal- 
+ization coefficients, ar and art , are 
+S ~ S 
+aj,  = Tr(s} w (JulS) H qut and aj,  = Tr{s,} p? H r, , (7) 
+kl  
+The somewhat arbitrary use of the differences 5qr, = (S')q and 5rr, = (S')r in 
+the BP approach becomes clear form the statistical mechanics description, where 
+they represent the expectation values of the dynamical variables with respect to the 
+fields. The statistical mechanics formulation also provides a partial answer to the 
+successful use of the BP methods to loopy systems, as we consider a finite number 
+of steps on an infinite lattice [14]. However, it does not provide an explanation in 
+the case of small systems which should be examined using other methods. 
+The formulation so far has been general; however, in the case of Sourlas's code we 
+S Sz 
+can make use of the explicit expression for g to derive the relatipn between qrt, 
+5qr and 5rr as well  an explicit expression for w B 
+s 1 1 (1 + 5rtSt) and (8) 
+i ( 
+wn(J]S,) = coshSJ. 1 +tanhSJ  St , (9) 
+by the perturbation expansion of the mean field equations with respect to Onsager reac- 
+tion fields since these fields are too large in diluted systems. Consequently, the resulting 
+equations are different than those obtained for fully connected systems [12]. We termed 
+our approach TAP, following the convention for the Bethe approximation when applied to 
+disordered systems subject to mean field type random interactions. 
+250 Y. Kabashirna and D. Saad 
+where œ(y) is the set of all sites of $ connected to Jr, i.e., for which the corre- 
+sponding element of the tensor yt is non-zero. The explicit form of the equations 
+for 5q and 5r becomes 
+5rl=tanhfiJ H 5ql and 5ql=tanh( - tanh-15rl+F) , (10) 
+e r(u)/l \e()/u 
+where A(1)/y is the set of all indices of the tensor J, excluding y, which are 
+connected to the vector site l; the external field F which previously appeared in the 
+last term of Eq.(1) is directly related to our prior belief of the message bias 
+s, 1 (1 + tanh FS,) (11) 
+We therefore showed that there is a direct relation between the equations derived 
+from the BP approach and from TAP in this particular case. One should note that 
+the TAP approach allows for the use of finite inverse-temperatures fi which is not 
+naturally included in the BP approach. 
+5 Numerical solutions 
+To examine the efficacy of TAP/BP decoding we used the method for decoding 
+corrupted messages encoded by the Sourlas scheme [4], for which we have previously 
+obtained analytical solutions using the replica method [8]. We solved iteratively 
+Eq.(10) for specific cases by making use of differences 5q, and 5rui to obtain the 
+values of q:kl and +1 and of the magnetization M. 
+Numerical solutions of 10 individual runs for each value of the flip rate p starting 
+from different initial conditions, obtained for the case K- 2 and C: 4, different 
+biases (f = p -- 0.1, 0.5 - the probability of +1 bit in the original message ) and 
+temperatures (T = 0.26,T) are shown in Fig. la. For each run, 20000 bit code 
+words jo were generated from 10000 bit message  using a fixed random sparse 
+tensor yt. The noise corrupted code word J was decoded to retrieve the original 
+message . Initial conditions are set to 5r - 0 and 5q = tanh F reflecting the prior 
+belief; whenever the TAP/BP approach was successful in predicting the theoretical 
+values we observed convergence in most runs corresponding to the ferromagnetic 
+phase while almost all runs at low temperatures did not converged to a stable 
+solution above the critical flip-rate (although the magnetization M did converge as 
+one may expect). We obtain good agreement between the TAP/BP solutions and 
+the theoretical values calculated using the methods of [8] (diamond symbols and 
+dashed line respectively). The results for biased patterns at T= 0.26 presented in 
+the form of mean values and standard deviation, show a sub-optimal improvement 
+in performance as expected. Obtaining solutions under similar conditions but at 
+Nishimori's temperature- 1/T = 1/21n[(1 - p)/p] [7], we see that pattern sparsity 
+is exploited optimally resulting in a magnetization M m 0.8 for high corruption 
+rates, as T simulates accurately the loss of information due to channel noise [6, 7]; 
+results for unbiased patterns (not shown) are not affected significantly by the use 
+of Nishimori's temperature. 
+The replica-based theoretical solutions [8] indicate a profoundly different behaviour 
+for K = 2 in comparison to other K values. We therefore obtained solutions for 
+I  = 5 under similar conditions (which are representative of results obtained in 
+other cases of K  2). The results presented in Fig. lb, in terms of means and 
+standard deviation of 10 individual runs per flip rate value p, are less encouraging 
+as the iterative solutions are sensitive to the choice of initial conditions and tend to 
+The Belief in TAP 251 
+1.2 
+0.8 
+0.6 
+0.4 
+0.2 
+a) K=2 
+T--0.26, Unbiased 
+(f_-o.,  
+1.2 
+., T=Tn, Biased 
+(f--0.1) 
+ 0.26,( 
+tootoS^ 
+tt,t 
+i I I 
+0,2 0.3 0.4 0.5 
+p 
+0.8 
+0.6 
+0.4 
+0.2 
+b) K=5 
+T=Tn, Biased 
+? 
+T=Tn, Unbiased 
+(f=0.5) 
+1.001 
+11 
+0.999 
+0.998 
+0.997 
+0.996 
+0.995 
+T=Tn, Biased 
+(1=0.1) 
+0.020.040.060.06 0.1 0.120.14 
+I I I I I 
+0 0.1 0 0.1 0.2 0.3 0,4 0.5 
+p 
+Figure 1' 
+Numerical solutions for M and different flip rate p. 
+(a) For K: 2, 
+different biases (f=p =0.1,0.5) and temperatures (T:0.2d,T,). Results for the 
+unbiased patterns are shown as raw data (10 runs per flip rate value p - diamond), 
+while the theoretical solution is marked by the dashed line. Results for biased 
+patterns are presented by their mean and standard deviation, showing a suboptimal 
+performance as expected for T= 0.26 and an optimal one at Nishimori's temperature 
+-T,. The standard deviation is significantly smaller than the symbol size. Figure 
+(b) shows results for the case K - 5 and T = T in similar conditions to (a). 
+Also here iterative solutions may generally drift away from the theoretical values 
+where temperatures other than T, are employed (not shown); using Nishimori's 
+temperature alleviates the problem only in the case of biased messages and the 
+results are in close agreement with the theoretical solutions (inset - focusing on low 
+p values). 
+converge to sub-optimal values unless high sparsity and the appropriate choice of 
+temperature (T,) forces them to the correct values, showing then good agreement 
+with the theoretical results (solid line, see inset). This phenomena is indicative of the 
+fact that the ground state of the non-biased system is macroscopically degenerate 
+with multiple equally good ground states. 
+We conclude that the TAP/BP approach may be highly useful in the case of biased 
+patterns but may lead to errors for unbiased patterns and I(>_ 3, and that the use 
+of the appropriate temperature, i.e., Nishimori's temperature, enables one to obtain 
+improved results, in agreement with results presented elsewhere [4, 6, 7]. 
+252 Y. Kabash#na and D. Saad 
+6 Summary and discussion 
+We compared the use of BP to that of TAP for decoding corrupted messages encoded 
+by Sourlas's method to discover that in this particular case the two methods provide 
+a similar set of equations. We then solved the equations iteratively for specific cases 
+and compared the results to those obtained by the replica method. The solutions 
+indicate that the method is particularly useful in the case of biased messages and 
+that using Nishimori's temperature is highly beneficial; solutions obtained using 
+other temperature values may be sub-optimal. For non-sparse messages and K_> 3 
+we may obtain erroneous solutions using these methods. 
+It would be desirable to explore whether the similarity in the equations derived using 
+TAP and BP is restricted to this particular case or whether there is a more general 
+link between the two methods. Another important question that remains open 
+is the generality of our conclusions on the efficacy of these methods for decoding 
+corrupted messages, as they are currently being applied in a variety of state-of-the- 
+art coding schemes (e.g., [2, 3]). Understanding the limitations of these methods and 
+the proper way to use them in general, especially in the context of error-correcting 
+codes, may be highly beneficial to practitioners. 
+Acknowledgment This work was partially supported by the RFTF program of the JSPS 
+(YK) and by EPSRC grant GR/L19232 (DS). 
+References 
+[8] 
+[9] 
+[10] 
+[11] 
+[12] 
+[13] 
+[14] 
+[1] J. Pearl, Probabilistic Reasoning in Intelligent Systems: Networks of Plausible 
+Inference (Morgan Kaufmann) 1988. 
+[2] D.J.C. MacKay and R.M. Neal, Elect. Left., 33,457 and preprint (1997). 
+[3] B.J. Frey, Graphical Models for Machine Learning and Digital Communication 
+(MIT Press), 1998. 
+[4] N. Sourlas, Nature, 339,693 (1989) and Europhys. Left., 25, 159 (1994). 
+[5] R.G. Gallager, IRE Trans. Info. Theory, IT-8, 21 (1962). 
+[6] P. Ruj&n, Phys. Rev. Lett., 70, 2968 (1993). 
+[7] H. Nishimori,J. Phys. C, 13, 4071 (1980) and J. Phys. Soc. of Japan, 62, 1169 
+(1993). 
+Y. Kabashima and D. Saad, Europhys. Lett., 45, in press (1999). 
+D. Sherrington and S. Kirkpatrick, Phys. Rev. Lett., 35, 1792 (1975). 
+B. Derrida, Phys. Rev. B, 24, 2613 (1981). 
+H. Bethe, Proc. R. Soc. A, 151, 540 (1935). 
+D. Thouless, P.W. Anderson and R.G. Palmer, Phil. Mag., 35, 593 (1977). 
+Y. Weiss, MIT preprint CBCL155 (1997). 
+D. Sherrington and K.Y.M. Wong J. Phys. A, 20, L785 (1987). 

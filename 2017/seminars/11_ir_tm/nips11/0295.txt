@@ -1,0 +1,305 @@
+On the optimality of incremental neural network 
+algorithms 
+Ron Meir* 
+Department of Electrical Engineering 
+Technion, Haifa 32000, Israel 
+rmeir@dumbo. technion. ac. il 
+Vitaly Maiorov + 
+Department of Mathematics 
+Technion, Haifa 32000, Israel 
+maiorov@tx. technion. ac. il 
+Abstract 
+We study the approximation of functions by two-layer feedforward neu- 
+ral networks, focusing on incremental algorithms which greedily add 
+units, estimating single unit parameters at each stage. As opposed to 
+standard algorithms for fixed architectures, the optimization at each stage 
+is performed over a small number of parameters, mitigating many of the 
+difficult numerical problems inherent in high-dimensional non-linear op- 
+timization. We establish upper bounds on the error incurred by the al- 
+gorithm, when approximating functions from the Sobolev class, thereby 
+extending previous results which only provided rates of convergence for 
+functions in certain convex hulls of functional spaces. By comparing our 
+results to recently derived lower bounds, we show that the greedy algo- 
+rithms are nearly optimal. Combined with estimation error results for 
+greedy algorithms, a strong case can be made for this type of approach. 
+1 Introduction and background 
+A major problem in the application of neural networks to real world problems is the ex- 
+cessively long time required for training large networks of a fixed architecture. Moreover, 
+theoretical results establish the intractability of such training in the worst case [9][4]. Ad- 
+ditionally, the problem of determining the architecture and size of the network required to 
+solve a certain task is left open. Due to these problems, several authors have considered 
+incremental algorithms for constructing the network by the addition of hidden units, and 
+estimation of each unit's parameters incrementally. These approaches possess two desir- 
+able attributes: first, the optimization is done step-wise, so that only a small number of 
+parameters need to be optimized at each stage; and second, the structure of the network 
+*This work was supported in part by the a grant from the Israel Science Foundation 
++The author was partially supported by the center for Absorption in Science, Ministry of Immi- 
+grant Absorption, State of Israel. 
+296 R. Meir and V. Maiorov 
+is established concomitantly with the learning, rather than specifying it in advance. How- 
+ever, until recently these algorithms have been rather heuristic in nature, as no guaranteed 
+performance bounds had been established. Note that while there has been a recent surge 
+of interest in these types of algorithms, they in fact date back to work done in the early 
+seventies (see [3] for a historical survey). 
+The first theoretical result establishing performance bounds for incremental approximations 
+in Hilbert space, was given by Jones [8]. This work was later extended by Barron [2], and 
+applied to neural network approximation of functions characterized by certain conditions 
+on their Fourier coefficients. The work of Barron has been extended in two main direc- 
+tions. First, Lee et al. [10] have considered approximating general functions using Hilbert 
+space techniques, while Donahue et al. [7] have provided powerful extensions of Jones' 
+and Barron's results to general Banach spaces. One of the most impressive results of the 
+latter work is the demonstration that iterative algorithms can, in many cases, achieve nearly 
+optimal rates of convergence, when approximating convex hulls. 
+While this paper is concerned mainly with issues of approximation, we comment that it is 
+highly relevant to the statistical problem of learning from data in neural networks. First, 
+Lee et al. [10] give estimation error bounds for algorithms performing incremental opti- 
+mization with respect to the training error. Under certain regularity conditions, they are 
+able to achieve rates of convergence comparable to those obtained by the much more com- 
+putationally demanding algorithm of empirical error minimization. Moreover, it is well 
+known that upper bounds on the approximation error are needed in order to obtain per- 
+formance bounds, both for parametric and nonparametric estimation, where the latter is 
+achieved using the method of complexity regularization. Finally, as pointed out by Don- 
+ahue et al. [7], lower bounds on the approximation error are crucial in establishing worst 
+case speed limitations for learning. 
+The main contribution of this paper is as follows. For functions belonging to the Sobolev 
+class (see definition below), we establish, under appropriate conditions, near-optimal rates 
+of convergence for the incremental approach, and obtain explicit bounds on the parameter 
+values of the network. The latter bounds are often crucial for establishing estimation error 
+rates. In contrast to the work in [10] and [7], we characterize approximation rates for 
+functions belonging to standard smoothness classes, such as the Sobolev class. The former 
+work establishes rates of convergence with respect to the convex hulls of certain subsets 
+of functions, which do not relate in a any simple way to standard functional classes (such 
+as Lipschitz, Sobolev, H61der, etc.). As far as we are aware, the results reported here are 
+the first to report on such bounds for incremental neural network procedures. A detailed 
+version of this work, complete with the detailed proofs, is available in [ 13]. 
+2 Problem statement 
+We make use of the nomenclature and definitions from [7]. Let 7/be a Banach space of 
+functions with norm II ' II. For concreteness we assume henceforth that the norm is given 
+by the Lq norm, 1 < q < oo, denoted by l[ ' IIq. Let lin,,7/consist of all sums of the form 
+i= aig, gi E 7/and arbitrary ai, and co,,7/is the set of such sums with ai E [0, 1] and 
+i ai = 1. The distances, measured in the Lq norm, from a function f are given by 
+dist(lin,7/, f) = inf {lib- fllq:  lin,7/), 
+dist(co,7/, f) = inf {lib - fllq: h  
+The linear span of 7/is given by lin7/ = U,lin,7/, while the convex-hull of 7/is co7/ = 
+U,co,7/. We follow standard notation and denote closures of sets by a bar, e.g. co7/is the 
+closure of the convex hull of 7/. In this work we focus on the special case where 
+7/__ 7/. __a +b), 14 _< I1(-)11 _< 1), (1) 
+On the Optimality of Incremental Neural Network Algorithms 297 
+corresponding to the basic building blocks of multilayer neural networks. The restriction 
+Ila(')11 _<  is not very demanding as many sigmoidal functions can be expressed as a sum 
+of functions of bounded norm. It should be obvious that lin,N, corresponds to a two-layer 
+neural network with a linear output unit and a-activation functions in the single hidden 
+layer, while co,N, is equivalent to a restricted form of such a network, where restrictions 
+are placed on the hidden-to-output weights. In terms of the definitions introduced above, 
+the by now well known property of universal function approximation over campacta can 
+be stated as linN: C(M), where C(M) is the class of continuous real valued functions 
+defined over M, a compact subset of p,a. A necessary and sufficient condition for this 
+has been established by Leshno et al. [11], and essentially requires that a(.) be locally 
+integrable and non-polynomial. We comment that if r = oo in (1), and c is unrestricted in 
+sign, then coNoo = linNoo. The distinction becomes important only if r < oo, in which 
+case coN, C linN,. 
+For the purpose of incremental approximation, it turns out to be useful to consider the con- 
+vex hull coN, rather than the usual linear span, as powerful algorithms and performance 
+bounds can be developed in this case. In this context several authors have considered 
+bounds for the approximation of a function f belonging to con by sequences of functions 
+belonging to co,N. However, it is not clear in general how well convex hulls of bounded 
+functions approximate general functions. One contribution of this work is to show how 
+one may control the rate of growth of the bound r in (1), so that general functions, belong- 
+ing to certain smoothness classes (e.g. Sobolev), may be well approximated. In fact, we 
+show that the incremental approximation scheme described below achieves nearly optimal 
+approximation error for functions in the Sobolev space. 
+Following Danahue et al. [7], we consider s-greedy algorithms. Let s - (s, 62,... ) be a 
+positive sequence, and similarly for (c, c2,... ), 0 < c, < 1. A sequence of functions 
+h, h2, ß ß ß is s-greedy with respect to f if for n = 0, 1, 2, .... 
+II/n+l -- fllq < inf {I]c,h, + (1 - c,)9 - fllq:  E N.) q- 6,,, (2) 
+where we set h0 = 0. For simplicity we set c, -- (n - 1)In, although other schemes are 
+also possible. It should be clear that at each stage n, the function h, belongs to co,N,. 
+Observe also that at each step, the infimum is taken with respect to 9 E N,, the function 
+h, being fixed. In terms of neural networks, this implies that the optimization over each 
+hidden unit parameters (a, b, c) is performed independently of the others. We note in pass- 
+ing, that while this greatly facilitates the optimization process in practice, no theoretical 
+guarantee can be made as to the convexity of the single-node error function (see [1] for 
+counter-examples). The variables s, are slack variables, allowing the extra freedom of 
+only approximate minimization. In this paper we do not optimize over c,, but rather fix a 
+sequence in advance, forfeiting some generality at the price of a simpler presentation. In 
+any event, the rates we obtain are unchanged by such a restriction. 
+In the sequel we consider s-greedy approximations of smooth functions belonging to the 
+Sobolev class of functions, 
+W = { f ' max 
+0<<r 
+where 17c = (]Cl,... , ]Cd) , ]C i _ 0 and l]7cl = k +... ka. IIere 7 ) is the partial derivative 
+operator of order 17c. All functions are defined over a compact domain K C p,a. 
+3 Upper bound fo: the L2 norm 
+First, we consider the approximation of functions from W using the L2 norm. In dis- 
+tinction with other Lq norms, there exists an inner product in this case, defined through 
+298 R. Meir and V. Maiorov 
+(', ') = I[' l[2 2. This simplification is essential to the proof in this case. 
+We begin by recalling a result from [12], demonstrating that any function in L2 may be 
+exactly expressed as a convex integral representation of the form 
+f(x) = c2 f h(x,O)w(O)dO, (3) 
+where 0 < Q <  depends on f, and w(O) is a probability density function (pdf) with 
+respect to the multi-dimensional variable 0. Thus, we may write f(:r) = QE,{h(:r, ©)}, 
+where Ew denotes the expectation operator with respect to the pdf w. Moreover, it was 
+shown in [12], using the Radon and wavelet transforms, that the function h(a:, 0) can be 
+taken to be a ridge function with 0 = (a,b,c) and h(x,O) = ca(arx + b). 
+In the case of neural networks, this type of convex representation was first exploited by 
+Barron in [2], assuming f belongs to a class of functions characterized by certain moment 
+conditions on their Fourier transforms. Later, Delyon et al. [6] and Maiorov and Meir 
+[12] extended Barron's results to the case of wavelets and neural networks, respectively, 
+obtaining rates of convergence for functions in the Sobolev class. 
+The basic idea at this point is to generate an approximation, hn(x), based on n draws of 
+random variables ©n = {©, 02,... , ©n}, ©i ' W('), resulting in the random function 
+hn(27;13 n) --  h(27,13i). 
+i=1 
+(4) 
+Throughout the paper we conform to standard notation, and denote random variables by 
+uppercase letters, as in 13, and their realization by lower case letters, as in 0. Let w n --- 
+1-Iin_- wi represent the product pdf for {13,... , 13n}. Our first result demonstrates that, 
+on the average, the above procedure leads to good approximation of functions belonging to 
+w;. 
+Theorem 3.1 Let K C R a be a compact set. Then for an 3, f E W.;, n > 0 and s > 0 
+there exists a constant c > O, such that 
+(5) 
+where Q < cn(/2-r/a)+, and (z)+ = max(0, z). 
+The implication of the upper bound on the expected value, is that there exists a set of 
+values 0 *' = {01,... , 0}, for which the rate (5) can be achieved. Moreover, as long as 
+the functions h(:r, Oi) in (4) are bounded in the L2 norm, a bound on Q implies a bound on 
+the size of the function hn itself. 
+Proof sketch The proof proceeds by expressing f as the sum of two functions, fl 
+and f2. The function fl is the best approximation to f from the class of multi-variate 
+splines of degree r. From [12] we know that there exist parameters 0 n such that 
+Ilfx(') - hn(-,0n)112 _< cn -/a. Moreover, using the results of [5] it can be shown that 
+11/2112 _< cn Using these two observations, together with the triangle inequality 
+[If - hnl[2 _< It fl - hnl12 - [If2ll2, yields the desired result. I 
+Next, we show that given the approximation rates attained in Theorem 3.1, the same rates 
+may be obtained using an s-greedy algorithm. Moreover, since in [ 12] we have established 
+the optimality of the upper bound (up to a logarithmic factor in n), we conclude that greedy 
+approximations can indeed yield near-optimal performance, while at the same time being 
+much more attractive computationally. In fact, in this section we use a weaker algorithm, 
+which does not perform a full minimization at each stage. 
+On the Optimality of Incremental Neural Network Algorithms 299 
+Incremental algorithm: (q = 2) Let c. = 1 - l/n, &n = 1 - cn = 1In. 
+1. Let 0 F be chosen to satisfy 
+Ill(x) - Qh(x,o)ll2 2 = Ewl {Ill(x) - Qh(x, Ox)ll} ß 
+Assume that 0F, 0,... , 0 n_  have been generated. Select 0 to obey 
+f(x) /- 1 i=1 
+- anQ(, . 
+= Ew. 
+Define 
+E(T ¸  EWr t f(x) T- I i:1 
+which measures the error incurred at the n-th stage by this incremental procedure. 
+main result of this section then follows. 
+The 
+Theorem 3.2 For any f E W and  > O, the error of the incremental algorithm above is 
+bounded as 
+E? _< cn--3+*, 
+for some finite constant c. 
+Proof sketch The claim will be established upon showing that 
+{ f 
+T/ i----1 
+namely, the error incurred by the incremental procedure is identical to that of the non- 
+incremental one described preceding Theorem 3.1. The result will then follow upon using 
+H61der's inequality and the upper bound (5) for the r.h.s. of (6). The remaining details are 
+straightforward, but tedious, and can be found in the full paper [13]. I 
+4 Upper bound for general Lq norms 
+Having established rates of convergence for incremental approximation of W in the L2 
+norm, we move now to general Lq norms. First, note that the proof of Theorem 3.2 relies 
+heavily on the existence on an inner product. This useful tool is no longer available in the 
+case of general Banach spaces such as Lq. In order to extend the results to the latter norm, 
+we need to use more advanced ideas from the theory of the geometry of Banach spaces. In 
+particular, we will make use of recent results from the work of Donahue et al. [7]. Second, 
+we must keep in mind that the approximation of the Sobolev space W using the Lq norm 
+only makes sense if the embedding condition rid > (1/2 - l/q)+ holds, since otherwise 
+the Lq norm may be infinite (the embedding condition guarantees its finiteness; see [14] 
+for details). 
+We first present the main result of this section, followed by a sketch of the proof. The full 
+details of the rather technical proof can be found in [ 13]. Note that in this case we need to 
+use the greedy algorithm (2) rather than the algorithm of Section 3. 
+300 R. Meir and V. Maiorov 
+Theorem 4.1 
+0<r < r*, r*:  
+f E W and e > O 
+Let the embedding condition rid > (1/2 - l/q)+ hold for 1 < q < 
+ ) and assume that II(.,0)11q < 1for all O. Then for any 
+q + -- 
+where 
+!_a 2__ q > 2, 
+3' = /-q qd (7) 
+ q<2, 
+c = c(r,d,K) and h(-,0 ) is obtained via the incremental greedy algorithm (2) with 
+sn=0. 
+Proof sketch The main idea in the proof of Theorem 4.1 is a two-part approximation 
+scheme. First, based on [13], we show that any f E W may be well approximated by 
+functions in the convex class co,(7-{,) for an appropriate value of r/(see Lemma 5.2 in 
+[13]), where H, is defined in (1). Then, it is argued, making use of results from [7] (in 
+particular, using Corollary 3.6), that an incremental greedy algorithm can be used to ap- 
+proximate the closure of the class co(H,) by the class co,(7-{,). The proof is completed by 
+using the triangle inequality. The proof along the above lines is done for the case q > 2. In 
+the case q _< 2, a simple use of the H61der inequality in the form Ilfllq < IKIX/q-x/211fl12, 
+where [KI is the volume of the region K, yields the desired result, which, given the lower 
+bounds in [12], is nearly optimal. I 
+5 Discussion 
+We have presented a theoretical analysis of an increasingly popular approach to incremental 
+learning in neural networks. Extending previous results, we have shown that near-optimal 
+rates of convergence may be obtained for approximating functions in the Sobolev class 
+W. These results extend and clarify previous work dealing solely with the approximation 
+of functions belonging to the closure of convex hulls of certain sets of functions. Moreover, 
+we have given explicit bounds on the parameters used in the algorithm, and shown that the 
+restriction to co,7-{, is not too stringent. In the case q _< 2 the rates obtained are as good (up 
+to logarithmic factors) to the rates obtained for general spline functions, which are known 
+to be optimal for approximating Sobolev spaces. The rates obtained in the case q > 2 
+are sub-optimal as compared to spline functions, but can be shown to be provabl better 
+than any linear approach. In any event, we have shown that the rates obtained are equal, 
+up to logarithmic factors, to approximation from lin,7-{,, when the size of r/ is chosen 
+appropriately, implying that positive input-to-output weights suffice for approximation. An 
+open problem remaining at this point is to demonstrate whether incremental algorithms for 
+neural network construction can be shown to be optimal for every value of q. In fact, this 
+is not even known at this stage for neural network approximation in general. 
+References 
+[1] P. Auer, M. Herbster, and M. Warmuth. Exponentially many local minima for single 
+neurons. In D.S. Touretzky, M.C. Mozer, and M.E. Hasselmo, editors, Advances in 
+Neural Information Processing Systems 8, pages 316-322. MIT Press, 1996. 
+[2] A.R. Barron. Universal approximation bound for superpositions of a sigmoidal func- 
+tion. IEEE Trans. Inf Th., 39:930-945, 1993. 
+[3] A.R. Barron and R.L. Barron. Statistical learning networks: a unifying view. In 
+E. Wegman, editor, Computing Science and Statistics: Proceedings 20th Symposium 
+Interface, pages 192-203, Washington D.C., 1988. Amer. Statis. Assoc. 
+On the Optimality of Incremental Neural Network Algorithms 301 
+[4] 
+[5] 
+[6] 
+[71 
+[81 
+[9] 
+[10] 
+[11] 
+[12] 
+[13] 
+[14] 
+A. Blum and R. Rivest. Training a 3-node neural net is np-complete. In D.S. Touret- 
+zky, editor, Advances in Neural bformation Processing Systems I, pages 494-501. 
+Morgan Kaufmann, 1989. 
+C. de Boor and G. Fix. Spline approximation by quasi-interpolation. J. Approx. 
+Theor3,, 7:19-45, 1973. 
+B. Delyon, A. Juditsky, and A. Benveniste. Accuracy nalysis for wavelet approxima- 
+tions. IEEE Transaction on Neural Networks, 6:332-348, 1995. 
+M.J. Donahue, L. Gurvits, C. Darken, and E. Sontag. Rates of convex approximation 
+in non-hilbert spaces. Constructive Approx., 13:187-220, 1997. 
+L. Jones. A simple lemma on greedy approximation in Hilbert space and conver- 
+gence rate for projection pursuit regression and neural network training. Ann. Statis., 
+20:608-613, 1992. 
+S. Judd. Neural Netxvork Design and the Complexit 3, of Learning. MIT Press, Boston, 
+USA, 1990. 
+W.S. Lee, P.S. Bartlett, and R.C. Williamson. Efficient Agnostic learning of neural 
+networks with bounded fan-in. IEEE Trans. Inf Theor3,, 42(6):2118-2132, 1996. 
+M. Leshno, V. Lin, A. Pinkus, and S. Schocken. Multilayer Feedforward Networks 
+with a Nonpolynomial Activation Function Can Approximate any Function. Neural 
+Netxvorks, 6:861-867, 1993. 
+V.E. Maiorov and R. Meir. On the near optimality of the stochastic approximation of 
+smooth functions by neural networks. Technical Report CC-223, Technion, Depart- 
+ment of Electrical Engineering, November 1997. Submitted to Advances in Compu- 
+tational Mathematics. 
+R. Meir and V. Maiorov. On the optimality of neural network approxima- 
+tion using incremental algorithms. Submitted for publication, October 1998. 
+ftp://dumbo.technion.ac.il/pub/PAPERS/incremental.pdf. 
+H. Triebel. Theory. of Function Spaces. Birkhauser, Basel, 1983. 

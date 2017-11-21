@@ -1,0 +1,306 @@
+Learning to Find Pictures of People 
+Sergey Ioffe 
+Computer Science Division 
+U.C. Berkeley 
+Berkeley CA 94720 
+ioffe (cs. berkeley. edu 
+David Forsyth 
+Computer Science Division 
+U.C. Berkeley 
+Berkeley CA 94720 
+dafcs. berkeley. edit 
+Abstract 
+Finding articulated objects, like people, in pictures presents a par- 
+ticularly difficult object recognition probleln. We show how to 
+find people by finding putative body segments, and then construct- 
+ing assemblies of those segments that are consistent with the con- 
+straints on the appearance of a person that result froill kinematic 
+properties. Since a reasonable model of a person requires at. lea.st 
+nine segments, it is not possible to present every group to a classi- 
+fier. Instead, the search can be pruned by using projected versions 
+of a classifier that accepts groups corresponding to people. We 
+describe an efficient projection algorithm for one popular classi- 
+fier, and demonstrate that our approach can be used to deterlnine 
+whether images of real scenes contain people. 
+1 Introduction 
+Several typical collections containing over ten million images are listed in [2]. There 
+is an extensive literature on obtaining images from large collections using features 
+computed froin the whole ilnage, including colour histograms, texture measures and 
+shape measures; a partial review appears in [5]. 
+However, in the most comprehensive field study of usage practices (a paper by 
+Enser [2] surveying the use of the Hulton Deutsch collection), there is a clear user 
+preference for searching these collections on image semantics. An ideal search tool 
+would be a quite general object recognition system that, could be adapted quickly 
+and easily to the types of objects sought by a user. An important special case 
+is finding people and determining what they are doing. This is hard, because 
+people have many internal degrees of freedom. We follow the approach of [3], 
+and represent people as collections of cylinders, each representing a body segment. 
+Regions that could be the projections of cylinders are easily found using techniques 
+similar to those of [1]. Once these regions are found, they nmst be assembled 
+Learning to Find Pictures of People 783 
+into collections that are consistent with the appearance of images of real people, 
+which are constrained by the kinematics of human joints; consistency is tested 
+with a classifier. Since there are many candidate segments, a brute force search 
+is impossible. We show how this search can be pruned using projections of the 
+classifier. 
+2 Learning to Build Segment Configurations 
+Suppose that. :¾ segments have been found in an image, and there are m body parts. 
+We will define a labeling as a set L = {(l,s),(12,s,),...,(l.,s)} of pairs where 
+each seglnent,s G {1...N} is labeled with the lobell  {1...m}. A labeling is 
+complete if it represents a full m-segment configuration (Fig. 2(a,b)). 
+Assume we have a classifier C that for any coinplete labeling L outputs C(L) > 0 
+if L corresponds to a person-like configuration, and C(L) < 0 otherwise. Finding 
+all the possible body configuratiols in an image is equivalent to finding all the 
+complete labelings L for which C(L) > 0. This calmot be done with brute-force 
+search through the entire set.. The search can be pruned if, for an (incolnplete) 
+labeling L' there is no colnplete L _D L' such that C(L) > 0. For instance, if two 
+seglnelts cannot represent the upper and lower left. arm, as in Figure la, then we 
+do not consider any complete labelings where they are labeled as such. 
+Projected clossificrs make the search for body configurations eflicient by pruning 
+labelings using the properties of smaller sub-labelings (as in [7], who use manually 
+determined bounds and do not learn the tests). Given a classifier C which is a 
+function of a set of features whose values depend on segments with labels l ... 
+the projected classifier 6't . is a function of of all those features that depend 
+only on the segments with labels ll ... lu. In particular, C...t (L ) > 0 if there is 
+SOllie extension L of L  such that C(L) > 0 (see figure 1).The converse need not 
+be true: the feature values required to bring a projected point inside the positive 
+volulne of (' may not be realized with any labeling of the current set. of segments 
+1 ..... N. For a projected classifier to be useful, it lnust be easy to compute the 
+projection, and it must be effective in rejecting labelings at. an early stage. These 
+are strong requirements which are not satisfied by most good classifiers; for example, 
+in our experience a support vector machine with a posit, ive definite quadratic kernel 
+projects easily but typically yields unrestrictive projected classifiers. 
+2.1 Building Labelings Incrementally 
+Assume we have a classifier C that accepts assemblies corresponding to people and 
+that, we can construct projected classifiers as we need thein. We will now show how 
+to use them to construct labelings, using a pyramid of classificr.s. 
+A pyramid of classifiers (Fig. 1(c)), determined by the classifier C and a permutation 
+of labels (l...I/,.) consists of nodes Nt .... t corresponding to each of the projected 
+classifiers C), . t,, i _< j. Each of the bottom-level nodes Nt, receives the set of all 
+segments in the image as the input. The top node Nt .t, outputs the set of all 
+complete labelings L: {(/,s)... (/m,sm)} such that C.(L) > 0, i.e. tile set of all 
+asselnblies in the image classified as people. Further, each node h}, . t, outputs the 
+set of all sub-labelings L: {(li,si)...(lj,sj)} such that Ct,. t(L) > 0. 
+The nodes Nt, at, the bottom level work by selecting all segments si in the ilnage for 
+which (_', {(/,. si)} > 0. Each of the remaining nodes has two parts: merging and 
+filtering. The merging stage of node Nt .... t merges the outputs of its children by 
+computing the set of all labelings {(li,si)...(lj,s)} where {(h,s)... (/_, s_)} 
+784 S. Ioffe and D. Forsyth 
+y(sl,s2) 
+x(sl) 
+segments 
+tput 
+Figure 1: (a) Two segments that cannot correspond to the left upper and lower 
+arm. Any configuration where they do can be rejected using a projected classifier 
+regardless of the other segments that might appear in the configuration. (b) Pro- 
+jecting a classifier C'{ (l,s),(12, s2)}. The shaded area is the volume classified as 
+positive, for the feature set {x(s),y(s,s2)}. Finding the projection C't amounts 
+to projecting off the features that cannot be computed from s only, i.e., y(s, s2). 
+(c) A pyramid of classifiers. Each node outputs sub-assemblies accepted by the cor- 
+responding projected classifier. Each node except those in the bottom row works by 
+forming labelings from the outputs of its two children, and filtering the result using 
+the corresponding projected classifier. The top node outputs the set of all complete 
+labelings that correspond to body configurations. 
+and {(li+, si+)... (lj, sj) } are in the outputs of Nt .... z_ and Ni,.[.1...$ , respectivelyß 
+The filtering stage then selects, from the resulting set of labelings, those for which 
+Cz .... t.(.) > 0, and the resulting set is the output of Nz .... tj. It is clear, from the 
+definition of projected classifiers, that the output of the pyramid is, in fact, the set 
+of all complete L for which C(L) > 0 (note that Ct...z, = C). 
+The only constraint on the order in which the outputs of nodes are computed is that 
+children nodes have to be applied before parents. In our implementation, we use 
+nodes Nt .... t where j changes from 1 to m, and, for each j, i changes from j down to 
+1. This is equivalent to computing sets of labelings of the form {(/1, sx)... (lj, sj)} 
+in order, where getting (j + 1)-segment labelings from j-segment ones is itself an 
+incremental process, whereby we check labels against lj+l in the order lj, l j_ l, ß ß ß, l. 
+In practice, we choose the latter order on the fly for each increment step using a 
+greedy algorithm, to minimize the size of labeling sets that are constructed (note 
+that in this case the classifiers no longer form a pyramid). The order (/1 ...l,) in 
+which labels are added to an assembly needs to be fixed. We determine this order 
+with a greedy algorithm by running a large segment set through the labeling builder 
+and choosing the next label to add so as to minimize the number of labelings that 
+result. 
+2.2 Classifiers that Project 
+In our problem, each segment from the set {1...N} is a rectangle in some position 
+and orientation. Given a complete labeling L: {(1, Sl), ..., (rn,.s,)}, we want to 
+have C'(L) > 0 iff the segment arrangement produced by L looks like a person. 
+Learning to Find Pictures of People 785 
+y 0.22 0.38 
+0.25 , 0.25 =0.25+0.22 --0.25+0.6, 
+0.4 ,, 0.4 0.62 I.O , 
+, =0.4+0.22 --0.4+0.6 , t0.2; 
+i 
+0.15 ', 0.15 0.37 0.75 
+, =0.15+0.22 =0.15+0.6 ' 
+0 0.22 0.6 x 
+=0.22+0.38 
+' I I ' 
+' 0 0.22 0.6 ' 
+a b c 
+Figure : (a) All segments extracted for an image. (b) A labeled segment con- 
+figuration corresponding to a person, where T--torso, LUA=left upper arm, etc. 
+The head is not marked because we are not looking for it with our method The 
+single left leg segment in (a) has been broken in (b) to generate the upper and 
+lower leg segments. (c) (top) A combination of a bounding box (the dashed line) 
+and a boosted classifier, for two features x and y. Each plane in the boosted 
+classifier is a thick line with the positive half-space indicated by an arrow; the 
+associated weight /3 is shown next to the arrow. The shaded area is the posi- 
+tive volume of the classifier, which are the points P where -! wl(P(f)) > 1/2. 
+The weights wx(.) and wv(.) are shown along the x- and y-axes, respectively, and 
+the total weight wx(P(x)) + wv(P(y)) is shown for each region of the bounding 
+box. (bottom) The projected classifier, given by w(P(x)) > 1/2- 5 = 0.1 where 
+5: mx{0.as, 0.s} = 
+Each feature will depend on a few segments (1 to 3 in our experiments). Our 
+kinematic features are invariant to translation, uniform scaling or rotation of the 
+segment set, and include angles between segments and ratios of lengths, widths and 
+distances. We expect the features that correspond to human configurations to lie 
+within small fractions of their possible value ranges. This suggests using an axis- 
+aligned bounding box, with bounds learned from a collection of positive labelings, 
+for a good first separation, and then using a boosted version of a weak classifier that 
+splits the feature space on a single feature value (as in [6]). This classifier projects 
+particularly well, using a simple algorithm described in section 2.3. 
+Each weak classifier (Fig. 2(c)) is defined by the feature fj on which the split is 
+made, the position pj of the splitting hyperplane, and the direction dj  {1,-1} 
+that determines which half-space is positive. A point P is classified as positive iff 
+dj(P(fj)-pj) > 0, where P(fj) is the value of feature fj. The boosting algorithm 
+will associate a weight/3j with each plane (so that y'.j/3j = 1), and the resulting 
+classifier will classify a point as positive iff a,(e(!,)-pD>0 ]d > 1/2, that is, iff the 
+total weight of the weak classifiers that classify the point as positive is at least a 
+half of the total weight of the classifiers. The set {fj} may have repeating features 
+(which may have different pj, dj and wj values), and does not need to span the 
+entire feature set. 
+By grouping together the weights corresponding to plaues splitting on the same 
+feature, we finally rewrite the classifier as ! wj(P(f)) > 1/2, where w!(P(f)) = 
+786 S. Ioffe and D. Forsyth 
+-].5=,r, d(?(,r)-p,)>0/35 is the weight associated with the particular value of feature 
+.f, is a piece-wise constant function and depends on in which of the intervals given 
+by {P51f5 = f} this value falls. 
+2.3 Projecting a Boosted Classifier 
+Given a classifier constructed as above, we need to construct classifiers that depend 
+on on some identified subset of the features. The geometry of our classifiers -- 
+whose positive regions consist of unions of axis-aligned bounding boxes -- makes 
+this easy to do. 
+Let # be the feature to be projected away -- perhaps because the value depends on 
+a label that is not available. The projection of the classifier should classify a point 
+P' in the (lower-dimensional) feature space as positive iffmaxp ]]]f wf(P(f)) > 1/2 
+where P is a point which projects into P' but can have any value for P(g). We can 
+rewrite this expression as y]½g w(P'(f)) + maxp(g)wg(P(g)) > 1/2. The value 
+of 5 = maxws(P(g)) is readily available and independent of P'. We can see that, 
+with the feature projected away, we obtain y-]y wy(P'(f)) > 1/2- 5. Any number 
+of features can be projected away in a sequence ill this fashion. An example of the 
+projected classifier is shown in Figure 2(c). 
+Tile classifier C we are using allows for an efficient building of labelings, in that 
+tile features do not need to be recomputed when we move from Ct...tk to Ct..tk+. 
+We achieve this efficiency by carrying along with a labeling L = {(/, s)... (1,, s,)} 
+tile sum or(L) = y-]feF(t,...t)w(P(f)) where F(l ...l,) is the set of all features 
+colnputable from the segments labeled as l,...,lk, and {P(f)} -- the values of 
+these features. When we add another segment to get L' = {(/, s)... (/,+1, s+)}, 
+we can compute cr(L') = or(L) + Y']YeF(t...t+)\F(t...t) w.(P'(f)). In other words, 
+when we add a label l,+, we need to compute only those features that require s+ 
+for their computation. 
+3 Experimental Results 
+We report results for a system that automatically identifies potential body segments 
+(using the techniques described in [4]), and then applies the assembly process de- 
+scribed above. hnages for which assemblies that are kinematically consistent with a 
+person are reported as having people in them. The segment finder may find either 
+1 or 2 segments for each limb, depending on whether it is bent or straight; because 
+the pruning is so effective, we can allow segments to be broken into two equal halves 
+lengthwise (like the left leg ill Fig. 2(b)), both of which are tested. 
+3.1 Training 
+The training set included 79 ilntges without people, selected randomly from the 
+C, OaEL database, and 274 images each with a single person on uniform background. 
+The images with people have been scanned from books of human models [10]. All 
+segments in the test images were reported; in the control images, only segments 
+whose interior corresponded to human skin in colour and texture were reported. 
+Control images, both for the training and for the test set, were chosen so that all 
+had at least 30(7(, of their pixels similar to human skin in colour and texture. This 
+gives a more realistic test of the system performance by excluding regions that are 
+obviously not human, and reduces the number of segments in the control images to 
+the same order of magnitude as those in the test images. 
+Learning to Find Pictures of People 787 
+Features II Test I Cøntrøl 
+367 120 28 
+567 120 86 
+[Features [[ False Neg. 
+I 367 37 % 
+567 49 % 
+b 
+False Pos. 
+10% 
+Table 1: (a) Number of images of people (test) and without people (control) processed 
+by the classifiers with 367 and 567features. (b) False negative (images with a person 
+where no body configuration was found) and false positive (images with no people 
+where a person was detected) rates. 
+The models are all wearing either swim suits or no clothes, otherwise segment finding 
+fails; it is an open problem to segment people wearing loose clothing. There is a 
+wide variation in the poses of the training examples, although all body segments 
+are visible. The sets of segments corresponding to people were then hand-labeled. 
+Of the 274 images with people, segments for each body part were found in 193 
+images. The remaining 81 resulted in incomplete configurations, which could still 
+be used for computing the bounding box used to obtain a first separation. Since 
+we assume that if a configuration looks like a person then its mirror tinage would 
+too, we double the number of body configurations by flipping each one about a 
+vertical axis. The bounding box is then computed from the resulting 548 points in 
+the feature space, without, looking at the images without people. 
+The boosted classifier was trained to separate two classes: the 193 x 2 = 386 points 
+corresponding to body configurations, and 60727 points that did not correspond to 
+people but lay in the bounding box, obtained by using the bounding box classifier 
+to incrementally build labelings for the images with no people. We added 1178 
+synthetic positive configurations obtained by randomly selecting each limb and the 
+torso froth one of the 386 real images of body configurations (which were rotated 
+and scaled so the torso positions were the same in all of them) to give an effect 
+of joining lilnbs and torsos froth different images rather like children's flip-books. 
+Remarkably, the boosted classifier classified each of the real data points correctly but 
+misclassified 976 out of the 1178 synthetic configurations as negative; the synthetic 
+examples were unexpectedly more similar to the negative examples than the real 
+positive examples were. 
+3.2 Results 
+The test dataset was separate froth the training set and included 120 images with a 
+person on a uniform background, and varying numbers of control images, reported 
+in Table 1. We report results for two classifiers, one using 567 features and the 
+other using a subset of 367 of those features. Table lb shows the false positive 
+and false negative rates achieved for each of the two classifiers. By marking 51% 
+of test tinages and only 10% of control images, the classifier using 567 features 
+coinpares extremely favorably with that of [3], which marked 54% of test images 
+and 38% of control tinages using hand-tuned tests to forth groups of four seglnents. 
+In 55 of the 59 images where there was a false negative, a segment corresponding 
+to a body part was missed by the segment finder, ineaning that the overall system 
+performance significantly understates the classifier performance. There are few 
+signs of overfitting, probably because the features are highly redundant. Using the 
+larger set of features makes labeling faster (by a factor of about five), because more 
+configurations are rejected earlier. 
+788 S. Ioffe and D. Forsyth 
+4 Conclusions and Future Work 
+Groups of seglnents that satisfy kinematic constraints, learned from images of real 
+people, quite reliably correspond to people and can be used to identify them. Our 
+trick of projecting classifiers is effective at pruning an otherwise completely unman- 
+ageable correspondence search. Future issues include: fusing responses froin face 
+finders (such as those of [11, 9]; exploiting patterns of shading on human limbs to 
+get better selectivity (as in [8]); determining the configuration of the person, which 
+might tell what they are doing; and exploiting the kinematic similarities between 
+humans and many animals to build systems that can find many different types of 
+animal without searching the classes one by one. 
+References 
+[1] J.M. Brady and H. Asada. Smoothed local syminetries and their implementation. 
+International Journal of Robotics Research, 3(3), 1984. 
+[2] P.G.B. Enser. Query analysis in a visual information retrieval context. J. Document 
+and Text Management, 1(1):25-52, 1993. 
+[3] M. M. Fleck, D. A. Forsyth, and C. Bregler. Finding naked people. In European 
+Conference on Computer Vision 1996, Vol. II, pages 592-602, 1996. 
+[4] D.A. Forsyth and M.M. Fleck. Body plans. In IEEE Conf. o'n Computer Vision and 
+Pattern Recognition, 1997. 
+[5] D.A. Forsyth, J. Malik, M.M. Fleck, H. Greenspan, T. Leung, S. Belongie, C. Carson, 
+and C. Bregler. Finding pictures of objects in large collections of images. In Proc. 
+2'nd International Workshop on Object Representation in Computer Vision, 1996. 
+[6] Y. Freund and R.E. Schapire. Experiments with a new boosting algorithm. In Machine 
+Learning- 13, 1996. 
+[7] W.E.L. Grimson and T. Lozano-Prez. Localizing overlapping parts by searching the 
+interpretation tree. IœEE Trans. Part. Anal. Mach. Intell., 9(4):469-482, 1987. 
+[8] J. Haddon and D.A. Forsyth. Shading primitives. In Int. Uonf. on Uomputer Vision, 
+1997. to appear. 
+[9] H.A. Rowley, S. Baluja, and T. Kanade. Human face detection in visual scenes. 
+In D.S. Touretzky, M.C. Mozer, and M.E. Hasselmo, editors, Advances in Neural 
+Information Processing 8, pages 875-881, 1996. 
+[10] Elte Shuppan. Pose file, volume 1-7. Books Nippan, 1993-1996. A collection of 
+photographs of human models, annotated in Japanese. 
+[11] K-K Sung and T. Poggio. Example based learning for view based face detection. Ai 
+memo 1521, MIT, 1994. 
