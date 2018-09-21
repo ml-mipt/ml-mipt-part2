@@ -174,7 +174,7 @@ def WintersExponentialSmoothing(x, h, Params):
         FORECAST[cntr+h] = l + s[(cntr+1)%p]
     return FORECAST
 
-def TWExponentialSmoothing(x, h, Params):
+def TheilWageExponentialSmoothing(x, h, Params):
     T = len(x)
     alpha = Params['alpha']
     beta = Params['beta']
@@ -205,9 +205,9 @@ def TWExponentialSmoothing(x, h, Params):
             else:
                 l_old=l
                 s_old=s[cntr%p]
-                s[cntr%p]=gamma*(x[cntr]-l)+(1-gamma)*s[cntr%p]
                 l = alpha*(x[cntr]-s_old)+(1-alpha)*(l+b) # recurrent smoothing of level 
-                b=beta*(l-l_old)+(1-beta)*b
+ 				b=beta*(l-l_old)+(1-beta)*b
+				s[cntr%p]=gamma*(x[cntr]-l)+(1-gamma)*s[cntr%p]
             
         FORECAST[cntr+h] = l+b + s[(cntr+h)%p]
     return FORECAST
